@@ -16,6 +16,7 @@
 		http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
 	<!-- 读取配置文件 -->
 	<context:property-placeholder location="classpath:database.properties" />
 	
@@ -45,10 +46,11 @@
 	<!-- 配置mybitas SqlSessionFactoryBean -->
 	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
 		<property name="dataSource" ref="dataSource" /> 
-		<property name="typeAliasesPackage" value="cn.jxcdb.pojo" />
+		<property name="typeAliasesPackage" value="cn.jxc.pojo" />
 	</bean>
+	
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property value="cn.jxcdb.mapper" name="basePackage" />
+		<property name="basePackage" value="cn.jxc.mapper"/>
 	</bean>
 	
 	<!-- 事务管理 -->
