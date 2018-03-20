@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <!-- start: Meta -->
-<title>Bootstrap Metro Dashboard by Dennis Ji for ARM demo</title>
+<title>进销存系统登录</title>
 <meta name="description" content="Bootstrap Metro Dashboard">
 <meta name="author" content="LXQ">
 <meta name="keyword"
@@ -37,7 +37,7 @@
 	<![endif]-->
 
 <!-- start: Favicon -->
-<link rel="shortcut icon" href="static/img/favicon.ico">
+<link rel="shortcut icon" href="static/img/favicon.png">
 <!-- end: Favicon -->
 
 <style type="text/css">
@@ -52,10 +52,9 @@ body {
 			<div class="row-fluid">
 				<div class="login-box">
 					<div class="icons">
-						<a href="index.html"><i class="halflings-icon home"></i></a> <a
-							href="#"><i class="halflings-icon cog"></i></a>
+						
 					</div>
-					<h2>Login to your account</h2>
+					<h2>登录账号</h2>
 					<form class="form-horizontal" action="login" method="post">
 						<fieldset>
 							<div class="input-prepend" title="Username">
@@ -71,9 +70,6 @@ body {
 							</div>
 							<div class="clearfix"></div>
 
-							<label class="remember" for="remember"><input
-								type="checkbox" id="remember" />Remember me</label>
-
 							<div class="button-login">
 								<button type="submit" class="btn btn-primary">Login</button>
 							</div>
@@ -81,10 +77,6 @@ body {
 						</fieldset>
 					</form>
 					<hr>
-					<h3>Forgot Password?</h3>
-					<p>
-						No problem, <a href="#">click here</a> to get a new password.
-					</p>
 				</div>
 				<!--/span-->
 			</div>

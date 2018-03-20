@@ -27,14 +27,13 @@ public class LoginController {
 		if (null!=login) {
 			session.setAttribute("loginEmp", login);//当前登录的用户放入session中
 			return "index";
-		}else {
+		} else {
 			return "login";
 		}
 	}
 	
 	@RequestMapping("table")
 	public String go() {
-		
 		return "table";
 	}
 	

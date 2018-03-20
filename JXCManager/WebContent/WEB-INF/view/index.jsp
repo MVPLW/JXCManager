@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html lang="en">
 <head>
 
 <!-- start: Meta -->
-<title>Bootstrap Metro Dashboard by Dennis Ji for ARM demo</title>
+<title>进销存管理</title>
 <meta name="description" content="Bootstrap Metro Dashboard">
 <meta name="author" content="Dennis Ji">
 <meta name="keyword"
@@ -39,64 +39,29 @@
 	<![endif]-->
 
 <!-- start: Favicon -->
-<link rel="shortcut icon" href="static/img/favicon.ico">
+<link rel="shortcut icon" href="static/img/favicon.png">
 <!-- end: Favicon -->
 </head>
+
 <body>
 	<!-- 网页头部 -->
 	<%@ include file="common/head.jsp"%>
-	<div class="copyrights">
-		Collect from <a href="http://www.cssmoban.com/">企业网站模板</a>
-	</div>
+
 	<div class="container-fluid-full">
 		<div class="row-fluid">
-			<!-- 左边主菜单 -->
+			
+			<!-- start: Main Menu -->
 			<%@ include file="common/Menu.jsp"%>
-
-			<noscript>
-				<div class="alert alert-block span10">
-					<h4 class="alert-heading">Warning!</h4>
-					<p>
-						You need to have <a href="http://en.wikipedia.org/wiki/JavaScript"
-							target="_blank">JavaScript</a> enabled to use this site.
-					</p>
-				</div>
-			</noscript>
+			<!-- end: Main Menu -->
+			
 			<!-- start: Content -->
 			<iframe style="height: 800px; width: 100%;" src="welcome.jsp"
-				id="page-Content" name="page-Content" frameborder="0"> 
+				id="page-Content" name="page-Content" frameborder="0" scrolling="no">
 			</iframe>
-			<!--/.fluid-container-->
 			<!-- end: Content -->
-		</div>
-		<!--/#content.span10-->
-	</div>
-	<!--/fluid-row-->
-
-	<div class="modal hide fade" id="myModal">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>Settings</h3>
-		</div>
-		<div class="modal-body">
-			<p>Here settings can be configured...</p>
-		</div>
-		<div class="modal-footer">
-			<a href="#" class="btn" data-dismiss="modal">Close</a> <a href="#"
-				class="btn btn-primary">Save changes</a>
+			
 		</div>
 	</div>
-
-	<div class="common-modal modal fade" id="common-Modal1" tabindex="-1"
-		role="dialog" aria-hidden="true">
-		<div class="modal-content">
-			<ul class="list-inline item-details">
-				<li><a href="#">Admin templates</a></li>
-				<li><a href="http://themescloud.org">Bootstrap themes</a></li>
-			</ul>
-		</div>
-	</div>
-	<div class="clearfix"></div>
 
 	<!-- 脚部开始 -->
 	<%@ include file="common/foot.jsp"%>
@@ -133,6 +98,13 @@
 	<script src="static/js/retina.js"></script>
 	<script src="static/js/custom.js"></script>
 	<!-- end: JavaScript-->
-
+	<script type="text/javascript">
+		$(function() {
+			$("#menu li").click(function() {
+				$(this).siblings('li').removeClass('active'); // 删除其他兄弟元素的样式
+				$(this).addClass('active'); //给当前元素加上样式
+			});
+		});
+	</script>
 </body>
 </html>
