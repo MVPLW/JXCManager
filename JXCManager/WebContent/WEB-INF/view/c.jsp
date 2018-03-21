@@ -51,9 +51,7 @@
 
 	<div class="container-fluid-full">
 		<div class="row-fluid">
-			<!-- start: Main Menu
-			end: Main Menu
-			start: Content -->
+			<!-- start: Content -->
 			<div id="content" class="span10">
 				<ul class="breadcrumb">
 					<li><i class="icon-home"></i> <a href="index.html">Home</a> <i
@@ -113,21 +111,12 @@
 							</table>
 						</div>
 					</div>
-					<!-- /span -->
 				</div>
-				<!-- /row -->
-				<!-- /row -->
-				<!-- /row -->
-				<!-- /row -->
 			</div>
-			<!-- /.fluid-container -->
-			<!-- end: Content  -->
 		</div>
-		<!-- /#content.span10 -->
 	</div>
-	<!--/fluid-row-->
+	
 	<!-- start: JavaScript-->
-
 	<script src="static/js/jquery-1.9.1.min.js"></script>
 	<script src="static/js/jquery-migrate-1.0.0.min.js"></script>
 	<script src="static/js/jquery-ui-1.10.0.custom.min.js"></script>

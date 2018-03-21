@@ -27,9 +27,10 @@ public class PurchaseRequest implements java.io.Serializable {
 	private Date deptReviewTime;
 	private Date prepaymentReviewTime;
 	private Date financialAuditTime;
-	
-	private Set<PurchasePaymentSlip> purchasepaymentslips = new HashSet<PurchasePaymentSlip>(0);
+	//存放当前订单中明细
 	private Set<PurchaseRequestDetail> purchaserequestdetails = new HashSet<PurchaseRequestDetail>(0);
+
+	private Set<PurchasePaymentSlip> purchasepaymentslips = new HashSet<PurchasePaymentSlip>(0);
 
 	public PurchaseRequest() {
 	}

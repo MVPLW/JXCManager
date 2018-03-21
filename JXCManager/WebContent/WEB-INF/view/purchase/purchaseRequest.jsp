@@ -82,7 +82,7 @@
 											input</label>
 										<div class="controls">
 											<input class="input-xlarge disabled" id="disabledInput"
-												type="text" placeholder="Disabled input here…" disabled="">
+												type="text" placeholder="Disabled input here…" disabled="disabled">
 										</div>
 									</div>
 									<div class="control-group">
@@ -90,7 +90,7 @@
 											checkbox</label>
 										<div class="controls">
 											<label class="checkbox"> <input type="checkbox"
-												id="optionsCheckbox2" value="option1" disabled="">
+												id="optionsCheckbox2" value="option1" disabled="disabled">
 												This is a disabled checkbox
 											</label>
 										</div>
