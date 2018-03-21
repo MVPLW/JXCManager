@@ -43,7 +43,11 @@
 <!-- end: Favicon -->
 
 </head>
-
+<style type="text/css">
+	h3{
+		display: inline;
+	}
+</style>
 <body>
 	<div class="container-fluid-full">
 		<div class="row-fluid">
@@ -54,34 +58,43 @@
 						class="icon-angle-right"></i></li>
 					<li><a href="form">采购订单管理</a></li>
 				</ul>
-				<div class="row-fluid sortable">
-					<form action="#" method="post">
-						<div style="float: left;">
-							申请人：<input type="text" /> 供应商编号：<input type="text" />
-							<button type="submit" class="btn btn-info"
-								onclick="javascript:void(0)" data-command="search">
-								<i class="icon-search"></i>搜索
-							</button>
-						</div>
-						<div style="float: right;">
-							<a class="btn btn-primary" href="goPurchaseRequest"
-								data-command="Add"><i class="icon-plus"></i>&nbsp;申请</a> <a
-								class="btn btn-warning" href="javascript:void(0)"
-								data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a> <a
-								class="btn btn-danger" href="javascript:void(0)"
-								data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
+
+				<div class="row-fluid">
+					<form action="#" method="post" class="form-horizontal">
+						<div class="control-group">
+							<div data-condition="search">
+								申请单号:<input type="text" name="OrderNum" class="input-medium"
+									placeholder="请输入申请单号" /> 申请人:<input type="text" name="BarCode"
+									class="input-medium" placeholder="请输入申请人" /> 供应商:<input
+									type="text" name="ProductName" class="input-medium"
+									placeholder="请输入供应商" /> <a class="btn btn-success"
+									href="javascript:void(0)" data-command="search"><i
+									class="icon-search"></i>&nbsp;搜索</a>
+								<div style="float: right;">
+									<a class="btn btn-primary" href="goPurchaseRequest" data-command="Add"><i
+										class="icon-plus"></i>&nbsp;申请</a> <a class="btn btn-warning"
+										href="javascript:void(0)" data-command="Delete"><i
+										class="icon-remove"></i>&nbsp;删除</a> <a class="btn btn-danger"
+										href="javascript:void(0)" data-command="Refresh"><i
+										class="icon-refresh"></i>&nbsp;刷新</a>
+								</div>
+
+							</div>
 						</div>
 					</form>
-					<div class="clear:both">&nbsp;</div>
 					<div class="box">
 						<div class="box-header" data-original-title>
 							<h2>
-								<i class="halflings-icon white user"></i><span class="break"></span>采购管理
+								<i class="halflings-icon white user"></i><span class="break"></span>采购订单管理
 							</h2>
 						</div>
+						<div style="clear: both;">&nbsp;</div>
+						<div style="clear: both;">&nbsp;</div>
 						<div class="box-content">
 							<table
-								class="table table-striped table-bordered bootstrap-datatable datatable">
+								class="table table-striped table-bordered bootstrap-datatable">
+								<!-- table table-bordered table-striped table-condensed
+								 -->
 								<thead>
 									<tr>
 										<th><input type="checkbox"></th>
@@ -106,14 +119,12 @@
 										<td>2</td>
 										<td>1</td>
 										<td>1</td>
-										<td class="center">
-											<a class="btn btn-info btn-setting" href="goPurchaseDetail">
-												<i class="halflings-icon white zoom-in"></i> 
-											</a> 
-											<a class="btn btn-info" href="goPurchaseUpdate">&nbsp; 
+										<td class="center"><a class="btn btn-info btn-setting"
+											href="goPurchaseDetail"> <i
+												class="halflings-icon white zoom-in"></i>
+										</a> <a class="btn btn-info btn-success" href="goPurchaseUpdate">
 												<i class="halflings-icon white edit"></i>
-											</a>
-										</td>
+										</a></td>
 									</tr>
 								</tbody>
 							</table>
@@ -133,19 +144,86 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="modal hide fade" id="myModal" style="width: 800px;">
-		<div class="modal-header">
+		<div class="modal-header" >
 			<button type="button" class="close" data-dismiss="modal">x</button>
-			<h3>采购明细</h3>
+			<h2 >采购订单明细</h2>
 		</div>
-		<div class="modal-body">靳颖是傻逼</div>
+		<div class="modal-body">
+			<!-- 采购订单中所有内容 -->
+			<div>
+				<table style="width: 100%;" >
+					<tr style="height: 30px;">
+						<td> <h3>订单编号:</h3> aaa</td>
+						<td> <h3>申请人:</h3>张三 </td>
+						<td><h3>申请时间:</h3>2009-8-9</td>
+					</tr>
+					<tr style="height: 30px;">
+						<td><h3>供应商编号:</h3>SSSSSSS</td>
+						<td><h3>联系人:</h3>张三</td>
+						<td><h3>电话:</h3>198683762</td>
+					</tr>
+					<tr style="height: 30px;">
+						<td><h3>部门审核人:</h3>啊啊啊</td>
+						<td><h3>审核时间:</h3>123</td>
+						<td><h3>审核状态:</h3>啊</td>
+					</tr>
+					<tr style="height: 30px;">
+						<td><h3>财务审核:</h3>阿斯蒂芬</td>
+						<td><h3>审核时间:</h3>的方式</td>
+						<td><h3>审核状态:</h3>地方</td>
+					</tr>
+					<tr style="height: 30px;"><td colspan="3"> <h3>备注:</h3>今天周二 </td></tr>
+				</table>
+			</div>
+			<div style="clear: both;">&nbsp;</div>
+			<div class="box-content">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>产品名称</th>
+							<th>产品编号</th>
+							<th>规格</th>
+							<th>数量</th>
+							<th>单价</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Dennis Ji</td>
+							<td class="center">2012/01/01</td>
+							<td class="center">Member</td>
+							<td class="center">Active</td>
+							<td class="center">sss</td>
+						</tr>
+						<tr>
+							<td>Dennis Ji</td>
+							<td>2012/01/01</td>
+							<td class="center">Member</td>
+							<td class="center">Active</td>
+							<td class="center">sss</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="pagination pagination-centered">
+					<ul>
+						<li><a href="#">上一页</a></li>
+						<li class="active"><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">下一页</a></li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn" data-dismiss="modal">Close</a> <a href="#"
-				class="btn btn-primary">Save</a>
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a> 
 		</div>
 	</div>
-	
+
 	<!-- start: JavaScript-->
 	<script src="static/js/jquery-1.9.1.min.js"></script>
 	<script src="static/js/jquery-migrate-1.0.0.min.js"></script>

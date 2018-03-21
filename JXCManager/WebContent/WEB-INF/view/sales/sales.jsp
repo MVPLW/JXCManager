@@ -46,6 +46,7 @@
 <body>
 	<div class="container-fluid-full">
 		<div class="row-fluid">
+		
 			<!-- start: Content -->
 			<div id="content" class="span10">
 				<ul class="breadcrumb">
@@ -55,7 +56,7 @@
 				</ul>
 
 				<div class="row-fluid">
-					<form class="form-horizontal" action="javascript:void(0)">
+					<form class="form-horizontal" action="javascript:void(0)" method="post">
 						<div class="control-group">
 							<div data-condition="search">
 								销售单号:<input type="text" name="OrderNum" class="input-medium"
@@ -82,7 +83,6 @@
 
 					</form>
 				</div>
-				<div class="clear:both">&nbsp;</div>
 
 				<div class="box">
 					<div class="box-header" data-original-title>
