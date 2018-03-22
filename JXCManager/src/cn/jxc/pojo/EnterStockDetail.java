@@ -1,5 +1,4 @@
 package cn.jxc.pojo;
-// Generated 2018-3-14 20:32:32 by Hibernate Tools 5.2.8.Final
 
 /**
  * Èë¿âµ¥Ã÷Ï¸
@@ -16,17 +15,24 @@ public class EnterStockDetail implements java.io.Serializable {
 	private Product product;
 	private int productCount;
 	private long productPrice;
+	private ProductUnit productUnit;
 
 	public EnterStockDetail() {
+		super();
 	}
 
-	public EnterStockDetail(int spId, EnterStock enterstock, Product product, int productCount, long productPrice) {
+	public EnterStockDetail(int spId, EnterStock enterstock, Product product, int productCount, long productPrice,
+			ProductUnit productUnit) {
+		super();
 		this.spId = spId;
 		this.enterstock = enterstock;
 		this.product = product;
 		this.productCount = productCount;
 		this.productPrice = productPrice;
+		this.productUnit = productUnit;
 	}
+
+
 
 	public int getSpId() {
 		return this.spId;
@@ -68,4 +74,12 @@ public class EnterStockDetail implements java.io.Serializable {
 		this.productPrice = productPrice;
 	}
 
+	public ProductUnit getProductUnit() {
+		return productUnit;
+	}
+
+	public void setProductUnit(ProductUnit productUnit) {
+		this.productUnit = productUnit;
+	}
+	
 }

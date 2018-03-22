@@ -13,34 +13,24 @@ import cn.jxc.service.EmployeeService;
 
 @Controller
 public class LoginController {
-	
+
 	@Autowired
 	private EmployeeService employeeService;
-	
+
 	/**
 	 * 登录方法
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/login")
-	public String login(String username,String password,HttpSession session) {
-//		Employee login = employeeService.login(username, password);
-//		if (null!=login) {
-//			session.setAttribute("loginEmp", login);//当前登录的用户放入session中
-//			return "index";
-//		} else {
-<<<<<<< HEAD
-//			return "login";
-//		}
-		return "index";
-=======
+	public String login(String username, String password, HttpSession session) {
+		Employee login = employeeService.login(username, password);
+		if (null != login) {
+			session.setAttribute("loginEmp", login);// 当前登录的用户放入session中
 			return "index";
-<<<<<<< HEAD
-//		}
->>>>>>> dcbbb8729fcfc6f5f4c040194b419bf876dc152d
-	}
-=======
+		} else {
+			return "login";
 		}
-//	}
->>>>>>> refs/remotes/origin/master
-	
+	}
+
 }

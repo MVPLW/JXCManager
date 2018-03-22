@@ -15,16 +15,20 @@ public class SalesOrderDetail implements java.io.Serializable {
 	private SalesOrder salesorder;
 	private int count;
 	private long price;
+	private ProductUnit productUnit;
 
 	public SalesOrderDetail() {
+		super();
 	}
 
-	public SalesOrderDetail(int sodId, Product product, SalesOrder salesorder, int count, long price) {
+	public SalesOrderDetail(int sodId, Product product, SalesOrder salesorder, int count, long price,ProductUnit productUnit) {
+		super();
 		this.sodId = sodId;
 		this.product = product;
 		this.salesorder = salesorder;
 		this.count = count;
 		this.price = price;
+		this.productUnit=productUnit;
 	}
 
 	public int getSodId() {
@@ -67,4 +71,12 @@ public class SalesOrderDetail implements java.io.Serializable {
 		this.price = price;
 	}
 
+	public ProductUnit getProductUnit() {
+		return productUnit;
+	}
+
+	public void setProductUnit(ProductUnit productUnit) {
+		this.productUnit = productUnit;
+	}
+	
 }
