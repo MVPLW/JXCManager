@@ -34,8 +34,13 @@ public class LoginController {
 		return "index";
 =======
 			return "index";
+<<<<<<< HEAD
 //		}
 >>>>>>> dcbbb8729fcfc6f5f4c040194b419bf876dc152d
 	}
+=======
+		}
+//	}
+>>>>>>> refs/remotes/origin/master
 	
 }
