@@ -74,8 +74,8 @@
 									<a href="#" class="btn-setting"><i
 										class="halflings-icon white wrench"></i></a> <a href="#"
 										class="btn-minimize"><i
-										class="halflings-icon white chevron-up"></i></a> <a href="#"
-										class="btn-close"><i class="halflings-icon white remove"></i></a>
+										class="halflings-icon white chevron-up"></i></a> <!-- <a href="#"
+										class="btn-close"><i class="halflings-icon white remove"></i></a> -->
 								</div>
 							</div>
 							<div class="box-content">
@@ -88,7 +88,7 @@
 														<label class="control-label" for="OrderNum">申请人</label>
 														<div class="controls">
 															<!-- <input type="text" name="OrderNum" class="span12" placeholder="可不填,自动生成" disabled="disabled"> -->
-															<input type="text" class="span12"> <input
+															<input type="text" class="span12"  disabled="disabled" placeholder="不可以更改"> <input
 																type="hidden" name="SnNum" /> <span class="help-block"></span>
 														</div>
 													</div>
@@ -198,7 +198,7 @@
 												data-command="Save">
 												<i class="icon-ok"></i>保存
 											</button>
-											<button type="button" class="btn" data-command="Cancel">取消</button>
+											<button type="button" onclick="window.history.back()" class="btn" data-command="Cancel">取消</button>
 										</div>
 									</fieldset>
 								</form>
@@ -213,19 +213,78 @@
 		<!--/#content.span10-->
 	</div>
 	<!--/fluid-row-->
-	<div class="modal hide fade" id="myModal">
+	<!-- 调拨产品 -->
+	<div class="modal hide fade" id="myModal" style="width: 800px;">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">Ã</button>
-			<h3>Settings</h3>
+			<h3>调拨产品</h3>
 		</div>
 		<div class="modal-body">
-			<p>Here settings can be configured...</p>
+			<div>
+				<table style="width: 100%;" >
+					<tr style="height: 30px;">
+						<td> <h3>产品单号:</h3><input type="text" name="" placeholder="请输入单号"/></td>
+						<td> <h3>产品名称:</h3><input type="text" name="" placeholder="请输入产品名称"/>
+							<a class="btn btn-success"
+									href="javascript:void(0)" data-command="search"><i
+									class="icon-search"></i>&nbsp;搜索</a>
+						 </td>
+					</tr>
+				</table>
+			</div>
+			<div style="clear: both;">&nbsp;</div>
+			<div class="box-content">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th></th>
+							<th>产品名称</th>
+							<th>产品编号</th>
+							<th>规格</th>
+							<th>库存数量</th>
+							<th>数量</th>
+							<th>单价</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="checkbox"></td>
+							<td>Dennis Ji</td>
+							<td class="center">2012/01/01</td>
+							<td class="center">Member</td>
+							<td class="center">Active</td>
+							<td><input type="text" name="" style="width:50px;" value="0"></td>
+							<td class="center">sss</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox"></td>
+							<td>Dennis Ji</td>
+							<td class="center">2012/01/01</td>
+							<td class="center">Member</td>
+							<td class="center">Active</td>
+							<td><input type="text" name="" style="width:50px;" value="0"></td>
+							<td class="center">sss</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="pagination pagination-centered">
+					<ul>
+						<li><a href="#">上一页</a></li>
+						<li class="active"><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">下一页</a></li>
+					</ul>
+				</div>
+			</div>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Close</a> <a href="#"
 				class="btn btn-primary">Save changes</a>
 		</div>
 	</div>
+	<!-- /调拨产品 -->
 
 	<!-- start: JavaScript-->
 
@@ -284,17 +343,5 @@
 
 	<script src="static/js/custom.js"></script>
 	<!-- end: JavaScript-->
-
-	<div class="modal hide fade" id="myModal" style="width: 1000px;">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal">x</button>
-			<h3>采购明细</h3>
-		</div>
-		<div class="modal-body"></div>
-		<div class="modal-footer">
-			<a href="#" class="btn" data-dismiss="modal">Close</a> <a href="#"
-				class="btn btn-primary">Save</a>
-		</div>
-	</div>
 </body>
 </html>

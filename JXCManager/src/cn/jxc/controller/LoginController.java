@@ -28,8 +28,14 @@ public class LoginController {
 //			session.setAttribute("loginEmp", login);//当前登录的用户放入session中
 //			return "index";
 //		} else {
+<<<<<<< HEAD
+//			return "login";
+//		}
+		return "index";
+=======
 			return "index";
 //		}
+>>>>>>> dcbbb8729fcfc6f5f4c040194b419bf876dc152d
 	}
 	
 }
