@@ -16,52 +16,57 @@ public class PurchaseRequest implements java.io.Serializable {
 	
 	private String purchaseRequestId;
 	private Employee employeeByFinancialAuditEmp;
-	private Employee employeeByPrepaymentReviewEmp;
 	private Employee employeeByRequestEmpId;
 	private Employee employeeByDeptReviewEmp;
-	private ReviewStatus reviewstatusByPrepaymentReviewStatus;
 	private ReviewStatus reviewstatusByDeptReviewStatus;
 	private ReviewStatus reviewstatusByFinancialAuditStatus;
 	private Supplier supplier;
+	private String SuppContact;
+	private String SuppPhone;
 	private Date requestTime;
 	private Date deptReviewTime;
-	private Date prepaymentReviewTime;
 	private Date financialAuditTime;
-	
-	private Set<PurchasePaymentSlip> purchasepaymentslips = new HashSet<PurchasePaymentSlip>(0);
+	private String Remark;
+	//存放当前订单中明细
 	private Set<PurchaseRequestDetail> purchaserequestdetails = new HashSet<PurchaseRequestDetail>(0);
 
+	private Set<PurchasePaymentSlip> purchasepaymentslips = new HashSet<PurchasePaymentSlip>(0);
+
 	public PurchaseRequest() {
+		
 	}
 
 	public PurchaseRequest(String purchaseRequestId, Employee employeeByRequestEmpId, Supplier supplier,
 			Date requestTime) {
+		super();
 		this.purchaseRequestId = purchaseRequestId;
 		this.employeeByRequestEmpId = employeeByRequestEmpId;
 		this.supplier = supplier;
 		this.requestTime = requestTime;
 	}
-
+	
 	public PurchaseRequest(String purchaseRequestId, Employee employeeByFinancialAuditEmp,
-			Employee employeeByPrepaymentReviewEmp, Employee employeeByRequestEmpId, Employee employeeByDeptReviewEmp,
-			ReviewStatus reviewstatusByPrepaymentReviewStatus, ReviewStatus reviewstatusByDeptReviewStatus,
-			ReviewStatus reviewstatusByFinancialAuditStatus, Supplier supplier, Date requestTime, Date deptReviewTime,
-			Date prepaymentReviewTime, Date financialAuditTime, Set<PurchasePaymentSlip> purchasepaymentslips, Set<PurchaseRequestDetail> purchaserequestdetails) {
+			Employee employeeByRequestEmpId, Employee employeeByDeptReviewEmp,
+			ReviewStatus reviewstatusByDeptReviewStatus, ReviewStatus reviewstatusByFinancialAuditStatus,
+			Supplier supplier, String suppContact, String suppPhone, Date requestTime, Date deptReviewTime,
+			Date financialAuditTime, String remark, Set<PurchaseRequestDetail> purchaserequestdetails,
+			Set<PurchasePaymentSlip> purchasepaymentslips) {
+		super();
 		this.purchaseRequestId = purchaseRequestId;
 		this.employeeByFinancialAuditEmp = employeeByFinancialAuditEmp;
-		this.employeeByPrepaymentReviewEmp = employeeByPrepaymentReviewEmp;
 		this.employeeByRequestEmpId = employeeByRequestEmpId;
 		this.employeeByDeptReviewEmp = employeeByDeptReviewEmp;
-		this.reviewstatusByPrepaymentReviewStatus = reviewstatusByPrepaymentReviewStatus;
 		this.reviewstatusByDeptReviewStatus = reviewstatusByDeptReviewStatus;
 		this.reviewstatusByFinancialAuditStatus = reviewstatusByFinancialAuditStatus;
 		this.supplier = supplier;
+		this.SuppContact = suppContact;
+		this.SuppPhone = suppPhone;
 		this.requestTime = requestTime;
 		this.deptReviewTime = deptReviewTime;
-		this.prepaymentReviewTime = prepaymentReviewTime;
 		this.financialAuditTime = financialAuditTime;
-		this.purchasepaymentslips = purchasepaymentslips;
+		this.Remark = remark;
 		this.purchaserequestdetails = purchaserequestdetails;
+		this.purchasepaymentslips = purchasepaymentslips;
 	}
 
 	public String getPurchaseRequestId() {
@@ -80,14 +85,6 @@ public class PurchaseRequest implements java.io.Serializable {
 		this.employeeByFinancialAuditEmp = employeeByFinancialAuditEmp;
 	}
 
-	public Employee getEmployeeByPrepaymentReviewEmp() {
-		return this.employeeByPrepaymentReviewEmp;
-	}
-
-	public void setEmployeeByPrepaymentReviewEmp(Employee employeeByPrepaymentReviewEmp) {
-		this.employeeByPrepaymentReviewEmp = employeeByPrepaymentReviewEmp;
-	}
-
 	public Employee getEmployeeByRequestEmpId() {
 		return this.employeeByRequestEmpId;
 	}
@@ -102,14 +99,6 @@ public class PurchaseRequest implements java.io.Serializable {
 
 	public void setEmployeeByDeptReviewEmp(Employee employeeByDeptReviewEmp) {
 		this.employeeByDeptReviewEmp = employeeByDeptReviewEmp;
-	}
-
-	public ReviewStatus getReviewstatusByPrepaymentReviewStatus() {
-		return this.reviewstatusByPrepaymentReviewStatus;
-	}
-
-	public void setReviewstatusByPrepaymentReviewStatus(ReviewStatus reviewstatusByPrepaymentReviewStatus) {
-		this.reviewstatusByPrepaymentReviewStatus = reviewstatusByPrepaymentReviewStatus;
 	}
 
 	public ReviewStatus getReviewstatusByDeptReviewStatus() {
@@ -152,14 +141,6 @@ public class PurchaseRequest implements java.io.Serializable {
 		this.deptReviewTime = deptReviewTime;
 	}
 
-	public Date getPrepaymentReviewTime() {
-		return this.prepaymentReviewTime;
-	}
-
-	public void setPrepaymentReviewTime(Date prepaymentReviewTime) {
-		this.prepaymentReviewTime = prepaymentReviewTime;
-	}
-
 	public Date getFinancialAuditTime() {
 		return this.financialAuditTime;
 	}
@@ -182,6 +163,30 @@ public class PurchaseRequest implements java.io.Serializable {
 
 	public void setPurchaserequestdetails(Set<PurchaseRequestDetail> purchaserequestdetails) {
 		this.purchaserequestdetails = purchaserequestdetails;
+	}
+
+	public String getSuppContact() {
+		return SuppContact;
+	}
+
+	public void setSuppContact(String suppContact) {
+		this.SuppContact = suppContact;
+	}
+
+	public String getSuppPhone() {
+		return SuppPhone;
+	}
+
+	public void setSuppPhone(String suppPhone) {
+		this.SuppPhone = suppPhone;
+	}
+
+	public String getRemark() {
+		return Remark;
+	}
+
+	public void setRemark(String remark) {
+		this.Remark = remark;
 	}
 
 }

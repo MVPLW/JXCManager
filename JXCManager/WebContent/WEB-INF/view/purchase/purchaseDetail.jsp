@@ -5,7 +5,7 @@
 <head>
 <!-- start: Meta -->
 <meta charset="utf-8">
-<title>Bootstrap Metro Dashboard by Dennis Ji for ARM demo</title>
+<title>查看采购明细</title>
 <meta name="description" content="Bootstrap Metro Dashboard">
 <meta name="author" content="Dennis Ji">
 <meta name="keyword"
@@ -31,11 +31,11 @@
 <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 	  	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		<link id="ie-style" href="css/ie.css" rel="stylesheet">
+		<link id="ie-style" href="static/css/ie.css" rel="stylesheet">
 	<![endif]-->
 
 <!--[if IE 9]>
-		<link id="ie9style" href="css/ie9.css" rel="stylesheet">
+		<link id="ie9style" href="static/css/ie9.css" rel="stylesheet">
 	<![endif]-->
 
 <!-- start: Favicon -->
@@ -48,26 +48,10 @@
 </head>
 
 <body>
-	<!-- start: Header -->
-	<%-- <%@ include file="common/head.jsp"%> --%>
-	<!-- start: Header -->
 
 	<div class="container-fluid-full">
 		<div class="row-fluid">
 
-			<!-- start: Main Menu -->
-			<%@ include file="common/Menu.jsp"%>
-			<!-- end: Main Menu -->
-
-			<noscript>
-				<div class="alert alert-block span10">
-					<h4 class="alert-heading">Warning!</h4>
-					<p>
-						You need to have <a href="http://en.wikipedia.org/wiki/JavaScript"
-							target="_blank">JavaScript</a> enabled to use this site.
-					</p>
-				</div>
-			</noscript>
 
 			<!-- start: Content -->
 			<div id="content" class="span10">
@@ -83,9 +67,10 @@
 					<div class="box">
 						<div class="box-header" data-original-title>
 							<h2>
-								<i class="halflings-icon white user"></i><span class="break"></span>修改采购单
+								<i class="halflings-icon white user"></i><span class="break"></span>采购详情
 							</h2>
 						</div>
+						
 						<div class="box-content">
 							<table
 								class="table table-striped table-bordered bootstrap-datatable datatable">
@@ -130,27 +115,17 @@
 										<th>财务审核时间：<input type="text"/></th>
 									</tr>
 								</thead>
-								
 							</table>
-							 <button type="submit"  data-command="Save"><i class="icon-ok"></i>保存</button>
-                                    <button type="button"  data-command="Cancel">取消</button>
 						</div>
 					</div>
-					<!--/span-->
 				</div>
-				<!--/row-->
 			</div>
-			<!--/.fluid-container-->
-
-			<!-- end: Content -->
 		</div>
-		<!--/#content.span10-->
 	</div>
-	<!--/fluid-row-->
 
 	<div class="modal hide fade" id="myModal">
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal">Ã</button>
+			<button type="button" class="close" data-dismiss="modal">x</button>
 			<h3>Settings</h3>
 		</div>
 		<div class="modal-body">
@@ -172,64 +147,38 @@
 	</div>
 	<div class="clearfix"></div>
 
-	<!-- 页面尾部 -->
-	<%@ include file="common/foot.jsp"%>
 	<!-- start: JavaScript-->
 
-	<script src="js/jquery-1.9.1.min.js"></script>
-	<script src="js/jquery-migrate-1.0.0.min.js"></script>
-
-	<script src="js/jquery-ui-1.10.0.custom.min.js"></script>
-
-	<script src="js/jquery.ui.touch-punch.js"></script>
-
-	<script src="js/modernizr.js"></script>
-
-	<script src="js/bootstrap.min.js"></script>
-
-	<script src="js/jquery.cookie.js"></script>
-
-	<script src='js/fullcalendar.min.js'></script>
-
-	<script src='js/jquery.dataTables.min.js'></script>
-
-	<script src="js/excanvas.js"></script>
-	<script src="js/jquery.flot.js"></script>
-	<script src="js/jquery.flot.pie.js"></script>
-	<script src="js/jquery.flot.stack.js"></script>
-	<script src="js/jquery.flot.resize.min.js"></script>
-
-	<script src="js/jquery.chosen.min.js"></script>
-
-	<script src="js/jquery.uniform.min.js"></script>
-
-	<script src="js/jquery.cleditor.min.js"></script>
-
-	<script src="js/jquery.noty.js"></script>
-
-	<script src="js/jquery.elfinder.min.js"></script>
-
-	<script src="js/jquery.raty.min.js"></script>
-
-	<script src="js/jquery.iphone.toggle.js"></script>
-
-	<script src="js/jquery.uploadify-3.1.min.js"></script>
-
-	<script src="js/jquery.gritter.min.js"></script>
-
-	<script src="js/jquery.imagesloaded.js"></script>
-
-	<script src="js/jquery.masonry.min.js"></script>
-
-	<script src="js/jquery.knob.modified.js"></script>
-
-	<script src="js/jquery.sparkline.min.js"></script>
-
-	<script src="js/counter.js"></script>
-
-	<script src="js/retina.js"></script>
-
-	<script src="js/custom.js"></script>
+	<script src="static/js/jquery-1.9.1.min.js"></script>
+	<script src="static/js/jquery-migrate-1.0.0.min.js"></script>
+	<script src="static/js/jquery-ui-1.10.0.custom.min.js"></script>
+	<script src="static/js/jquery.ui.touch-punch.js"></script>
+	<script src="static/js/modernizr.js"></script>
+	<script src="static/js/bootstrap.min.js"></script>
+	<script src="static/js/jquery.cookie.js"></script>
+	<script src='static/js/fullcalendar.min.js'></script>
+	<script src='static/js/jquery.dataTables.min.js'></script>
+	<script src="static/js/excanvas.js"></script>
+	<script src="static/js/jquery.flot.js"></script>
+	<script src="static/js/jquery.flot.pie.js"></script>
+	<script src="static/js/jquery.flot.stack.js"></script>
+	<script src="static/js/jquery.flot.resize.min.js"></script>
+	<script src="static/js/jquery.chosen.min.js"></script>
+	<script src="static/js/jquery.uniform.min.js"></script>
+	<script src="static/js/jquery.cleditor.min.js"></script>
+	<script src="static/js/jquery.noty.js"></script>
+	<script src="static/js/jquery.elfinder.min.js"></script>
+	<script src="static/js/jquery.raty.min.js"></script>
+	<script src="static/js/jquery.iphone.toggle.js"></script>
+	<script src="static/js/jquery.uploadify-3.1.min.js"></script>
+	<script src="static/js/jquery.gritter.min.js"></script>
+	<script src="static/js/jquery.imagesloaded.js"></script>
+	<script src="static/js/jquery.masonry.min.js"></script>
+	<script src="static/js/jquery.knob.modified.js"></script>
+	<script src="static/js/jquery.sparkline.min.js"></script>
+	<script src="static/js/counter.js"></script>
+	<script src="static/js/retina.js"></script>
+	<script src="static/js/custom.js"></script>
 	<!-- end: JavaScript-->
 
 </body>

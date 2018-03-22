@@ -9,7 +9,7 @@
 					class="icon-bar-chart"></i> <span class="hidden-tablet"> 首页</span>
 			</a></li>
 			<li ><a href="gopurchase" target="page-Content"> <i
-					class="icon-envelope"></i> <span class="hidden-tablet"> 采购订单</span>
+					class="icon-envelope"></i> <span class="hidden-tablet">采购订单</span>
 			</a></li>
 			<li><a href="a.jsp" target="page-Content"> <i
 					class="icon-tasks"></i> <span class="hidden-tablet"> A</span>
@@ -36,17 +36,17 @@
 						target="page-Content"><i class="icon-file-alt"></i><span
 							class="hidden-tablet"> Sub Menu 3</span></a></li>
 				</ul></li>
-			<li><a href="form.html" target="page-Content"><i
-					class="icon-edit"></i><span class="hidden-tablet"> Forms</span></a></li>
-			<li><a href="chart.html" target="page-Content"><i
+			<li><a href="gorequisition" target="page-Content"><i
+					class="icon-edit"></i><span class="hidden-tablet"> 调拨 </span></a></li>
+			<li><a href="gosales" target="page-Content"><i
 					class="icon-list-alt"></i><span class="hidden-tablet">
-						Charts</span></a></li>
-			<li><a href="typography.html" target="page-Content"><i
+						销售</span></a></li>
+			<li><a href="goenterstock" target="page-Content"><i
 					class="icon-font"></i><span class="hidden-tablet">
-						Typography</span></a></li>
-			<li><a href="gallery.html" target="page-Content"><i
+						入库</span></a></li>
+			<li><a href="godamaged" target="page-Content"><i
 					class="icon-picture"></i><span class="hidden-tablet">
-						Gallery</span></a></li>
+						报损</span></a></li>
 			<li><a href="table.jsp" target="page-Content"><i
 					class="icon-align-justify"></i><span class="hidden-tablet">
 						Tables</span></a></li>

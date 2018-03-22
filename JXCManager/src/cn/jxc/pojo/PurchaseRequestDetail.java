@@ -14,16 +14,24 @@ public class PurchaseRequestDetail implements java.io.Serializable {
 	private Product product;
 	private PurchaseRequest purchaserequest;
 	private int count;
+	private ProductUnit productUnit;
+	private double price;
 
 	public PurchaseRequestDetail() {
 	}
 
-	public PurchaseRequestDetail(int prdId, Product product, PurchaseRequest purchaserequest, int count) {
+	public PurchaseRequestDetail(int prdId, Product product, PurchaseRequest purchaserequest, int count,
+			ProductUnit productUnit, double price) {
+		super();
 		this.prdId = prdId;
 		this.product = product;
 		this.purchaserequest = purchaserequest;
 		this.count = count;
+		this.productUnit = productUnit;
+		this.price = price;
 	}
+
+
 
 	public int getPrdId() {
 		return this.prdId;
@@ -57,4 +65,20 @@ public class PurchaseRequestDetail implements java.io.Serializable {
 		this.count = count;
 	}
 
+	public ProductUnit getProductUnit() {
+		return productUnit;
+	}
+
+	public void setProductUnit(ProductUnit productUnit) {
+		this.productUnit = productUnit;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	
 }

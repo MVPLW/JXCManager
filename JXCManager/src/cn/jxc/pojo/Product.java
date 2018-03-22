@@ -20,7 +20,6 @@ public class Product implements java.io.Serializable {
 	private ProductUnit productunit;
 	private Employee employeeId;
 	private String productName;
-	private double price;
 	private Date createDate;
 	
 	private Set salesorderdetails = new HashSet(0);
@@ -34,25 +33,23 @@ public class Product implements java.io.Serializable {
 		
 	}
 
-	public Product(String productId, ProductType producttype, ProductUnit productunit, String productName, double price,
+	public Product(String productId, ProductType producttype, ProductUnit productunit, String productName,
 			Employee employeeId, Date createDate) {
 		this.productId = productId;
 		this.producttype = producttype;
 		this.productunit = productunit;
 		this.productName = productName;
-		this.price = price;
 		this.employeeId = employeeId;
 		this.createDate = createDate;
 	}
 
-	public Product(String productId, ProductType producttype, ProductUnit productunit, String productName, double price,
+	public Product(String productId, ProductType producttype, ProductUnit productunit, String productName, 
 			Employee employeeId, Date createDate, Set salesorderdetails, Set enterstockdetails, Set stockpiles,
 			Set leavestockdetails, Set purchaserequestdetails, Set requisitiondetails) {
 		this.productId = productId;
 		this.producttype = producttype;
 		this.productunit = productunit;
 		this.productName = productName;
-		this.price = price;
 		this.employeeId = employeeId;
 		this.createDate = createDate;
 		this.salesorderdetails = salesorderdetails;
@@ -93,14 +90,6 @@ public class Product implements java.io.Serializable {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
-	}
-
-	public double getPrice() {
-		return this.price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
 	}
 
 	public Employee getEmployeeId() {

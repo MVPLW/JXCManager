@@ -8,7 +8,22 @@ public class PurchaseController {
 	
 	@RequestMapping("/gopurchase")
 	public String gopurchase() {
-		return "purchase";
+		return "purchase/purchase";
+	}
+	
+	@RequestMapping("/goPurchaseRequest")
+	public String goPurchaseRequest() {
+		return "purchase/purchaseRequest";
+	}
+	
+	@RequestMapping("/goPurchaseDetail")
+	public String goPurchaseDetail() {
+		return "purchase/purchaseDetail";
+	}
+	
+	@RequestMapping("/goPurchaseUpdate")
+	public String goPurchaseUpdate() {
+		return "purchase/purchaseUpdate";
 	}
 	
 }

@@ -5,7 +5,7 @@
 <head>
 <!-- start: Meta -->
 <meta charset="utf-8">
-<title>Bootstrap Metro Dashboard by Dennis Ji for ARM demo</title>
+<title></title>
 <meta name="description" content="Bootstrap Metro Dashboard">
 <meta name="author" content="Dennis Ji">
 <meta name="keyword"
