@@ -13,8 +13,6 @@ import cn.jxc.service.ReviewStatusService;
 @Controller
 public class RequisitionController {
 	
-	
-	
 	@Autowired
 	private ReviewStatusService rsmapperservice;
 	
