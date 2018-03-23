@@ -46,6 +46,7 @@
 	<!-- 配置mybitas SqlSessionFactoryBean -->
 	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
 		<property name="dataSource" ref="dataSource" /> 
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
 		<property name="typeAliasesPackage" value="cn.jxc.pojo" />
 	</bean>
 	

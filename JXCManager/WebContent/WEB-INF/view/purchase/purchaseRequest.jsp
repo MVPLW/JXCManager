@@ -22,6 +22,7 @@
 <link id="base-style" href="static/css/style.css" rel="stylesheet">
 <link id="base-style-responsive" href="static/css/style-responsive.css"
 	rel="stylesheet">
+<!-- <link rel="stylesheet" href="static/css/bootstrap.css"/> -->
 <link
 	href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext'
 	rel='stylesheet' type='text/css'>
@@ -36,197 +37,172 @@
 <!--[if IE 9]>
 		<link id="ie9style" href="static/css/ie9.css" rel="stylesheet">
 	<![endif]-->
+
 <!-- start: Favicon -->
 <link rel="shortcut icon" href="static/img/favicon.png">
 <!-- end: Favicon -->
 
 </head>
+<style type="text/css">
+	h3{
+		display: inline;
+	}
+</style>
 <body>
 	<div class="container-fluid-full">
 		<div class="row-fluid">
 			<!-- start: Content -->
 			<div id="content" class="span10">
 				<ul class="breadcrumb">
-					<li><i class="icon-home"></i>首页 <i class="icon-angle-right"></i></li>
-					<li><a href="form">采购申请管理</a></li>
+					<li><i class="icon-home"></i> <a href="index.html">首页</a> <i
+						class="icon-angle-right"></i></li>
+					<li><a href="form">采购订单管理</a></li>
 				</ul>
-				<div class="row-fluid sortable">
-					<div class="box span12">
+
+				<div class="row-fluid">
+					<form action="#" method="post" class="form-horizontal">
+						<div class="control-group">
+							<div data-condition="search">
+								申请单号:<input type="text" name="OrderNum" class="input-medium"
+									placeholder="请输入申请单号" /> 申请人:<input type="text" name="BarCode"
+									class="input-medium" placeholder="请输入申请人" /> 供应商:<input
+									type="text" name="ProductName" class="input-medium"
+									placeholder="请输入供应商" /> <a class="btn btn-success"
+									href="javascript:void(0)" data-command="search"><i
+									class="icon-search"></i>&nbsp;搜索</a>
+								<div style="float: right;">
+									<a class="btn btn-primary" href="goPurchaseRequest" data-command="Add"><i
+										class="icon-plus"></i>&nbsp;申请</a> <a class="btn btn-warning"
+										href="javascript:void(0)" data-command="Delete"><i
+										class="icon-remove"></i>&nbsp;删除</a> <a class="btn btn-danger"
+										href="javascript:void(0)" data-command="Refresh"><i
+										class="icon-refresh"></i>&nbsp;刷新</a>
+								</div>
+
+							</div>
+						</div>
+					</form>
+					<div class="box">
 						<div class="box-header" data-original-title>
 							<h2>
-								<i class="halflings-icon white edit"></i><span class="break"></span>
-								采购订单填写
+								<i class="halflings-icon white user"></i><span class="break"></span>采购订单管理
 							</h2>
 						</div>
 						<div style="clear: both;">&nbsp;</div>
+						<div style="clear: both;">&nbsp;</div>
 						<div class="box-content">
-							<form class="form-horizontal" action="#" method="post">
-								<fieldset>
-									<table style="width: 80%; margin: 0px auto;">
-										<tr>
-											<td><div class="control-group">
-													<label class="control-label">采购订单号&nbsp;&nbsp;</label>
-													<div class="controls">
-														<span class="input-xlarge uneditable-input">订单号SSSSSSS</span>
-													</div>
-												</div></td>
-											<td><div class="control-group">
-													<label class="control-label" for="selectError">申请人&nbsp;&nbsp;</label>
-													<div class="controls">
-														<select id="selectError" data-rel="chosen">
-															<option>Option 1</option>
-															<option>Option 2</option>
-															<option>Option 3</option>
-															<option>Option 4</option>
-															<option>Option 5</option>
-														</select>
-													</div>
-												</div></td>
-										</tr>
-										<tr>
-											<td><div class="control-group">
-													<label class="control-label" for="date01">订单申请时间</label>
-													<div class="controls">
-														<input type="text" class="input-xlarge datepicker"
-															id="date01" placeholder="申请时间" />
-													</div>
-												</div></td>
-											<td><div class="control-group">
-													<label class="control-label" for="selectError1">供应商&nbsp;&nbsp;</label>
-													<div class="controls">
-														<select id="selectError1" data-rel="chosen">
-															<option>Option 1</option>
-															<option>Option 2</option>
-															<option>Option 3</option>
-															<option>Option 4</option>
-															<option>Option 5</option>
-														</select>
-													</div>
-												</div></td>
-										</tr>
-										<tr>
-											<td><div class="control-group">
-													<label class="control-label" for="focusedInput">供应商联系人</label>
-													<div class="controls">
-														<input class="input-xlarge focused" id="focusedInput"
-															type="text" value="此处填写供货商的联系人">
-													</div>
-												</div></td>
-											<td><div class="control-group">
-													<label class="control-label" for="focusedInput">联系电话</label>
-													<div class="controls">
-														<input class="input-xlarge focused" id="focusedInput"
-															type="text" value="此处填写联系人的电话">
-													</div>
-												</div></td>
-										</tr>
-										<tr>
-											<td colspan="2">
-												<div class="control-group">
-													<label class="control-label" for="typeahead">
-														备&nbsp;&nbsp;&nbsp;&nbsp;注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-													</label>
-													<div class="controls">
-														<input type="text" class="span6 typeahead" id="typeahead"
-															data-provide="typeahead" data-items="4">
-													</div>
-												</div>
-											</td>
-										</tr>
-									</table>
-
-									<div class="box-content">
-										<table
-											class="table table-bordered table-striped table-condensed"
-											style="width: 90%; margin: 0px auto; table-layout: fixed;">
-											<thead>
-												<tr>
-													<th>产品编号</th>
-													<th>产品名称</th>
-													<th>单价</th>
-													<th>规格</th>
-													<th>数量</th>
-													<th>操作</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>Dennis Ji</td>
-													<td>A</td>
-													<td>M</td>
-													<td>ABC</td>
-													<td>A</td>
-													<td><a class="label label-important" href="#">移除</a></td>
-												</tr>
-											</tbody>
-										</table>
-										<div class="pagination pagination-centered">
-											<ul>
-												<li><a href="#">Prev</a></li>
-												<li class="active"><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">Next</a></li>
-											</ul>
-										</div>
-										<!--/span-->
-									</div>
-									<div class="form-actions">
-										<button class="btn btn-info btn-setting"
-											onclick="javascript:void(0);">添加产品信息</button>
-										<button type="submit" class="btn btn-primary">提交申请</button>
-										<button class="btn">取消</button>
-									</div>
-								</fieldset>
-							</form>
+							<table
+								class="table table-striped table-bordered bootstrap-datatable">
+								<!-- table table-bordered table-striped table-condensed
+								 -->
+								<thead>
+									<tr>
+										<th><input type="checkbox"></th>
+										<th>申请编号</th>
+										<th>申请人</th>
+										<th>申请时间</th>
+										<th>供应商</th>
+										<th>部门审核状态</th>
+										<th>部门审核人</th>
+										<th>部门审核时间</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th><input type="checkbox"></th>
+										<td>Dennis Ji</td>
+										<td class="center">2012/01/01</td>
+										<td class="center">Member</td>
+										<td class="center"><span class="label label-success">Active</span>
+										</td>
+										<td>2</td>
+										<td>1</td>
+										<td>1</td>
+										<td class="center"><a class="btn btn-info btn-setting"
+											href="goPurchaseDetail"> <i
+												class="halflings-icon white zoom-in"></i>
+										</a> <a class="btn btn-info btn-success" href="goPurchaseUpdate">
+												<i class="halflings-icon white edit"></i>
+										</a></td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
-						<!--/span-->
+						<div class="pagination pagination-centered">
+							<ul>
+								<li><a href="#">上一页</a></li>
+								<li class="active"><a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">下一页</a></li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- END Content -->
 
 	<div class="modal hide fade" id="myModal" style="width: 800px;">
-		<div class="modal-header">
+		<div class="modal-header" >
 			<button type="button" class="close" data-dismiss="modal">x</button>
-			<h2>选择产品</h2>
+			<h2 >采购订单明细</h2>
 		</div>
-		<div style="clear: both;"></div>
 		<div class="modal-body">
 			<!-- 采购订单中所有内容 -->
+			<div>
+				<table style="width: 100%;" >
+					<tr style="height: 30px;">
+						<td> <h3>订单编号:</h3> aaa</td>
+						<td> <h3>申请人:</h3>张三 </td>
+						<td><h3>申请时间:</h3>2009-8-9</td>
+					</tr>
+					<tr style="height: 30px;">
+						<td><h3>供应商编号:</h3>SSSSSSS</td>
+						<td><h3>联系人:</h3>张三</td>
+						<td><h3>电话:</h3>198683762</td>
+					</tr>
+					<tr style="height: 30px;">
+						<td><h3>部门审核人:</h3>啊啊啊</td>
+						<td><h3>审核时间:</h3>123</td>
+						<td><h3>审核状态:</h3>啊</td>
+					</tr>
+					<tr style="height: 30px;">
+						<td><h3>财务审核:</h3>阿斯蒂芬</td>
+						<td><h3>审核时间:</h3>的方式</td>
+						<td><h3>审核状态:</h3>地方</td>
+					</tr>
+					<tr style="height: 30px;"><td colspan="3"> <h3>备注:</h3>今天周二 </td></tr>
+				</table>
+			</div>
+			<div style="clear: both;">&nbsp;</div>
 			<div class="box-content">
-				<table class="table table-bordered" style="table-layout: fixed;">
+				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th width="20px;"><input type="checkbox" /></th>
 							<th>产品名称</th>
 							<th>产品编号</th>
-							<th>类别</th>
-							<th>计量单位</th>
+							<th>规格</th>
 							<th>数量</th>
+							<th>单价</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr height="20px;">
-							<td><input type="checkbox" /></td>
+						<tr>
 							<td>Dennis Ji</td>
-							<td>2012/01/01</td>
-							<td>Member</td>
-							<td>Active</td>
-							<td><input type="number" min="0"
-								style="width: 80%; margin: 0px auto; height: 80%;" /></td>
+							<td class="center">2012/01/01</td>
+							<td class="center">Member</td>
+							<td class="center">Active</td>
+							<td class="center">sss</td>
 						</tr>
 						<tr>
-							<td><input type="checkbox" /></td>
 							<td>Dennis Ji</td>
 							<td>2012/01/01</td>
-							<td>Member</td>
-							<td>Active</td>
-							<td><input type="number" min="0"
-								style="width: 80%; margin: 0px auto; height: 80%;" /></td>
+							<td class="center">Member</td>
+							<td class="center">Active</td>
+							<td class="center">sss</td>
 						</tr>
 					</tbody>
 				</table>
@@ -244,13 +220,11 @@
 
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn btn-primary">选择</a> <a href="#" class="btn"
-				data-dismiss="modal">关闭</a>
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a> 
 		</div>
 	</div>
 
 	<!-- start: JavaScript-->
-
 	<script src="static/js/jquery-1.9.1.min.js"></script>
 	<script src="static/js/jquery-migrate-1.0.0.min.js"></script>
 	<script src="static/js/jquery-ui-1.10.0.custom.min.js"></script>
@@ -258,8 +232,8 @@
 	<script src="static/js/modernizr.js"></script>
 	<script src="static/js/bootstrap.min.js"></script>
 	<script src="static/js/jquery.cookie.js"></script>
-	<script src='static/js/fullcalendar.min.js'></script>
-	<script src='static/js/jquery.dataTables.min.js'></script>
+	<script src="static/js/fullcalendar.min.js"></script>
+	<script src="static/js/jquery.dataTables.min.js"></script>
 	<script src="static/js/excanvas.js"></script>
 	<script src="static/js/jquery.flot.js"></script>
 	<script src="static/js/jquery.flot.pie.js"></script>
@@ -281,7 +255,10 @@
 	<script src="static/js/counter.js"></script>
 	<script src="static/js/retina.js"></script>
 	<script src="static/js/custom.js"></script>
+
+	<script src="static/js/bootstrap-transition.js"></script>
+	<script src="static/js/bootstrap-modal.js"></script>
 	<!-- end: JavaScript-->
-	
+
 </body>
 </html>
