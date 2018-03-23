@@ -58,14 +58,14 @@
 				<ul class="breadcrumb">
 					<li><i class="icon-home"></i> <a href="index.jsp">Home</a> <i
 						class="icon-angle-right"></i></li>
-					<li><a href="#">销售管理</a></li>
+					<li><a href="#">出库管理</a></li>
 				</ul>
 				<div class="row-fluid sortable">
 					<div class="box span12">
 						<div class="box-header" data-original-title>
 							<h2>
 								<i class="halflings-icon white edit"></i><span class="break"></span>
-								销售订单修改
+								出库单修改
 							</h2>
 						</div>
 						<div style="clear: both;">&nbsp;</div>
@@ -75,14 +75,14 @@
 									<table style="width: 80%; margin: 0px auto;">
 										<tr>
 											<td><div class="control-group">
-													<label class="control-label">销售订单号</label>
+													<label class="control-label">出库订单号</label>
 													<div class="controls">
 														<span class="input-xlarge uneditable-input">随机生成
 															可不填</span>
 													</div>
 												</div></td>
 											<td><div class="control-group">
-													<label class="control-label" for="selectError">销售人</label>
+													<label class="control-label" for="selectError">出库人</label>
 													<div class="controls">
 														<select id="selectError" data-rel="chosen">
 															<option>Option 1</option>
@@ -96,14 +96,7 @@
 										</tr>
 										<tr>
 											<td><div class="control-group">
-													<label class="control-label" for="date01">销售交易时间</label>
-													<div class="controls">
-														<input type="text" class="input-xlarge datepicker"
-															id="date01" value="02/16/12">
-													</div>
-												</div></td>
-											<td><div class="control-group">
-													<label class="control-label" for="selectError1">客&nbsp;&nbsp;&nbsp;户</label>
+													<label class="control-label" for="selectError1">所在仓库</label>
 													<div class="controls">
 														<select id="selectError1" data-rel="chosen">
 															<option>Option 1</option>
@@ -114,40 +107,26 @@
 														</select>
 													</div>
 												</div></td>
+											<td><div class="control-group">
+													<label class="control-label" for="date01">出库时间</label>
+													<div class="controls">
+														<input type="text" class="input-xlarge datepicker"
+															id="date01" value="02/16/12">
+													</div>
+												</div></td>
 										</tr>
 										<tr>
 											<td><div class="control-group">
-													<label class="control-label" for="focusedInput">销&nbsp;&nbsp;售&nbsp;&nbsp;金&nbsp;&nbsp;额</label>
+													<label class="control-label" for="focusedInput">上&nbsp;&nbsp;游&nbsp;&nbsp;单&nbsp;&nbsp;号</label>
 													<div class="controls">
 														<input class="input-xlarge focused" id="focusedInput"
 															type="text">
 													</div>
 												</div></td>
 											<td><div class="control-group">
-													<label class="control-label" for="selectError4">审核人</label>
+													<label class="control-label" for="selectError4">出库类型</label>
 													<div class="controls">
 														<select id="selectError4" data-rel="chosen">
-															<option>Option 1</option>
-															<option>Option 2</option>
-															<option>Option 3</option>
-															<option>Option 4</option>
-															<option>Option 5</option>
-														</select>
-													</div>
-												</div></td>
-										</tr>
-										<tr>
-											<td><div class="control-group">
-													<label class="control-label" for="date01">审&nbsp;&nbsp;核&nbsp;&nbsp;时&nbsp;&nbsp;间</label>
-													<div class="controls">
-														<input type="text" class="input-xlarge datepicker"
-															id="date01" value="02/16/12">
-													</div>
-												</div></td>
-											<td><div class="control-group">
-													<label class="control-label" for="selectError3">审核状态</label>
-													<div class="controls">
-														<select id="selectError3" data-rel="chosen">
 															<option>Option 1</option>
 															<option>Option 2</option>
 															<option>Option 3</option>
@@ -193,7 +172,7 @@
 													<td>M</td>
 													<td>ABC</td>
 													<td>A</td>
-													<td> <a class="label label-important" href="#">移除</a> </td>
+													<td><a class="label label-important" href="#">移除</a></td>
 												</tr>
 											</tbody>
 										</table>

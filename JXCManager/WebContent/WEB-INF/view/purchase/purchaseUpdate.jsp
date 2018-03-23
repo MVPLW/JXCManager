@@ -50,101 +50,209 @@
 			<!-- start: Content -->
 			<div id="content" class="span10">
 				<ul class="breadcrumb">
-					<li><i class="icon-home"></i> <a href="index.html">Home</a> <i
-						class="icon-angle-right"></i></li>
-					<li><a href="form">采购申请管理</a></li>
+					<li><i class="icon-home"></i>首页 <i class="icon-angle-right"></i></li>
+					<li><a href="form">采购订单修改</a></li>
 				</ul>
 				<div class="row-fluid sortable">
-					<div class="clear:both">&nbsp;</div>
-					<div class="box">
+					<div class="box span12">
 						<div class="box-header" data-original-title>
 							<h2>
-								<i class="halflings-icon white user"></i><span class="break"></span>修改采购单
+								<i class="halflings-icon white edit"></i><span class="break"></span>
+								采购订单修改
 							</h2>
 						</div>
+						<div style="clear: both;">&nbsp;</div>
 						<div class="box-content">
-							<table
-								class="table table-striped table-bordered bootstrap-datatable datatable">
-								<thead>
-									<tr>
-										<th>&nbsp;&nbsp;申请编号：<input type="text"/></th>
+							<form class="form-horizontal" action="#" method="post">
+								<fieldset>
+									<table style="width: 80%; margin: 0px auto;">
+										<tr>
+											<td><div class="control-group">
+													<label class="control-label">采购订单号&nbsp;&nbsp;</label>
+													<div class="controls">
+														<span class="input-xlarge uneditable-input">订单号SSSSSSS</span>
+													</div>
+												</div></td>
+											<td><div class="control-group">
+													<label class="control-label" for="selectError">申请人&nbsp;&nbsp;</label>
+													<div class="controls">
+														<select id="selectError" data-rel="chosen">
+															<option>Option 1</option>
+															<option>Option 2</option>
+															<option>Option 3</option>
+															<option>Option 4</option>
+															<option>Option 5</option>
+														</select>
+													</div>
+												</div></td>
 										</tr>
 										<tr>
-										<th>&nbsp;&nbsp;&nbsp;申请人：<input type="text"/></th>
+											<td><div class="control-group">
+													<label class="control-label" for="date01">订单申请时间</label>
+													<div class="controls">
+														<input type="text" class="input-xlarge datepicker"
+															id="date01" placeholder="申请日期" readonly="readonly" />
+													</div>
+												</div></td>
+											<td><div class="control-group">
+													<label class="control-label" for="selectError1">供应商&nbsp;&nbsp;</label>
+													<div class="controls">
+														<select id="selectError1" data-rel="chosen">
+															<option>Option 1</option>
+															<option>Option 2</option>
+															<option>Option 3</option>
+															<option>Option 4</option>
+															<option>Option 5</option>
+														</select>
+													</div>
+												</div></td>
 										</tr>
 										<tr>
-										<th>&nbsp;&nbsp;申请时间：<input type="text"/></th>
+											<td><div class="control-group">
+													<label class="control-label" for="focusedInput">供应商联系人</label>
+													<div class="controls">
+														<input class="input-xlarge focused" id="focusedInput"
+															type="text" placeholder="此处填写供货商的联系人">
+													</div>
+												</div></td>
+											<td><div class="control-group">
+													<label class="control-label" for="focusedInput">联系电话</label>
+													<div class="controls">
+														<input class="input-xlarge focused" id="focusedInput"
+															type="text" placeholder="此处填写供应商联系人的电话">
+													</div>
+												</div></td>
 										</tr>
 										<tr>
-										<th>&nbsp;供应商编号：<input type="text"/></th>
+											<td colspan="2">
+												<div class="control-group">
+													<label class="control-label" for="typeahead">
+														备&nbsp;&nbsp;&nbsp;&nbsp;注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													</label>
+													<div class="controls">
+														<input type="text" class="span6 typeahead" id="typeahead"
+															data-provide="typeahead" data-items="4"
+															placeholder="此处填写有关订单的备注信息" />
+													</div>
+												</div>
+											</td>
 										</tr>
-										<tr>
-										<th>部门审核状态：<input type="text"/></th>
-										</tr>
-										<tr>
-										<th>&nbsp;部门审核人：<input type="text"/></th>
-										</tr>
-										<tr>
-										<th>部门审核时间：<input type="text"/></th>
-										</tr>
-										<tr>
-										<th>付款审核状态：<input type="text"/></th>
-										</tr>
-										<tr>
-										<th>&nbsp;付款审核人：<input type="text"/></th>
-										</tr>
-										<tr>
-										<th>付款审核时间：<input type="text"/></th>
-										</tr>
-										<tr>
-										<th>财务审核状态：<input type="text"/></th>
-										</tr>
-										<tr>
-										<th>&nbsp;财务审核人：<input type="text"/></th>
-										</tr>
-										<tr>
-										<th>财务审核时间：<input type="text"/></th>
-									</tr>
-								</thead>
-								
-							</table>
-							 <button type="submit"  data-command="Save"><i class="icon-ok"></i>保存</button>
-                                    <button type="button"  data-command="Cancel">取消</button>
+									</table>
+
+
+									<div class="box-content">
+										<table
+											class="table table-bordered table-striped table-condensed"
+											style="width: 90%; margin: 0px auto; table-layout: fixed;">
+											<thead>
+												<tr>
+													<th>产品编号</th>
+													<th>产品名称</th>
+													<th>单价</th>
+													<th>规格</th>
+													<th>数量</th>
+													<th>操作</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Dennis Ji</td>
+													<td>A</td>
+													<td>M</td>
+													<td>ABC</td>
+													<td>A</td>
+													<td><a class="label label-important" href="#">移除</a></td>
+												</tr>
+											</tbody>
+										</table>
+										<div class="pagination pagination-centered">
+											<ul>
+												<li><a href="#">Prev</a></li>
+												<li class="active"><a href="#">1</a></li>
+												<li><a href="#">2</a></li>
+												<li><a href="#">3</a></li>
+												<li><a href="#">4</a></li>
+												<li><a href="#">Next</a></li>
+											</ul>
+										</div>
+										<!--/span-->
+									</div>
+									<div class="form-actions">
+										<button class="btn btn-info btn-setting"
+											onclick="javascript:void(0);">添加产品信息</button>
+										<button type="submit" class="btn btn-primary">提交申请</button>
+										<button class="btn">取消</button>
+									</div>
+								</fieldset>
+							</form>
 						</div>
+						<!--/span-->
 					</div>
-					<!--/span-->
 				</div>
-				<!--/row-->
 			</div>
-			<!--/.fluid-container-->
-			<!-- end: Content -->
 		</div>
 	</div>
 
-	<div class="modal hide fade" id="myModal">
+	<div class="modal hide fade" id="myModal" style="width: 800px;">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">x</button>
-			<h3>Settings</h3>
+			<h2>选择产品</h2>
 		</div>
+		<div style="clear: both;"></div>
 		<div class="modal-body">
-			<p>Here settings can be configured...</p>
+			<!-- 采购订单中所有内容 -->
+			<div class="box-content">
+				<table class="table table-bordered" style="table-layout: fixed;">
+					<thead>
+						<tr>
+							<th width="20px;"><input type="checkbox" /></th>
+							<th>产品名称</th>
+							<th>产品编号</th>
+							<th>类别</th>
+							<th>计量单位</th>
+							<th>数量</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr height="20px;">
+							<td><input type="checkbox" /></td>
+							<td>Dennis Ji</td>
+							<td>2012/01/01</td>
+							<td>Member</td>
+							<td>Active</td>
+							<td><input type="number" min="0"
+								style="width: 80%; margin: 0px auto; height: 80%;" /></td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" /></td>
+							<td>Dennis Ji</td>
+							<td>2012/01/01</td>
+							<td>Member</td>
+							<td>Active</td>
+							<td><input type="number" min="0"
+								style="width: 80%; margin: 0px auto; height: 80%;" /></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="pagination pagination-centered">
+					<ul>
+						<li><a href="#">上一页</a></li>
+						<li class="active"><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">下一页</a></li>
+					</ul>
+				</div>
+			</div>
+
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn" data-dismiss="modal">Close</a> <a href="#"
-				class="btn btn-primary">Save changes</a>
+			<a href="#" class="btn btn-primary">选择</a> <a href="#" class="btn"
+				data-dismiss="modal">关闭</a>
 		</div>
 	</div>
-	<!-- <div class="common-modal modal fade" id="common-Modal1" tabindex="-1"
-		role="dialog" aria-hidden="true">
-		<div class="modal-content">
-			<ul class="list-inline item-details">
-				<li><a href="#">Admin templates</a></li>
-				<li><a href="http://themescloud.org">Bootstrap themes</a></li>
-			</ul>
-		</div>
-	</div>
-	<div class="clearfix"></div> -->
-
+	
 	<!-- start: JavaScript-->
 	<script src="static/js/jquery-1.9.1.min.js"></script>
 	<script src="static/js/jquery-migrate-1.0.0.min.js"></script>

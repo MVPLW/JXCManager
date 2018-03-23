@@ -1,0 +1,4 @@
+首先使用 git pull 命令把远程仓库代码更新到本地仓库
+成功以后  git add xxx  添加修改的文件
+git commit -m "messgae"  提交工作区的代码到本地仓库
+git push            提交代码到远程仓库

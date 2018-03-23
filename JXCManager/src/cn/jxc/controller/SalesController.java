@@ -18,11 +18,6 @@ public class SalesController {
 		return "sales/salesAdd";
 	}
 	
-	@RequestMapping("/gosalesorderlist")
-	public String gosalesorderlist() {
-		return "sales/salesOrderList";
-	}
-	
 	@RequestMapping("/gosalesupdate")
 	public String gosalesupdate() {
 		return "sales/salesUpdate";

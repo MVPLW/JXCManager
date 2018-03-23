@@ -52,25 +52,24 @@
 				<ul class="breadcrumb">
 					<li><i class="icon-home"></i> <a href="index.html">Home</a> <i
 						class="icon-angle-right"></i></li>
-					<li><a href="form">销售管理</a></li>
+					<li><a href="form">出库管理</a></li>
 				</ul>
 
 				<div class="row-fluid">
 					<form class="form-horizontal" action="javascript:void(0)" method="post">
 						<div class="control-group">
 							<div data-condition="search">
-								销售单号:<input type="text" name="OrderNum" class="input-medium"
-									placeholder="请输入销售单号" /> 客户名称:<input type="text"
-									name="BarCode" class="input-medium" placeholder="请输入客户名称" />
-								销售人:<input type="text" name="ProductName" class="input-medium"
-									placeholder="请输入销售人名称" /> <a class="btn btn-info"
+								出库单号:<input type="text" name="OrderNum" class="input-medium"
+									placeholder="请输入出库单号" /> 出库人:<input type="text"
+									name="BarCode" class="input-medium" placeholder="请输入出库人" />
+								 <a class="btn btn-info"
 									href="javascript:void(0)" data-command="search"><i
 									class="icon-search"></i>&nbsp;搜索</a>
 								<button class="btn btn-success " data-command="Clear">
 									<i class="icon-random"></i>&nbsp;清空搜索条件
 								</button>
 								<div style="float: right;">
-									<a class="btn btn-primary" href="gosalesadd"
+									<a class="btn btn-primary" href="goleaveStockadd"
 										data-command="Add"><i class="icon-plus"></i>&nbsp;申请</a> <a
 										class="btn btn-warning" href="javascript:void(0)"
 										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a>
@@ -97,13 +96,11 @@
 								<tr>
 									<th><input type="checkbox"></th>
 									<th>编号</th>
-									<th>销售人</th>
-									<th>客户</th>
-									<th>交易时间</th>
-									<th>销售金额</th>
-									<th>审核人</th>
-									<th>审核时间</th>
-									<th>审核状态</th>
+									<th>出库人</th>
+									<th>所在仓库</th>
+									<th>出库时间</th>
+									<th>出库类型</th>
+									<th>上游单号</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -117,14 +114,12 @@
 									</td>
 									<td>1</td>
 									<td>2</td>
-									<td>3</td>
-									<td>4</td>
 									<td class="center"><a class="btn btn-info btn-setting"
 											href="goPurchaseDetail"> <i
 												class="halflings-icon white zoom-in"></i>
-									</a> <a class="btn btn-success" href="gosalesadd"> &nbsp;<i
+									</a> <a class="btn btn-success" href="goleaveStockadd"> &nbsp;<i
 											class="icon-plus"></i>
-									</a> <a class="btn btn-info" href="gosalesupdate"> &nbsp;<i
+									</a> <a class="btn btn-info" href="goleaveStockupdate"> &nbsp;<i
 											class="halflings-icon white edit"></i>
 									</a> <a class="btn btn-danger" href="#"> &nbsp;<i
 											class="halflings-icon white trash"></i>
@@ -139,8 +134,6 @@
 									</td>
 									<td>1</td>
 									<td>2</td>
-									<td>3</td>
-									<td>4</td>
 									<td class="center"><a class="btn btn-success"
 										href="sale_order_list.jsp"> <i
 											class="halflings-icon white zoom-in"></i>
@@ -161,8 +154,6 @@
 									</td>
 									<td>1</td>
 									<td>2</td>
-									<td>3</td>
-									<td>4</td>
 									<td class="center"><a class="btn btn-success"
 										href="sale_order_list.jsp"> <i
 											class="halflings-icon white zoom-in"></i>
@@ -183,8 +174,6 @@
 									</td>
 									<td>1</td>
 									<td>2</td>
-									<td>3</td>
-									<td>4</td>
 									<td class="center"><a class="btn btn-success"
 										href="sale_order_list.jsp"> <i
 											class="halflings-icon white zoom-in"></i>
@@ -205,8 +194,6 @@
 									</td>
 									<td>1</td>
 									<td>2</td>
-									<td>3</td>
-									<td>4</td>
 									<td class="center"><a class="btn btn-success"
 										href="sale_order_list.jsp"> <i
 											class="halflings-icon white zoom-in"></i>
@@ -218,227 +205,6 @@
 											class="halflings-icon white trash"></i>
 									</a></td>
 								</tr>
-								<tr>
-									<th><input type="checkbox"></th>
-									<td>Dennis Ji</td>
-									<td class="center">2012/02/01</td>
-									<td class="center">Staff</td>
-									<td class="center"><span class="label label-important">Banned</span>
-									</td>
-									<td>1</td>
-									<td>2</td>
-									<td>3</td>
-									<td>4</td>
-									<td class="center"><a class="btn btn-success"
-										href="sale_order_list.jsp"> <i
-											class="halflings-icon white zoom-in"></i>
-									</a> <a class="btn btn-success" href="#"> &nbsp;<i
-											class="icon-plus"></i>
-									</a> <a class="btn btn-info" href="#"> <i
-											class="halflings-icon white edit"></i>
-									</a> <a class="btn btn-danger" href="#"> <i
-											class="halflings-icon white trash"></i>
-									</a></td>
-								</tr>
-								<tr>
-									<th><input type="checkbox"></th>
-									<td>Dennis Ji</td>
-									<td class="center">2012/03/01</td>
-									<td class="center">Member</td>
-									<td class="center"><span class="label label-warning">Pending</span>
-									</td>
-									<td>1</td>
-									<td>2</td>
-									<td>3</td>
-									<td>4</td>
-									<td class="center"><a class="btn btn-success"
-										href="sale_order_list.jsp"> <i
-											class="halflings-icon white zoom-in"></i>
-									</a> <a class="btn btn-success" href="#"> &nbsp;<i
-											class="icon-plus"></i>
-									</a> <a class="btn btn-info" href="#"> <i
-											class="halflings-icon white edit"></i>
-									</a> <a class="btn btn-danger" href="#"> <i
-											class="halflings-icon white trash"></i>
-									</a></td>
-								</tr>
-								<tr>
-									<th><input type="checkbox"></th>
-									<td>Dennis Ji</td>
-									<td class="center">2012/03/01</td>
-									<td class="center">Member</td>
-									<td class="center"><span class="label label-warning">Pending</span>
-									</td>
-									<td>1</td>
-									<td>2</td>
-									<td>3</td>
-									<td>4</td>
-									<td class="center"><a class="btn btn-success"
-										href="sale_order_list.jsp"> <i
-											class="halflings-icon white zoom-in"></i>
-									</a> <a class="btn btn-success" href="#"> &nbsp;<i
-											class="icon-plus"></i>
-									</a> <a class="btn btn-info" href="#"> <i
-											class="halflings-icon white edit"></i>
-									</a> <a class="btn btn-danger" href="#"> <i
-											class="halflings-icon white trash"></i>
-									</a></td>
-								</tr>
-								<tr>
-									<th><input type="checkbox"></th>
-									<td>Dennis Ji</td>
-									<td class="center">2012/01/21</td>
-									<td class="center">Staff</td>
-									<td class="center"><span class="label label-success">Active</span>
-									</td>
-									<td>1</td>
-									<td>2</td>
-									<td>3</td>
-									<td>4</td>
-									<td class="center"><a class="btn btn-success"
-										href="sale_order_list.jsp"> <i
-											class="halflings-icon white zoom-in"></i>
-									</a> <a class="btn btn-success" href="#"> &nbsp;<i
-											class="icon-plus"></i>
-									</a> <a class="btn btn-info" href="#"> <i
-											class="halflings-icon white edit"></i>
-									</a> <a class="btn btn-danger" href="#"> <i
-											class="halflings-icon white trash"></i>
-									</a></td>
-								</tr>
-								<tr>
-									<th><input type="checkbox"></th>
-									<td>Dennis Ji</td>
-									<td class="center">2012/01/21</td>
-									<td class="center">Staff</td>
-									<td class="center"><span class="label label-success">Active</span>
-									</td>
-									<td>1</td>
-									<td>2</td>
-									<td>3</td>
-									<td>4</td>
-									<td class="center"><a class="btn btn-success"
-										href="sale_order_list.jsp"> <i
-											class="halflings-icon white zoom-in"></i>
-									</a> <a class="btn btn-success" href="#"> &nbsp;<i
-											class="icon-plus"></i>
-									</a> <a class="btn btn-info" href="#"> <i
-											class="halflings-icon white edit"></i>
-									</a> <a class="btn btn-danger" href="#"> <i
-											class="halflings-icon white trash"></i>
-									</a></td>
-								</tr>
-								<tr>
-									<th><input type="checkbox"></th>
-									<td>Dennis Ji</td>
-									<td class="center">2012/01/21</td>
-									<td class="center">Staff</td>
-									<td class="center"><span class="label label-success">Active</span>
-									</td>
-									<td>1</td>
-									<td>2</td>
-									<td>3</td>
-									<td>4</td>
-									<td class="center"><a class="btn btn-success"
-										href="sale_order_list.jsp"> <i
-											class="halflings-icon white zoom-in"></i>
-									</a> <a class="btn btn-success" href="#"> &nbsp;<i
-											class="icon-plus"></i>
-									</a> <a class="btn btn-info" href="#"> <i
-											class="halflings-icon white edit"></i>
-									</a> <a class="btn btn-danger" href="#"> <i
-											class="halflings-icon white trash"></i>
-									</a></td>
-								</tr>
-								<tr>
-									<th><input type="checkbox"></th>
-									<td>Dennis Ji</td>
-									<td class="center">2012/01/21</td>
-									<td class="center">Staff</td>
-									<td class="center"><span class="label label-success">Active</span>
-									</td>
-									<td>1</td>
-									<td>2</td>
-									<td>3</td>
-									<td>4</td>
-									<td class="center"><a class="btn btn-success"
-										href="sale_order_list.jsp"> <i
-											class="halflings-icon white zoom-in"></i>
-									</a> <a class="btn btn-success" href="#"> &nbsp;<i
-											class="icon-plus"></i>
-									</a> <a class="btn btn-info" href="#"> <i
-											class="halflings-icon white edit"></i>
-									</a> <a class="btn btn-danger" href="#"> <i
-											class="halflings-icon white trash"></i>
-									</a></td>
-								</tr>
-								<tr>
-									<th><input type="checkbox"></th>
-									<td>Dennis Ji</td>
-									<td class="center">2012/08/23</td>
-									<td class="center">Staff</td>
-									<td class="center"><span class="label label-important">Banned</span>
-									</td>
-									<td>1</td>
-									<td>2</td>
-									<td>3</td>
-									<td>4</td>
-									<td class="center"><a class="btn btn-success"
-										href="sale_order_list.jsp"> <i
-											class="halflings-icon white zoom-in"></i>
-									</a> <a class="btn btn-success" href="#"> &nbsp;<i
-											class="icon-plus"></i>
-									</a> <a class="btn btn-info" href="#"> <i
-											class="halflings-icon white edit"></i>
-									</a> <a class="btn btn-danger" href="#"> <i
-											class="halflings-icon white trash"></i>
-									</a></td>
-								</tr>
-								<tr>
-									<th><input type="checkbox"></th>
-									<td>Dennis Ji</td>
-									<td class="center">2012/08/23</td>
-									<td class="center">Staff</td>
-									<td class="center"><span class="label label-important">Banned</span>
-									</td>
-									<td>1</td>
-									<td>2</td>
-									<td>3</td>
-									<td>4</td>
-									<td class="center"><a class="btn btn-success"
-										href="sale_order_list.jsp"> <i
-											class="halflings-icon white zoom-in"></i>
-									</a> <a class="btn btn-success" href="#"> &nbsp;<i
-											class="icon-plus"></i>
-									</a> <a class="btn btn-info" href="#"> <i
-											class="halflings-icon white edit"></i>
-									</a> <a class="btn btn-danger" href="#"> <i
-											class="halflings-icon white trash"></i>
-									</a></td>
-								</tr>
-								<tr>
-									<th><input type="checkbox"></th>
-									<td>Dennis Ji</td>
-									<td class="center">2012/06/01</td>
-									<td class="center">Admin</td>
-									<td class="center"><span class="label">Inactive</span></td>
-									<td>1</td>
-									<td>2</td>
-									<td>3</td>
-									<td>4</td>
-									<td class="center"><a class="btn btn-success"
-										href="sale_order_list.jsp"> <i
-											class="halflings-icon white zoom-in"></i>
-									</a> <a class="btn btn-success" href="#"> &nbsp;<i
-											class="icon-plus"></i>
-									</a> <a class="btn btn-info" href="#"> <i
-											class="halflings-icon white edit"></i>
-									</a> <a class="btn btn-danger" href="#"> <i
-											class="halflings-icon white trash"></i>
-									</a></td>
-								</tr>
-
-
 							</tbody>
 						</table>
 					</div>
@@ -474,17 +240,11 @@
 				<table style="width: 100%;" >
 					<tr style="height: 30px;">
 						<td>编号:aaa</td>
-						<td>销售人:张三 </td>
-						<td>客户:李四</td>
+						<td>出库单编号:ccc </td>
+						<td>产品编号:bbb</td>
 					</tr>
 					<tr style="height: 30px;">
-						<td>交易时间:2016-02-03</td>
-						<td>销售金额:100000</td>
-						<td>审核人:王五</td>
-					</tr>
-					<tr style="height: 30px;">
-						<td>审核时间:2016-02-03</td>
-						<td>审核状态:审核通过</td>
+						<td>数量:100000</td>
 					</tr>
 					<tr style="height: 30px;"><td colspan="3">备注:今天周二 </td></tr>
 				</table>
@@ -579,11 +339,8 @@
 	<script src="static/js/jquery.uploadify-3.1.min.js"></script>
 
 	<script src="static/js/jquery.gritter.min.js"></script>
-
 	<script src="static/js/jquery.imagesloaded.js"></script>
-
 	<script src="static/js/jquery.masonry.min.js"></script>
-
 	<script src="static/js/jquery.knob.modified.js"></script>
 
 	<script src="static/js/jquery.sparkline.min.js"></script>

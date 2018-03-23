@@ -47,9 +47,9 @@
 			<li><a href="godamaged" target="page-Content"><i
 					class="icon-picture"></i><span class="hidden-tablet">
 						报损</span></a></li>
-			<li><a href="table.jsp" target="page-Content"><i
+			<li><a href="goleaveStock" target="page-Content"><i
 					class="icon-align-justify"></i><span class="hidden-tablet">
-						Tables</span></a></li>
+						出库</span></a></li>
 			<li><a href="calendar.html" target="page-Content"><i
 					class="icon-calendar"></i><span class="hidden-tablet">
 						Calendar</span></a></li>
