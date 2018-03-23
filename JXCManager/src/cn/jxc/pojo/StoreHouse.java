@@ -14,11 +14,11 @@ public class StoreHouse implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private int storeHouseId;
-	private Employee employee;
-	private String shAddress;
-	private String shPhone;
-	private Date createDate;
+	private int storeHouseId;//仓库编号
+	private Employee employee;//负责人 外键
+	private String shAddress;//地址
+	private String shPhone;//电话
+	private Date createDate;//仓库成立时间
 	
 	private Set<EnterStock> enterstocks = new HashSet<EnterStock>(0);
 	private Set requisitionsForOutboundStoreHouse = new HashSet(0);
