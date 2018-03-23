@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,27 +55,23 @@
 			<!-- start: Content -->
 			<div id="content" class="span10">
 				<ul class="breadcrumb">
-					<li><i class="icon-home"></i> <a href="index.html">首页</a> <i
+					<li><i class="icon-home"></i> <a href="index.jsp">首页</a> <i
 						class="icon-angle-right"></i></li>
-					<li><a href="form">采购订单管理</a></li>
+					<li><a href="gorequisition">调拨仓库管理</a></li>
 				</ul>
 
 				<div class="row-fluid">
-					<form action="#" method="post" class="form-horizontal">
+					<form action="gorequisition" method="post" class="form-horizontal">
 						<div class="control-group">
 							<div data-condition="search">
-								调拨单号:<input type="text" name="OrderNum" class="input-medium"
-									placeholder="请输入调拨单号" /> 审核状态: <select><option>请选择审核状态</option>
+								调拨单号:<input type="text" name="requisitionId" class="input-medium"
+									placeholder="请输入调拨单号" /> 审核状态: <select name="rs_id"><option>请选择审核状态</option>
 									<c:forEach var="rs" items="${rslist }">
 										<option value="${rs.rsId }">${rs.rsName }</option>
 									</c:forEach>
-									<!-- <option>待审核</option><option>审核成功</option><option>审核失败</option> -->
-									</select>  <!-- <input type="text" name="BarCode"
-										class="input-medium" placeholder="请输入审核状态" /> --> <!-- 供应商:<input
-										type="text" name="ProductName" class="input-medium"
-										placeholder="请输入供应商" /> --> <a class="btn btn-success"
-									href="javascript:void(0)" data-command="search"><i
-									class="icon-search"></i>&nbsp;搜索</a>
+									</select>  
+									<button type="submit" class="btn btn-success" data-command="search"><i
+									  class="icon-search"></i>&nbsp;搜索</button>
 								<div style="float: right;">
 									<a class="btn btn-primary" href="gorequisitionadd" data-command="Add"><i
 										class="icon-plus"></i>&nbsp;新增调拨</a> <a class="btn btn-warning"
@@ -118,31 +115,30 @@
 									</tr>
 								</thead>
 								<tbody>
+								<c:forEach var="res" items="${reslist }">
 									<tr>
-										<th><input type="checkbox"></th>
-										<td>Dennis Ji</td>
-										<td class="center">2012/01/01</td>
-										<td class="center">Member</td>
-										<td class="center"><span class="label label-success">Active</span>
+										<th><input type="checkbox" ></th>
+										<td>${res.requisitionId }</td>
+										<td class="center">${res.employeeByRequestEmp.empLoginName }</td>
+										<td class="center">${res.requestTime }</td>
+										<td class="center">${res.employeeByReviewEmp.empLoginName }<!-- <span class="label label-success">Active</span> -->
 										</td>
-										<!-- <td></td>
-										<td></td>
-										<td></td> -->
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td>2</td>
-										<td>1</td>
-										<td>1</td>
+										<td>${res.reviewTime }</td>
+										<td>${res.reviewstatus.rsName }</td>
+										<td>${res.storehouseByOutboundStoreHouse.storeHouseId }</td>
+										<td>${res.outboundStoreHouseTime }</td>
+										<td>${res.employeeByOutboundEmp.empLoginName }</td>
+										<td>${res.storehouseByStorageStoreHouse.storeHouseId }</td>
+										<td>${res.storageStoreHouseTime }</td>
+										<td>${res.employeeByStorageStoreHouseEmp.empLoginName }</td>
 										<td class="center"><a class="btn btn-info btn-setting"
 											href="goPurchaseDetail"> <i
 												class="halflings-icon white zoom-in"></i>
-										</a><a class="btn btn-info btn-success" href="gorequisitionupdate">
+										</a><a class="btn btn-info btn-success" href="gorequisitionupdate?requisitionId=${res.requisitionId }">
 												<i class="halflings-icon white edit"></i>
 										</a></td>
 									</tr>
+									</c:forEach>
 								</tbody>
 							</table>
 						</div>

@@ -15,18 +15,18 @@ public class Requisition implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String requisitionId;
-	private Employee employeeByReviewEmp;
-	private Employee employeeByStorageStoreHouseEmp;
-	private Employee employeeByRequestEmp;
-	private Employee employeeByOutboundEmp;
-	private ReviewStatus reviewstatus;
-	private StoreHouse storehouseByOutboundStoreHouse;
-	private StoreHouse storehouseByStorageStoreHouse;
-	private Date requestTime;
-	private Date reviewTime;
-	private Date outboundStoreHouseTime;
-	private Date storageStoreHouseTime;
+	private String requisitionId;//调拨订单号
+	private Employee employeeByReviewEmp;//审核人
+	private Employee employeeByStorageStoreHouseEmp;//入库人
+	private Employee employeeByRequestEmp;//申请人
+	private Employee employeeByOutboundEmp;//出库人
+	private ReviewStatus reviewstatus;//审核状态
+	private StoreHouse storehouseByOutboundStoreHouse;//出库仓库
+	private StoreHouse storehouseByStorageStoreHouse;//入库仓库
+	private Date requestTime;//申请时间
+	private Date reviewTime;//审核时间
+	private Date outboundStoreHouseTime;//出库时间
+	private Date storageStoreHouseTime;//入库时间
 	
 	private Set<RequisitionDetail> requisitiondetails = new HashSet<RequisitionDetail>(0);
 

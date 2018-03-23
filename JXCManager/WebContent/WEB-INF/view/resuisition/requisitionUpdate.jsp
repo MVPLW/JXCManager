@@ -87,9 +87,7 @@
 													<div class="control-group">
 														<label class="control-label" for="OrderNum">申请人</label>
 														<div class="controls">
-															<!-- <input type="text" name="OrderNum" class="span12" placeholder="可不填,自动生成" disabled="disabled"> -->
-															<input type="text" class="span12"  disabled="disabled" placeholder="不可以更改"> <input
-																type="hidden" name="SnNum" /> <span class="help-block"></span>
+															<input type="text" class="span12"  disabled="disabled" placeholder="不可以更改" name="employeeByRequestEmp" value="${requ.employeeByRequestEmp }">  <span class="help-block"></span>
 														</div>
 													</div>
 												</div>
