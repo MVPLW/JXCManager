@@ -29,4 +29,10 @@ public class ProductServiceImpl implements ProductService {
 		return pageInfo;
 	}
 
+	@Override
+	public PageInfo<Product> getProductByNameAndNum(Integer num, String name, String no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

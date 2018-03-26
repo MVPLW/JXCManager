@@ -17,7 +17,6 @@ public class LoginController {
 
 	/**
 	 * µÇÂ¼·½·¨
-	 * 
 	 * @return
 	 */
 	@RequestMapping("/login")
@@ -29,7 +28,6 @@ public class LoginController {
 		} else {
 			return "login";
 		}
-		
 	}
-
+	
 }

@@ -11,13 +11,12 @@ import cn.jxc.service.ReviewStatusService;
 
 @Service
 public class ReviewStatusServiceImpl implements ReviewStatusService {
-
 	@Autowired
 	private ReviewStatusMapper rsmapper;
 	//²éÑ¯È«²¿ÉóºË×´Ì¬
 	@Override
 	public List<ReviewStatus> getReviewStatus() {
-		
+		// TODO Auto-generated method stub
 		return rsmapper.getReviewStatus();
 	}
 	
