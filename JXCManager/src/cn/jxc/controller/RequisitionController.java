@@ -22,30 +22,36 @@ public class RequisitionController {
 	private RequisitionService resmapperservice;
 	//进入调拨查询页面
 	@RequestMapping("/gorequisition")
-	public String gorequisition(
-			@RequestParam(value="requisitionId",required=false)String requisitionId,
-			@RequestParam(value="rs_id",required=false)String rs_id,
-			Model model) {
+	public String gorequisition(Model model) {
 		//审核状态
 		List<ReviewStatus> rslist = rsmapperservice.getReviewStatus();
-//		int currentPageNo=0;
-//		int pageSize=0;
 		//调拨订单表查询
-		List<Requisition> reslist=null;
-		if(requisitionId==null && rs_id==null){
-			 reslist = resmapperservice.getRequisition();
-		}else {
-			 reslist = resmapperservice.getRequisitionList(requisitionId,Integer.parseInt(rs_id));
-		}
-		
+		List<Requisition> reslist = resmapperservice.getRequisition(null,null);
 		model.addAttribute("rslist", rslist);
 		model.addAttribute("reslist", reslist);
-		//System.out.println(reslist.get(1).getEmployeeByRequestEmp().getEmpLoginName());
-		System.out.println("总共有："+reslist.size()+"个");
 		//翻页查询
 		
 		return "resuisition/requisition";
 	}
+	//按条件查询
+	@RequestMapping("getbyrsid")
+	public String getByrsid(
+			@RequestParam(value="requisitionId",required=false) String requisitionId,
+			@RequestParam(value="rs_id",required=false) String rs_id,
+			Model model) {
+		//审核状态
+		List<ReviewStatus> rslist = rsmapperservice.getReviewStatus();
+		//调拨订单表查询
+		Integer rsid =Integer.parseInt(rs_id); 
+		if(rsid==0) {
+			rsid=null;
+		}
+		List<Requisition> reslist = resmapperservice.getRequisition(requisitionId,rsid);
+		model.addAttribute("rslist", rslist);
+		model.addAttribute("reslist", reslist);
+		return "resuisition/requisition";
+	}
+	
 	//跳转至新增
 	@RequestMapping("/gorequisitionadd")
 	public String gorequisitionadd() {

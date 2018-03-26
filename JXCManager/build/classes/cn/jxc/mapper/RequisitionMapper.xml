@@ -3,6 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.jxc.mapper.RequisitionMapper">
 
+<<<<<<< HEAD
 	<resultMap type="Requisition" id="Requisitionlist">
 		<!-- 调拨订单号 -->
 		<result property="requisitionId" column="Requisition_id"/>
@@ -63,10 +64,78 @@
 			</if>
 			<if test=" id != null">
 				and r.RS_id=#{id} 
+=======
+	<resultMap type="Requisition" id="Requisitionlist" >
+		<!-- 调拨订单号 -->
+		<result property="requisitionId" column="Requisition_id" />
+		<!-- 申请时间 -->
+		<result property="requestTime" column="RequestTime" />
+		<!-- 审核时间 -->
+		<result property="reviewTime" column="ReviewTime" />
+		<!-- 出库时间 -->
+		<result property="outboundStoreHouseTime" column="OutboundStoreHouseTime" />
+		<!-- 入库时间 -->
+		<result property="storageStoreHouseTime" column="StorageStoreHouseTime" />
+		<!-- 审核人 -->
+		<association property="employeeByReviewEmp" javaType="Employee" column="reviewEmp">
+			<id column="reviewEmp" property="empLoginName"/>
+		</association>
+		<!-- 入库人 -->
+		<association property="employeeByStorageStoreHouseEmp" javaType="Employee" column="StoreHouseEmp">
+			<id column="StoreHouseEmp" property="empLoginName"/>
+		</association>
+		<!-- 申请人 -->
+		<association property="employeeByRequestEmp" javaType="Employee" column="requestEmp">
+			<id column="requestEmp" property="empLoginName"/>
+		</association>
+		<!-- 出库人 -->
+		<association property="employeeByOutboundEmp" javaType="Employee" column="OutboundEmp">
+			<id column="OutboundEmp" property="empLoginName"/>
+		</association>
+		<!-- 审核状态 -->
+		<association property="reviewstatus" javaType="ReviewStatus"
+			resultMap="cn.jxc.mapper.ReviewStatusMapper.ReviewStatusMap">
+		</association>
+		<!-- 出库仓库 -->
+		<association property="storehouseByOutboundStoreHouse"	column="OutboundStoreHouse" javaType="StoreHouse">
+			<id column="OutboundStoreHouse" property="storeHouseId"/>
+		</association>
+		<!-- 入库仓库 -->
+		<association property="storehouseByStorageStoreHouse" javaType="StoreHouse" column="StorageStoreHouse">
+			<id column="StorageStoreHouse" property="storeHouseId"/>
+		</association>
+
+	</resultMap>
+	<select id="getRequisition" resultMap="Requisitionlist">
+		SELECT  rs.Requisition_id,rs.requestTime,rs.ReviewTime,rs.OutboundStoreHouseTime,rs.StorageStoreHouseTime,
+		emp1.EmpLoginName AS requestEmp,emp2.EmpLoginName AS reviewEmp,
+		emp3.EmpLoginName AS OutboundEmp,emp4.EmpLoginName AS StoreHouseEmp,
+		r.RS_name,r.RS_id,
+		sto1.StoreHouse_id AS OutboundStoreHouse,sto2.StoreHouse_id AS StorageStoreHouse
+		FROM Requisition rs 
+		LEFT JOIN ReviewStatus r ON rs.reviewstatus=r.RS_id
+		LEFT JOIN `employee` emp1 ON emp1.EmpLoginName=rs.RequestEmp
+		LEFT JOIN `employee` emp2 ON emp2.EmpLoginName=rs.ReviewEmp
+		LEFT JOIN `employee` emp3 ON emp3.EmpLoginName=rs.OutboundEmp
+		LEFT JOIN `employee` emp4 ON emp4.EmpLoginName=rs.StorageStoreHouseEmp
+		LEFT JOIN `storehouse` sto1 ON sto1.StoreHouse_id=rs.OutboundStoreHouse
+		LEFT JOIN `storehouse` sto2 ON sto2.StoreHouse_id=rs.StorageStoreHouse
+		<where>
+			<if test="requisitionId != null and requisitionId != ''">
+				and rs.Requisition_id like CONCAT('%',#{requisitionId},'%')
+			</if>
+			<if test="rsid != null">
+				and r.RS_id=#{rsid}
+>>>>>>> 0b50cb891790b22cbfd75658364ff68ed259b867
 			</if>
 		</where>
 	</select>
 	<select id="requisitionByid" resultMap="Requisitionlist">
+<<<<<<< HEAD
 		SELECT * FROM Requisition WHERE Requisition_id=#{requisitionId}
+=======
+		SELECT * FROM Requisition
+		WHERE Requisition_id=#{requisitionId}
+>>>>>>> 0b50cb891790b22cbfd75658364ff68ed259b867
 	</select>
 </mapper>

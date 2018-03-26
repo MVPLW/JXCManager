@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,9 +46,9 @@
 
 </head>
 <style type="text/css">
-	h3{
-		display: inline;
-	}
+h3 {
+	display: inline;
+}
 </style>
 <body>
 	<div class="container-fluid-full">
@@ -61,24 +62,28 @@
 				</ul>
 
 				<div class="row-fluid">
-					<form action="gorequisition" method="post" class="form-horizontal">
+					<form action="getbyrsid" method="post" class="form-horizontal">
 						<div class="control-group">
 							<div data-condition="search">
-								调拨单号:<input type="text" name="requisitionId" class="input-medium"
-									placeholder="请输入调拨单号" /> 审核状态: <select name="rs_id"><option>请选择审核状态</option>
+								调拨单号:<input type="text" name="requisitionId"
+									class="input-medium" placeholder="请输入调拨单号" /> 审核状态: 
+									<select name="rs_id">
+										<option value="0">请选择</option>
 									<c:forEach var="rs" items="${rslist }">
-										<option value="${rs.rsId }">${rs.rsName }</option>
+										<option  value="${rs.rsId}">${rs.rsName }</option>
 									</c:forEach>
-									</select>  
-									<button type="submit" class="btn btn-success" data-command="search"><i
-									  class="icon-search"></i>&nbsp;搜索</button>
+								</select>
+								<button type="submit" class="btn btn-success"
+									data-command="search">
+									<i class="icon-search"></i>&nbsp;搜索
+								</button>
 								<div style="float: right;">
-									<a class="btn btn-primary" href="gorequisitionadd" data-command="Add"><i
-										class="icon-plus"></i>&nbsp;新增调拨</a> <a class="btn btn-warning"
-										href="javascript:void(0)" data-command="Delete"><i
-										class="icon-remove"></i>&nbsp;删除</a> <a class="btn btn-danger"
-										href="gorequisition" data-command="Refresh"><i
-										class="icon-refresh"></i>&nbsp;刷新</a>
+									<a class="btn btn-primary" href="gorequisitionadd"
+										data-command="Add"><i class="icon-plus"></i>&nbsp;新增调拨</a> <a
+										class="btn btn-warning" href="javascript:void(0)"
+										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a>
+									<a class="btn btn-danger" href="gorequisition"
+										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 								</div>
 							</div>
 						</div>
@@ -100,8 +105,10 @@
 									<tr>
 										<th><input type="checkbox"></th>
 										<th>调拨单号</th>
-										<th>制单人</th><!-- 申请人 -->
-										<th>制单时间</th><!-- 申请时间 -->
+										<th>制单人</th>
+										<!-- 申请人 -->
+										<th>制单时间</th>
+										<!-- 申请时间 -->
 										<th>审核人</th>
 										<th>审核时间</th>
 										<th>审核状态</th>
@@ -115,29 +122,43 @@
 									</tr>
 								</thead>
 								<tbody>
-								<c:forEach var="res" items="${reslist }">
-									<tr>
-										<th><input type="checkbox" ></th>
-										<td>${res.requisitionId }</td>
-										<td class="center">${res.employeeByRequestEmp.empLoginName }</td>
-										<td class="center">${res.requestTime }</td>
-										<td class="center">${res.employeeByReviewEmp.empLoginName }<!-- <span class="label label-success">Active</span> -->
-										</td>
-										<td>${res.reviewTime }</td>
-										<td>${res.reviewstatus.rsName }</td>
-										<td>${res.storehouseByOutboundStoreHouse.storeHouseId }</td>
-										<td>${res.outboundStoreHouseTime }</td>
-										<td>${res.employeeByOutboundEmp.empLoginName }</td>
-										<td>${res.storehouseByStorageStoreHouse.storeHouseId }</td>
-										<td>${res.storageStoreHouseTime }</td>
-										<td>${res.employeeByStorageStoreHouseEmp.empLoginName }</td>
-										<td class="center"><a class="btn btn-info btn-setting"
-											href="goPurchaseDetail"> <i
-												class="halflings-icon white zoom-in"></i>
-										</a><a class="btn btn-info btn-success" href="gorequisitionupdate?requisitionId=${res.requisitionId }">
-												<i class="halflings-icon white edit"></i>
-										</a></td>
-									</tr>
+									<c:forEach var="res" items="${reslist }">
+										<tr>
+											<th><input type="checkbox"></th>
+											<!--  -->
+											<td>${res.requisitionId }</td>
+											<!-- 调拨单号 -->
+											<td class="center">${res.employeeByRequestEmp.empLoginName }</td>
+											<!-- 制单人 -->
+											<td class="center"><fmt:formatDate value="${res.requestTime }" pattern="yyyy-MM-dd" /></td>
+											<!-- 制单时间 -->
+											<td class="center">${res.employeeByReviewEmp.empLoginName }<!-- <span class="label label-success">Active</span> -->
+											</td>
+											<!-- 审核人 -->
+											<td><fmt:formatDate value="${res.reviewTime }" pattern="yyyy-MM-dd" /></td>
+											<!-- 审核时间 -->
+											<td>${res.reviewstatus.rsName }</td>
+											<!-- 审核状态 -->
+											<td>${res.storehouseByOutboundStoreHouse.storeHouseId }</td>
+											<!-- 调出仓库 -->
+											<td><fmt:formatDate value="${res.outboundStoreHouseTime }" pattern="yyyy-MM-dd" /></td>
+											<!-- 出库时间 -->
+											<td>${res.employeeByOutboundEmp.empLoginName }</td>
+											<!-- 出库人 -->
+											<td>${res.storehouseByStorageStoreHouse.storeHouseId }</td>
+											<!-- 入库仓库 -->
+											<td><fmt:formatDate value="${res.storageStoreHouseTime }" pattern="yyyy-MM-dd" /></td>
+											<!-- 入库人 -->
+											<td>${res.employeeByStorageStoreHouseEmp.empLoginName }</td>
+											<!-- 入库时间 -->
+											<td class="center"><a class="btn btn-info btn-setting"
+												href="goPurchaseDetail"> <i
+													class="halflings-icon white zoom-in"></i>
+											</a><a class="btn btn-info btn-success"
+												href="gorequisitionupdate?requisitionId=${res.requisitionId }">
+													<i class="halflings-icon white edit"></i>
+											</a></td>
+										</tr>
 									</c:forEach>
 								</tbody>
 							</table>
@@ -159,17 +180,21 @@
 	</div>
 
 	<div class="modal hide fade" id="myModal" style="width: 800px;">
-		<div class="modal-header" >
+		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">x</button>
-			<h2 >采购订单明细</h2>
+			<h2>采购订单明细</h2>
 		</div>
 		<div class="modal-body">
 			<!-- 采购订单中所有内容 -->
 			<div>
-				<table style="width: 100%;" >
+				<table style="width: 100%;">
 					<tr style="height: 30px;">
-						<td> <h3>调拨单号:</h3> aaa</td>
-						<td> <h3>制单人:</h3>张三 </td>
+						<td>
+							<h3>调拨单号:</h3> aaa
+						</td>
+						<td>
+							<h3>制单人:</h3>张三
+						</td>
 						<td><h3>制单时间:</h3>2009-8-9</td>
 					</tr>
 					<tr style="height: 30px;">
@@ -232,7 +257,7 @@
 
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a> 
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
 

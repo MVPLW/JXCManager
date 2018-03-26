@@ -9,11 +9,9 @@ import cn.jxc.pojo.ReviewStatus;
 
 public interface RequisitionMapper {
 	//查询所有的调拨订单详情
-	List<Requisition> getRequisition();
-	//按条件查询所有的调拨订单详情
-	List<Requisition> getRequisitionList(
+	List<Requisition> getRequisition(
 			@Param("requisitionId")String requisitionId,
-			@Param("id")Integer id);
+			@Param("rsid")Integer rsid);
 	//按条件查询
 	Requisition requisitionByid(String requisitionId);
 }
