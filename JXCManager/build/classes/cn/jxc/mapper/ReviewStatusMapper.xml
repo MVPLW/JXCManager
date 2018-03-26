@@ -2,19 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.jxc.mapper.ReviewStatusMapper">
-<<<<<<< HEAD
-	<resultMap type="ReviewStatus" id="ReviewStatuslist">
-		<result property="rsId" column="RS_id"/>
-		<result property="rsName" column="RS_name"/>
-	</resultMap>
-	<select id="getReviewStatus" resultMap="ReviewStatuslist" >
-=======
 	<resultMap type="ReviewStatus" id="ReviewStatusMap">
 		<result property="rsId" column="RS_id"/>
 		<result property="rsName" column="RS_name"/>
 	</resultMap>
 	<select id="getReviewStatus" resultMap="ReviewStatusMap" >
->>>>>>> 0b50cb891790b22cbfd75658364ff68ed259b867
 		SELECT * FROM `reviewstatus`
 	</select>
 	

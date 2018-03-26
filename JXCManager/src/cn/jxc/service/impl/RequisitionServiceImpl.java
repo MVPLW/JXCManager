@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import cn.jxc.mapper.RequisitionMapper;
 import cn.jxc.pojo.Requisition;
-import cn.jxc.pojo.ReviewStatus;
 import cn.jxc.service.RequisitionService;
 @Service
 public class RequisitionServiceImpl implements RequisitionService{

@@ -3,68 +3,6 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.jxc.mapper.RequisitionMapper">
 
-<<<<<<< HEAD
-	<resultMap type="Requisition" id="Requisitionlist">
-		<!-- 调拨订单号 -->
-		<result property="requisitionId" column="Requisition_id"/>
-		<!-- 申请时间-->
-		<result property="requestTime" column="RequestTime"/>
-		<!-- 审核时间 -->
-		<result property="reviewTime" column="ReviewTime"/>
-		<!-- 出库时间 -->
-		<result property="outboundStoreHouseTime" column="OutboundStoreHouseTime"/>
-		<!-- 入库时间 -->
-		<result property="storageStoreHouseTime" column="StorageStoreHouseTime"/>
-		<!-- 审核人 -->
-		<association property="employeeByReviewEmp" javaType="Employee"
-		resultMap="cn.jxc.mapper.EmployeeMapper.employeeResultMap">
-		</association>
-		<!-- 入库人 -->
-		<association property="employeeByStorageStoreHouseEmp" javaType="Employee"
-		resultMap="cn.jxc.mapper.EmployeeMapper.employeeResultMap">
-		</association>
-		<!-- 申请人 -->
-		<association property="employeeByRequestEmp" javaType="Employee"
-		resultMap="cn.jxc.mapper.EmployeeMapper.employeeResultMap">
-		</association>
-		<!-- 出库人 -->
-		<association property="employeeByOutboundEmp" javaType="Employee"
-		resultMap="cn.jxc.mapper.EmployeeMapper.employeeResultMap">
-		</association>
-		<!-- 审核状态 -->
-		<association property="reviewstatus" javaType="ReviewStatus">
-			<result property="rsId" column="RS_id"/>
-			<result property="rsName" column="RS_name"/>
-		</association>
-		<!-- 出库仓库 -->
-		<association property="storehouseByOutboundStoreHouse" javaType="StoreHouse"
-		resultMap="cn.jxc.mapper.StoreHouseMapper.StoreHouseMap">
-		</association>
-		<!-- 入库仓库 -->
-		<association property="storehouseByStorageStoreHouse" javaType="StoreHouse"
-		resultMap="cn.jxc.mapper.StoreHouseMapper.StoreHouseMap">
-		</association>
-		
-	</resultMap> 
-	<!-- <sql id="rs">
-		rs.Requisition_id,rs.RequestEmp,rs.RequestTime,rs.ReviewEmp,rs.ReviewTime,rs.ReviewStatus,
-		rs.OutboundStoreHouse,rs.OutboundStoreHouseTime,rs.OutboundEmp,rs.StorageStoreHouse,rs.StorageStoreHouseTime,
-		rs.StorageStoreHouseEmp,r.RS_id,r.RS_name
-	</sql> -->
-	<select id="getRequisition" resultMap="Requisitionlist">
-		SELECT  rs.*,r.rs_Name FROM Requisition rs 
-		INNER JOIN ReviewStatus r ON rs.reviewstatus=r.RS_id
-	</select>
-	<select id="getRequisitionList" resultMap="Requisitionlist" >
-		SELECT  rs.*,r.rs_Name FROM Requisition rs 
-		INNER JOIN ReviewStatus r ON rs.reviewstatus=r.RS_id
-		<where>
-			<if test="requisitionId != null and requisitionId != ''">
-				and rs.Requisition_id like CONCAT ('%',#{requisitionId},'%') 
-			</if>
-			<if test=" id != null">
-				and r.RS_id=#{id} 
-=======
 	<resultMap type="Requisition" id="Requisitionlist" >
 		<!-- 调拨订单号 -->
 		<result property="requisitionId" column="Requisition_id" />
@@ -126,16 +64,11 @@
 			</if>
 			<if test="rsid != null">
 				and r.RS_id=#{rsid}
->>>>>>> 0b50cb891790b22cbfd75658364ff68ed259b867
 			</if>
 		</where>
 	</select>
 	<select id="requisitionByid" resultMap="Requisitionlist">
-<<<<<<< HEAD
-		SELECT * FROM Requisition WHERE Requisition_id=#{requisitionId}
-=======
 		SELECT * FROM Requisition
 		WHERE Requisition_id=#{requisitionId}
->>>>>>> 0b50cb891790b22cbfd75658364ff68ed259b867
 	</select>
 </mapper>
