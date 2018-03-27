@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxc.mapper.PurchaseRequestDetailMapper">
+	
+	<insert id="purchaseRequestDetailAdd" parameterType="PurchaseRequestDetail">
+		INSERT INTO PurchaseRequestDetail(purchaserequest_id,product_id,`count`,productunit_id,price) 
+			VALUES(#{prd.purchaserequest.purchaseRequestId},
+				#{prd.product.productId},#{prd.count},#{prd.productUnit.productUnitId},#{prd.price})
+	</insert>
+	
+</mapper>

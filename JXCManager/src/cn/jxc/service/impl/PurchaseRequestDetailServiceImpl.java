@@ -1,19 +1,24 @@
 package cn.jxc.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageInfo;
 
+import cn.jxc.mapper.PurchaseRequestDetailMapper;
 import cn.jxc.pojo.PurchaseRequestDetail;
 import cn.jxc.service.PurchaseRequestDetailService;
 
 @Service
 public class PurchaseRequestDetailServiceImpl implements PurchaseRequestDetailService {
 
+	@Autowired
+	private PurchaseRequestDetailMapper purchaseRequestDetailMapper;
+	
 	@Override
 	public int addPurchaseRequestDetail(PurchaseRequestDetail purchaseRequestDetail) {
 		// TODO Auto-generated method stub
-		return 0;
+		return purchaseRequestDetailMapper.purchaseRequestDetailAdd(purchaseRequestDetail);
 	}
 
 	@Override
