@@ -5,7 +5,5 @@ import java.util.List;
 import cn.jxc.pojo.ReviewStatus;
 
 public interface ReviewStatusService {
-	//²éÑ¯ÉóºË×´Ì¬
 	List<ReviewStatus> getReviewStatus();
-	
 }

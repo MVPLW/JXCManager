@@ -9,5 +9,4 @@
 	<select id="getReviewStatus" resultMap="ReviewStatusMap" >
 		SELECT * FROM `reviewstatus`
 	</select>
-	
 </mapper>
