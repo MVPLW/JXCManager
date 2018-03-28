@@ -13,12 +13,13 @@ import cn.jxc.service.EmployeeService;
 
 @Controller
 public class LoginController {
-	
+
 	@Autowired
 	private EmployeeService employeeService;
-	
+
 	/**
 	 * 登录方法
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/login")
@@ -28,8 +29,7 @@ public class LoginController {
 			session.setAttribute("loginEmp", login);//当前登录的用户放入session中
 			return "index";
 		} else {
-			return "index";
+			return"login";
 		}
 	}
-	
 }

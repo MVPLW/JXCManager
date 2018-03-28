@@ -19,7 +19,7 @@ public class SalesOrder implements java.io.Serializable {
 	private Employee employeeByEmployeeId;
 	private Employee employeeByReviewEmpId;
 	private ReviewStatus reviewstatus;
-	private Date salesTime;
+ 	private Date salesTime;
 	private long salesPrice;
 	private Date reviewDate;
 	

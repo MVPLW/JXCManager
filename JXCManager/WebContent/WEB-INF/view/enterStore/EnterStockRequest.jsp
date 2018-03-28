@@ -5,7 +5,7 @@
 <head>
 <!-- start: Meta -->
 <meta charset="utf-8">
-<title></title>
+<title>采购订单申请</title>
 <meta name="description" content="Bootstrap Metro Dashboard">
 <meta name="author" content="Dennis Ji">
 <meta name="keyword"
@@ -27,6 +27,7 @@
 	rel='stylesheet' type='text/css'>
 <!-- end: CSS -->
 
+
 <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 	  	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -39,9 +40,9 @@
 <!-- start: Favicon -->
 <link rel="shortcut icon" href="static/img/favicon.png">
 <!-- end: Favicon -->
-
 </head>
 <body>
+
 	<div class="container-fluid-full">
 		<div class="row-fluid">
 			<!-- start: Content -->
@@ -65,13 +66,14 @@
 									<table style="width: 80%; margin: 0px auto;">
 										<tr>
 											<td><div class="control-group">
-													<label class="control-label">采购订单号&nbsp;&nbsp;</label>
+													<label class="control-label">采购订单号</label>
 													<div class="controls">
-														<span class="input-xlarge uneditable-input">订单号SSSSSSS</span>
+														<span class="input-xlarge uneditable-input">随机生成
+															可不填</span>
 													</div>
 												</div></td>
 											<td><div class="control-group">
-													<label class="control-label" for="selectError">申请人&nbsp;&nbsp;</label>
+													<label class="control-label" for="selectError">申请人</label>
 													<div class="controls">
 														<select id="selectError" data-rel="chosen">
 															<option>Option 1</option>
@@ -85,14 +87,14 @@
 										</tr>
 										<tr>
 											<td><div class="control-group">
-													<label class="control-label" for="date01">订单申请时间</label>
+													<label class="control-label" for="date01">申请时间</label>
 													<div class="controls">
 														<input type="text" class="input-xlarge datepicker"
-															id="date01" placeholder="申请时间" />
+															id="date01" value="02/16/12">
 													</div>
 												</div></td>
 											<td><div class="control-group">
-													<label class="control-label" for="selectError1">供应商&nbsp;&nbsp;</label>
+													<label class="control-label" for="selectError1">供应商</label>
 													<div class="controls">
 														<select id="selectError1" data-rel="chosen">
 															<option>Option 1</option>
@@ -106,7 +108,7 @@
 										</tr>
 										<tr>
 											<td><div class="control-group">
-													<label class="control-label" for="focusedInput">供应商联系人</label>
+													<label class="control-label" for="focusedInput">联系人</label>
 													<div class="controls">
 														<input class="input-xlarge focused" id="focusedInput"
 															type="text" value="此处填写供货商的联系人">
@@ -123,17 +125,17 @@
 										<tr>
 											<td colspan="2">
 												<div class="control-group">
-													<label class="control-label" for="typeahead">
-														备&nbsp;&nbsp;&nbsp;&nbsp;注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-													</label>
+													<label class="control-label" for="typeahead">备注</label>
 													<div class="controls">
 														<input type="text" class="span6 typeahead" id="typeahead"
-															data-provide="typeahead" data-items="4">
+															data-provide="typeahead" data-items="4"
+															data-source='["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"]'>
 													</div>
 												</div>
 											</td>
 										</tr>
 									</table>
+
 
 									<div class="box-content">
 										<table
@@ -156,7 +158,7 @@
 													<td>M</td>
 													<td>ABC</td>
 													<td>A</td>
-													<td><a class="label label-important" href="#">移除</a></td>
+													<td> <a class="label label-important" href="#">移除</a> </td>
 												</tr>
 											</tbody>
 										</table>
@@ -282,6 +284,6 @@
 	<script src="static/js/retina.js"></script>
 	<script src="static/js/custom.js"></script>
 	<!-- end: JavaScript-->
-	
+
 </body>
 </html>

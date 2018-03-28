@@ -1,5 +1,4 @@
 package cn.jxc.pojo;
-// Generated 2018-3-14 20:32:32 by Hibernate Tools 5.2.8.Final
 
 /**
  * 调拨单明细表
@@ -15,15 +14,17 @@ public class RequisitionDetail implements java.io.Serializable {
 	private Product product;
 	private Requisition requisition;
 	private int count;
+	private ProductUnit productUnit;
 
 	public RequisitionDetail() {
 	}
 
-	public RequisitionDetail(int reId, Product product, Requisition requisition, int count) {
+	public RequisitionDetail(int reId, Product product, Requisition requisition, int count,ProductUnit productUnit) {
 		this.reId = reId;
 		this.product = product;
 		this.requisition = requisition;
 		this.count = count;
+		this.productUnit=productUnit;
 	}
 
 	public int getReId() {
@@ -58,4 +59,12 @@ public class RequisitionDetail implements java.io.Serializable {
 		this.count = count;
 	}
 
+	public ProductUnit getProductUnit() {
+		return productUnit;
+	}
+
+	public void setProductUnit(ProductUnit productUnit) {
+		this.productUnit = productUnit;
+	}
+	
 }
