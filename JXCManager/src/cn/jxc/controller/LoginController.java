@@ -29,8 +29,4 @@ public class LoginController {
 			return"login";
 		}
 	}
-<<<<<<< HEAD
-=======
-	
->>>>>>> refs/remotes/origin/master
 }

@@ -3,17 +3,10 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.jxc.mapper.EmployeeMapper">
 	
-<<<<<<< HEAD
-	
-	<resultMap type="Employee" id="employeeResultMap">
-		<id column="eemploginname" property="empLoginName" />
-		<!-- <association property="dept" javaType="Dept" column="edeptid">
-=======
 	<resultMap type="Employee" id="employeeResultMap">
 		<id column="eemploginname" property="empLoginName" />
 		<!-- <association property="dept" javaType="Dept" column="edeptid">
 
->>>>>>> refs/remotes/origin/master
 		</association>
 		<association property="role" javaType="Role" column="eroleid">
 		</association> -->
@@ -38,13 +31,6 @@
 	<select id="login" resultMap="employeeResultMap">
 		select <include refid="employeeMap" /> from employee e
 		where e.`EmpLoginName`=#{name} and e.`EmpLoginPwd`=#{pwd}
-<<<<<<< HEAD
-	</select>
-	
-	<select id="getEmployeeAll" resultMap="employeeResultMap" >
-		select <include refid="employeeMap" /> from employee e
-=======
->>>>>>> refs/remotes/origin/master
 	</select>
 	
 	<select id="getEmployeeAll" resultMap="employeeResultMap" >

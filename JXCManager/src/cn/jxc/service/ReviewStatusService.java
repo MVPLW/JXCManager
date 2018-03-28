@@ -1,10 +1,9 @@
-package cn.jxc.mapper;
+package cn.jxc.service;
 
 import java.util.List;
 
 import cn.jxc.pojo.ReviewStatus;
 
-public interface ReviewStatusMapper {
-
+public interface ReviewStatusService {
 	List<ReviewStatus> getReviewStatus();
 }
