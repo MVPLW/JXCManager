@@ -23,12 +23,12 @@ public class PurchaseRequest implements java.io.Serializable {
 	private ReviewStatus reviewstatusByDeptReviewStatus;
 	private ReviewStatus reviewstatusByFinancialAuditStatus;
 	private Supplier supplier;
-	private String SuppContact;
-	private String SuppPhone;
+	private String suppContact;
+	private String suppPhone;
 	private Date requestTime;
 	private Date deptReviewTime;
 	private Date financialAuditTime;
-	private String Remark;
+	private String remark;
 	
 	//存放当前订单中明细
 	private List<PurchaseRequestDetail> purchaserequestdetails = new ArrayList<PurchaseRequestDetail>(0);
@@ -62,12 +62,12 @@ public class PurchaseRequest implements java.io.Serializable {
 		this.reviewstatusByDeptReviewStatus = reviewstatusByDeptReviewStatus;
 		this.reviewstatusByFinancialAuditStatus = reviewstatusByFinancialAuditStatus;
 		this.supplier = supplier;
-		this.SuppContact = suppContact;
-		this.SuppPhone = suppPhone;
+		this.suppContact = suppContact;
+		this.suppPhone = suppPhone;
 		this.requestTime = requestTime;
 		this.deptReviewTime = deptReviewTime;
 		this.financialAuditTime = financialAuditTime;
-		this.Remark = remark;
+		this.remark = remark;
 		this.purchaserequestdetails = purchaserequestdetails;
 		this.purchasepaymentslips = purchasepaymentslips;
 	}
@@ -169,27 +169,27 @@ public class PurchaseRequest implements java.io.Serializable {
 	}
 
 	public String getSuppContact() {
-		return SuppContact;
+		return suppContact;
 	}
 
 	public void setSuppContact(String suppContact) {
-		this.SuppContact = suppContact;
+		this.suppContact = suppContact;
 	}
 
 	public String getSuppPhone() {
-		return SuppPhone;
+		return suppPhone;
 	}
 
 	public void setSuppPhone(String suppPhone) {
-		this.SuppPhone = suppPhone;
+		this.suppPhone = suppPhone;
 	}
 
 	public String getRemark() {
-		return Remark;
+		return remark;
 	}
 
 	public void setRemark(String remark) {
-		this.Remark = remark;
+		this.remark = remark;
 	}
 
 }
