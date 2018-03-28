@@ -1,5 +1,7 @@
 package cn.jxc.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public Employee login(String name, String pwd) {
 		return employeeMapper.login(name, pwd);
+	}
+
+	@Override
+	public List<Employee> getEmployeeAll() {
+		// TODO Auto-generated method stub
+		return employeeMapper.getEmployeeAll();
 	}
 	
 }

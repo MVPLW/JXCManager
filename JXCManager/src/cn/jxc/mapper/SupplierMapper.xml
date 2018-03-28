@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxc.mapper.SupplierMapper">
+	
+	<resultMap type="Supplier" id="SupplierResultMap">
+		<id property="supplierId" column="Supplier_id"/>
+		<result property="suppName" column="Supp_name"/>
+		<result property="suppAddress" column="Supp_address"/>
+		<result property="phone" column="Phone"/>
+		<result property="postalCode" column="PostalCode"/>
+		<result property="suppContact" column="Supp_contact"/>
+		<result property="suppContactPho" column="SuppContactPho"/>
+		<result property="suppBank" column="SuppBank"/>
+		<result property="suppBankNum" column="SuppBankNum"/>
+		<result property="remark" column="Remark"/>
+	</resultMap>
+
+	<select id="getSupplierAll" resultMap="SupplierResultMap">
+		SELECT * FROM supplier
+	</select>
+	
+</mapper>

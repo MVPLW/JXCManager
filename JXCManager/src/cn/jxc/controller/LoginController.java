@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.sun.org.apache.xml.internal.resolver.helpers.PublicId;
-
 import cn.jxc.pojo.Employee;
 import cn.jxc.service.EmployeeService;
 
@@ -19,7 +17,6 @@ public class LoginController {
 
 	/**
 	 * µÇÂ¼·½·¨
-	 * 
 	 * @return
 	 */
 	@RequestMapping("/login")
@@ -32,4 +29,8 @@ public class LoginController {
 			return"login";
 		}
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> refs/remotes/origin/master
 }

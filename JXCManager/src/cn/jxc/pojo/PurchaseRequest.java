@@ -1,14 +1,16 @@
 package cn.jxc.pojo;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * 采购申请单据
  */
 public class PurchaseRequest implements java.io.Serializable {
-
+	
 	/**
 	 * 
 	 */
@@ -27,10 +29,11 @@ public class PurchaseRequest implements java.io.Serializable {
 	private Date deptReviewTime;
 	private Date financialAuditTime;
 	private String Remark;
+	
 	//存放当前订单中明细
-	private Set<PurchaseRequestDetail> purchaserequestdetails = new HashSet<PurchaseRequestDetail>(0);
-
-	private Set<PurchasePaymentSlip> purchasepaymentslips = new HashSet<PurchasePaymentSlip>(0);
+	private List<PurchaseRequestDetail> purchaserequestdetails = new ArrayList<PurchaseRequestDetail>(0);
+	
+	private List<PurchasePaymentSlip> purchasepaymentslips = new ArrayList<PurchasePaymentSlip>(0);
 
 	public PurchaseRequest() {
 		
@@ -49,8 +52,8 @@ public class PurchaseRequest implements java.io.Serializable {
 			Employee employeeByRequestEmpId, Employee employeeByDeptReviewEmp,
 			ReviewStatus reviewstatusByDeptReviewStatus, ReviewStatus reviewstatusByFinancialAuditStatus,
 			Supplier supplier, String suppContact, String suppPhone, Date requestTime, Date deptReviewTime,
-			Date financialAuditTime, String remark, Set<PurchaseRequestDetail> purchaserequestdetails,
-			Set<PurchasePaymentSlip> purchasepaymentslips) {
+			Date financialAuditTime, String remark, List<PurchaseRequestDetail> purchaserequestdetails,
+			List<PurchasePaymentSlip> purchasepaymentslips) {
 		super();
 		this.purchaseRequestId = purchaseRequestId;
 		this.employeeByFinancialAuditEmp = employeeByFinancialAuditEmp;
@@ -149,19 +152,19 @@ public class PurchaseRequest implements java.io.Serializable {
 		this.financialAuditTime = financialAuditTime;
 	}
 
-	public Set<PurchasePaymentSlip> getPurchasepaymentslips() {
+	public List<PurchasePaymentSlip> getPurchasepaymentslips() {
 		return this.purchasepaymentslips;
 	}
 
-	public void setPurchasepaymentslips(Set<PurchasePaymentSlip> purchasepaymentslips) {
+	public void setPurchasepaymentslips(List<PurchasePaymentSlip> purchasepaymentslips) {
 		this.purchasepaymentslips = purchasepaymentslips;
 	}
 
-	public Set<PurchaseRequestDetail> getPurchaserequestdetails() {
+	public List<PurchaseRequestDetail> getPurchaserequestdetails() {
 		return this.purchaserequestdetails;
 	}
 
-	public void setPurchaserequestdetails(Set<PurchaseRequestDetail> purchaserequestdetails) {
+	public void setPurchaserequestdetails(List<PurchaseRequestDetail> purchaserequestdetails) {
 		this.purchaserequestdetails = purchaserequestdetails;
 	}
 

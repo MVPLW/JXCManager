@@ -99,6 +99,7 @@
 										<tr>
 										<th>报损原因：<input type="text"/></th>
 										</tr>
+										<tr>
 										<th>报损物品：<input type="text"/></th>
 										</tr>
 										<tr>
