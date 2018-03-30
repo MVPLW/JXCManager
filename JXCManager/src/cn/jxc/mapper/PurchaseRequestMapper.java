@@ -13,8 +13,24 @@ import cn.jxc.pojo.PurchaseRequest;
  */
 public interface PurchaseRequestMapper {
 	
-	List<PurchaseRequest> getPurReqInfoBySearch();
+	/**
+	 * 根据条件查询
+	 * @param empNo    申请人
+	 * @param singleNo 申请单号
+	 * @param suppId   供应商
+	 * @return
+	 */
+	List<PurchaseRequest> getPurchaseRequestByBlurry(
+			@Param("empNo")String empNo,
+			@Param("singleNo")String singleNo,
+			@Param("suppName")String suppName);
 	
+	/**
+	 * 添加
+	 * @param purchaseRequest
+	 * @return
+	 */
 	int addPurchaseRequest(@Param("pr")PurchaseRequest purchaseRequest);
+	
 	
 }

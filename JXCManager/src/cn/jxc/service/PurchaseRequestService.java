@@ -18,12 +18,7 @@ public interface PurchaseRequestService {
 	 * @return  是否成功
 	 */
 	int addPurchaseRequest(PurchaseRequest purchaseRequest);
-	/**
-	 * 分页查询采购申请 
-	 * @param num 页码
-	 * @return  采购申请对象集合
-	 */
-	PageInfo<PurchaseRequest> getPurchaseRequestByPage(int num);
+	
 	/**
 	 * 分页+模糊查询采购申请
 	 * @param num      页码
@@ -32,13 +27,13 @@ public interface PurchaseRequestService {
 	 * @param suppId   供应商
 	 * @return
 	 */
-	PageInfo<PurchaseRequest> getPurchaseRequestByBlurry(int num,String empNo,String singleNo,String suppId);
+	PageInfo<PurchaseRequest> getPurchaseRequestByBlurry(Integer num,String empNo,String singleNo,String suppName);
 	/**
 	 * 根据单号查询采购申请单
 	 * @param no 单号
 	 * @return 采购申请对象
 	 */
-	PurchaseRequest getPurchaseRequestById(String no);
+	PurchaseRequest getPurchaseRequestBySingleNo(String singleNo);
 	/**
 	 * 更新部门审核状态  
 	 * @param singleNo  申请单号

@@ -30,6 +30,6 @@ public interface PurchaseRequestDetailService {
 	 * @param num  Ò³Âë
 	 * @return
 	 */
-	PageInfo<PurchaseRequestDetail> getPurchaseRequestDetail(String purchaseRequestNo,int num);
+	PageInfo<PurchaseRequestDetail> getPurchaseRequestDetail(String purchaseRequestNo,Integer num);
 	
 }

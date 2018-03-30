@@ -1,7 +1,6 @@
 
 package cn.jxc.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,7 @@ import cn.jxc.pojo.PurchaseRequestDetail;
 import cn.jxc.pojo.Supplier;
 import cn.jxc.service.EmployeeService;
 import cn.jxc.service.ProductService;
+import cn.jxc.service.PurchaseRequestDetailService;
 import cn.jxc.service.PurchaseRequestService;
 import cn.jxc.service.SupplierService;
 
@@ -37,12 +37,33 @@ public class PurchaseRequestController {
 	private ProductService productService;
 	@Autowired
 	private PurchaseRequestService purchaseRequestService;
-
+	@Autowired
+	private PurchaseRequestDetailService purchaseRequestDetailService;
+	
 	@RequestMapping("/gopurchase")
-	public String gopurchase() {
+	public String gopurchase(
+			@RequestParam(value="pageNo",required=false)Integer pageNo,
+			@RequestParam(value="empNo",required=false)String empNo,
+			@RequestParam(value="singleNo",required=false)String singleNo,
+			@RequestParam(value="suppName",required=false)String suppName,
+			Model model) {
+		if (pageNo==null) {
+			pageNo=1;
+		}
+		PageInfo<PurchaseRequest> purchaseRequestByBlurry = 
+				purchaseRequestService.getPurchaseRequestByBlurry(pageNo, empNo, singleNo, suppName);
+		model.addAttribute("prbb", purchaseRequestByBlurry);
+		model.addAttribute("empNo", empNo);      //查询条件保存
+		model.addAttribute("singleNo", singleNo);
+		model.addAttribute("suppName", suppName);
 		return "purchase/purchaseRequest";
 	}
-
+	
+	/**
+	 * 跳转到采购订单申请页面
+	 * @param model
+	 * @return 
+	 */
 	@RequestMapping("/goPurchaseRequest")
 	public String goPurchaseRequest(Model model) {
 		List<Employee> employees = employeeService.getEmployeeAll();
@@ -58,7 +79,7 @@ public class PurchaseRequestController {
 
 	/**
 	 * 通过ajax实现分页产品信息
-	 * 
+	 * 采购订单申请页面中
 	 * @return
 	 */
 	@RequestMapping(value = "/getProductByPage", method = RequestMethod.POST)
@@ -66,6 +87,25 @@ public class PurchaseRequestController {
 	public String getProductPage(@RequestParam("pageNum") Integer pageNum) {
 		PageInfo<Product> productAll = productService.getProductAll(pageNum);
 		return JSON.toJSONString(productAll.getList());
+	}
+	
+	/**
+	 * 通过ajax实现
+	 * 根据采购单号查询一个采购订单所有信息
+	 * @param singleNo
+	 * @return 
+	 */
+	@RequestMapping("getPurchaseRequestBySingleNo")
+	@ResponseBody
+	public String getPurchaseRequestBySingleNo(@RequestParam("singleNo")String singleNo
+			,@RequestParam(value="pageNo",required=false)Integer pageNo) {
+		if(null==pageNo) {
+			pageNo=1;
+		}
+		PurchaseRequest purchaseRequestBySingleNo = purchaseRequestService.getPurchaseRequestBySingleNo(singleNo);
+		PageInfo<PurchaseRequestDetail> pageInfos = purchaseRequestDetailService.getPurchaseRequestDetail(singleNo, pageNo);
+		pageInfos.getList().get(0).setPurchaserequest(purchaseRequestBySingleNo);
+		return JSON.toJSONString(pageInfos);
 	}
 
 	/**
@@ -90,12 +130,7 @@ public class PurchaseRequestController {
 			return "redirect:gopurchase";                     //跳转到首页查询页面
 		}
 	}
-
-	@RequestMapping("/goPurchaseDetail")
-	public String goPurchaseDetail() {
-		return "purchase/purchaseDetail";
-	}
-
+	
 	@RequestMapping("/goPurchaseUpdate")
 	public String goPurchaseUpdate() {
 		return "purchase/purchaseUpdate";

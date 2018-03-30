@@ -19,15 +19,19 @@ public class LoginController {
 	 * 登录方法
 	 * @return
 	 */
+<<<<<<< HEAD
 	@RequestMapping("login")
 	public String login(String username, String password, HttpSession session) {
+=======
+	@RequestMapping("/login")
+	public String login(String username,String password,HttpSession session) {
+>>>>>>> refs/remotes/origin/master
 		Employee login = employeeService.login(username, password);
-		if (null != login) {
-			session.setAttribute("loginEmp", login);// 当前登录的用户放入session中
+		if (null!=login) {
+			session.setAttribute("loginEmp", login);//当前登录的用户放入session中
 			return "index";
 		} else {
-			return "login";
+			return"login";
 		}
 	}
-	
 }
