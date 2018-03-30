@@ -19,7 +19,7 @@ public class LoginController {
 	 * µÇÂ¼·½·¨
 	 * @return
 	 */
-	@RequestMapping("/login")
+	@RequestMapping("login")
 	public String login(String username, String password, HttpSession session) {
 		Employee login = employeeService.login(username, password);
 		if (null != login) {

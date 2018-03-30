@@ -7,10 +7,17 @@
 		<result property="shAddress" column="SH_address" />
 		<result property="shPhone" column="SH_phone" />
 		<result property="createDate" column="CreateDate" />
+		<result property="shName" column="SH_Name"/>
 		<association property="employee" javaType="Employee"
 			resultMap="cn.jxc.mapper.EmployeeMapper.employeeResultMap">
 		</association>
 	</resultMap>
-
-
+	<sql id="storehouses">
+		s.StoreHouse_id,s.SH_address,s.SH_phone,s.Employee_id,s.CreateDate,s.SH_Name
+	</sql>
+	<select id="getStoreHouselist" resultMap="StoreHouseMap">
+		SELECT 
+		 <include refid="storehouses" />
+		FROM storehouse s
+	</select>
 </mapper>

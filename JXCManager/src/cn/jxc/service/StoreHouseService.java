@@ -1,11 +1,10 @@
-package cn.jxc.mapper;
+package cn.jxc.service;
 
 import java.util.List;
 
 import cn.jxc.pojo.StoreHouse;
 
-public interface StoreHouseMapper {
+public interface StoreHouseService {
 
-	//查询仓库全部信息
 	List<StoreHouse> getStoreHouselist();
 }
