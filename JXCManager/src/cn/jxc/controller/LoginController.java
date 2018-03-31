@@ -20,7 +20,7 @@ public class LoginController {
 	 * @return
 	 */
 	@RequestMapping("/login")
-	public String login(String username,String password,HttpSession session) {
+	public String login1(String username,String password,HttpSession session) {
 		Employee login = employeeService.login(username, password);
 		if (null!=login) {
 			session.setAttribute("loginEmp", login);//当前登录的用户放入session中

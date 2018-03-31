@@ -1,8 +1,10 @@
 package cn.jxc.pojo;
 // Generated 2018-3-14 20:32:32 by Hibernate Tools 5.2.8.Final
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -28,7 +30,15 @@ public class Requisition implements java.io.Serializable {
 	private Date outboundStoreHouseTime;//出库时间
 	private Date storageStoreHouseTime;//入库时间
 	
-	private Set<RequisitionDetail> requisitiondetails = new HashSet<RequisitionDetail>(0);
+	//private Set<RequisitionDetail> requisitiondetails = new HashSet<RequisitionDetail>(0);
+	private List<RequisitionDetail>  requisitiondetails = new ArrayList<RequisitionDetail>();
+	public List<RequisitionDetail> getRequisitiondetails() {
+		return requisitiondetails;
+	}
+
+	public void setRequisitiondetails(List<RequisitionDetail> requisitiondetails) {
+		this.requisitiondetails = requisitiondetails;
+	}
 
 	public Requisition() {
 	}
@@ -42,7 +52,7 @@ public class Requisition implements java.io.Serializable {
 	public Requisition(String requisitionId, Employee employeeByReviewEmp, Employee employeeByStorageStoreHouseEmp,
 			Employee employeeByRequestEmp, Employee employeeByOutboundEmp, ReviewStatus reviewstatus,
 			StoreHouse storehouseByOutboundStoreHouse, StoreHouse storehouseByStorageStoreHouse, Date requestTime,
-			Date reviewTime, Date outboundStoreHouseTime, Date storageStoreHouseTime, Set<RequisitionDetail> requisitiondetails) {
+			Date reviewTime, Date outboundStoreHouseTime, Date storageStoreHouseTime, List<RequisitionDetail> requisitiondetails) {
 		this.requisitionId = requisitionId;
 		this.employeeByReviewEmp = employeeByReviewEmp;
 		this.employeeByStorageStoreHouseEmp = employeeByStorageStoreHouseEmp;
@@ -154,12 +164,6 @@ public class Requisition implements java.io.Serializable {
 		this.storageStoreHouseTime = storageStoreHouseTime;
 	}
 
-	public Set<RequisitionDetail> getRequisitiondetails() {
-		return this.requisitiondetails;
-	}
-
-	public void setRequisitiondetails(Set<RequisitionDetail> requisitiondetails) {
-		this.requisitiondetails = requisitiondetails;
-	}
+	
 
 }

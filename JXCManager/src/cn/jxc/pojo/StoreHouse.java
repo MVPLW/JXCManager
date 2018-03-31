@@ -19,7 +19,16 @@ public class StoreHouse implements java.io.Serializable {
 	private String shAddress;//地址
 	private String shPhone;//电话
 	private Date createDate;//仓库成立时间
+	private String shName;//仓库名字
 	
+	public String getShName() {
+		return shName;
+	}
+
+	public void setShName(String shName) {
+		this.shName = shName;
+	}
+
 	private Set<EnterStock> enterstocks = new HashSet<EnterStock>(0);
 	private Set requisitionsForOutboundStoreHouse = new HashSet(0);
 	private Set<LeaveStock> leavestocks = new HashSet<LeaveStock>(0);

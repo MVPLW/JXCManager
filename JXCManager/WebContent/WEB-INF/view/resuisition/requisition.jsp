@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,7 +58,7 @@ h3 {
 				<ul class="breadcrumb">
 					<li><i class="icon-home"></i> <a href="index.jsp">首页</a> <i
 						class="icon-angle-right"></i></li>
-					<li><a href="gorequisition">调拨仓库管理</a></li>
+					<li><a href="gorequisition">调拨订单管理</a></li>
 				</ul>
 
 				<div class="row-fluid">
@@ -66,11 +66,11 @@ h3 {
 						<div class="control-group">
 							<div data-condition="search">
 								调拨单号:<input type="text" name="requisitionId"
-									class="input-medium" placeholder="请输入调拨单号" /> 审核状态: 
-									<select name="rs_id">
-										<option value="0">请选择</option>
+									class="input-medium" placeholder="请输入调拨单号" /> 审核状态: <select
+									name="rs_id">
+									<option value="0">请选择</option>
 									<c:forEach var="rs" items="${rslist }">
-										<option  value="${rs.rsId}">${rs.rsName }</option>
+										<option value="${rs.rsId}">${rs.rsName }</option>
 									</c:forEach>
 								</select>
 								<button type="submit" class="btn btn-success"
@@ -91,7 +91,7 @@ h3 {
 					<div class="box">
 						<div class="box-header" data-original-title>
 							<h2>
-								<i class="halflings-icon white user"></i><span class="break"></span>采购订单管理
+								<i class="halflings-icon white user"></i><span class="break"></span>调拨订单管理
 							</h2>
 						</div>
 						<div style="clear: both;">&nbsp;</div>
@@ -113,16 +113,12 @@ h3 {
 										<th>审核时间</th>
 										<th>审核状态</th>
 										<th>调出仓库</th>
-										<th>出库时间</th>
-										<th>出库经办人</th>
 										<th>调入仓库</th>
-										<th>入库时间</th>
-										<th>入库经办人</th>
 										<th>操作</th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="res" items="${reslist }">
+									<c:forEach var="res" items="${reslist.list}">
 										<tr>
 											<th><input type="checkbox"></th>
 											<!--  -->
@@ -130,29 +126,21 @@ h3 {
 											<!-- 调拨单号 -->
 											<td class="center">${res.employeeByRequestEmp.empLoginName }</td>
 											<!-- 制单人 -->
-											<td class="center"><fmt:formatDate value="${res.requestTime }" pattern="yyyy-MM-dd" /></td>
+											<td class="center"><fmt:formatDate
+													value="${res.requestTime }" pattern="yyyy-MM-dd" /></td>
 											<!-- 制单时间 -->
 											<td class="center">${res.employeeByReviewEmp.empLoginName }<!-- <span class="label label-success">Active</span> -->
 											</td>
 											<!-- 审核人 -->
-											<td><fmt:formatDate value="${res.reviewTime }" pattern="yyyy-MM-dd" /></td>
+											<td><fmt:formatDate value="${res.reviewTime }"
+													pattern="yyyy-MM-dd" /></td>
 											<!-- 审核时间 -->
 											<td>${res.reviewstatus.rsName }</td>
 											<!-- 审核状态 -->
-											<td>${res.storehouseByOutboundStoreHouse.storeHouseId }</td>
-											<!-- 调出仓库 -->
-											<td><fmt:formatDate value="${res.outboundStoreHouseTime }" pattern="yyyy-MM-dd" /></td>
-											<!-- 出库时间 -->
-											<td>${res.employeeByOutboundEmp.empLoginName }</td>
-											<!-- 出库人 -->
-											<td>${res.storehouseByStorageStoreHouse.storeHouseId }</td>
-											<!-- 入库仓库 -->
-											<td><fmt:formatDate value="${res.storageStoreHouseTime }" pattern="yyyy-MM-dd" /></td>
-											<!-- 入库人 -->
-											<td>${res.employeeByStorageStoreHouseEmp.empLoginName }</td>
-											<!-- 入库时间 -->
+											<td>${res.storehouseByOutboundStoreHouse.shName }</td>
+											<td>${res.storehouseByStorageStoreHouse.shName }</td>
 											<td class="center"><a class="btn btn-info btn-setting"
-												href="goPurchaseDetail"> <i
+												href="requisitionId?requisitionId=${res.requisitionId }"> <i 
 													class="halflings-icon white zoom-in"></i>
 											</a><a class="btn btn-info btn-success"
 												href="gorequisitionupdate?requisitionId=${res.requisitionId }">
@@ -163,14 +151,56 @@ h3 {
 								</tbody>
 							</table>
 						</div>
+						
+						
+						
+						
+						<%-- <ul>
+									<li>< a href=" ">First</ a></li>
+									<li>< a href="javascript:goproductpage('pre');">Prev</ a></li>
+									<c:if test="${prbb.pageNum-2>1}">
+										<li><a>...</ a></li>
+									</c:if>
+									<c:forEach begin="1" end="${prbb.pages}" var="s">
+										<c:if test="${s>=prbb.pageNum-2 && s<=prbb.pageNum+2 }">
+											<li <c:if test="${s==prbb.pageNum}">class="active"</c:if>> 
+												< a href="javascript:goproductpage(${s});">${s}</ a> 
+											</li> 
+										</c:if>
+									</c:forEach>
+									<c:if test="${prbb.pageNum+2<prbb.pages}">
+										<li><a>...</ a></li>
+									</c:if>
+									<li>< a href="javascript:goproductpage('next');">Next</ a><!-- 隐藏域 存放当前页码 -->
+												<input type="hidden" name="pageNo" value="${prbb.pageNum}" /></li>
+									<li>< a href="javascript:goproductpage(${prbb.pages});">Last</ a></li>
+								</ul> --%>
+						
+						
+						
+						
 						<div class="pagination pagination-centered">
-							<ul>
-								<li><a href="#">上一页</a></li>
-								<li class="active"><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">下一页</a></li>
+							<ul id="productPageButton">
+								<li><a href="gorequisition?pageNo=1">首页</a></li>
+								<li><a href="javascript:goproductpage('pre');">上一页</a> <input
+									type="hidden" name="pageNo"
+									value="${reslist.pageNum}" /></li>
+								<c:if test="${reslist.pageNum-2>1}">
+									<li><a>...</a></li>
+								</c:if>
+								<c:forEach begin="1" end="${reslist.pages}" var="s">
+									<c:if test="${s>=reslist.pageNum-2 && s<=reslist.pageNum+2 }">
+										<li <c:if test="${s==reslist.pageNum}">class="active"</c:if>> 
+											<a href="javascript:goproductpage(${s});">${s}</a> 
+										</li> 
+									</c:if>
+								</c:forEach>
+								<c:if test="${reslist.pageNum+2<reslist.pages}">
+									<li><a>...</a></li>
+								</c:if>
+								<li><a href="javascript:goproductpage('next');">下一页</a></li>
+								<li><a href="gorequisition?pageNo=${reslist.pages}">尾页</a></li>
+								<li><h2>当前第${reslist.pageNum}页/共${reslist.pages}页</h2></li>
 							</ul>
 						</div>
 					</div>
@@ -190,27 +220,31 @@ h3 {
 				<table style="width: 100%;">
 					<tr style="height: 30px;">
 						<td>
-							<h3>调拨单号:</h3> aaa
+							<h3>调拨单号:</h3>${requisition.requisitionId }
 						</td>
 						<td>
-							<h3>制单人:</h3>张三
+							<h3>制单人:</h3>${requisition.employeeByRequestEmp.empLoginName }
 						</td>
-						<td><h3>制单时间:</h3>2009-8-9</td>
+						<td><h3>制单时间:</h3><fmt:formatDate
+							value="${requisition.requestTime }" pattern="yyyy-MM-dd" /></td>
 					</tr>
 					<tr style="height: 30px;">
-						<td><h3>审核人:</h3>SSSSSSS</td>
-						<td><h3>审核时间:</h3>张三</td>
-						<td><h3>审核状态:</h3>198683762</td>
+						<td><h3>审核人:</h3>${requisition.employeeByReviewEmp.empLoginName }</td>
+						<td><h3>审核时间:</h3><fmt:formatDate value="${requisition.reviewTime }"
+								pattern="yyyy-MM-dd" /></td>
+						<td><h3>审核状态:</h3>${requisition.reviewstatus.rsName }</td>
 					</tr>
 					<tr style="height: 30px;">
-						<td><h3>调出仓库:</h3>啊啊啊</td>
-						<td><h3>出库时间:</h3>123</td>
-						<td><h3>出库经办人:</h3>啊</td>
+						<td><h3>调出仓库:</h3>${requisition.storehouseByOutboundStoreHouse.storeHouseId }</td>
+						<td><h3>出库时间:</h3><fmt:formatDate
+								value="${requisition.outboundStoreHouseTime }" pattern="yyyy-MM-dd" /></td>
+						<td><h3>出库经办人:</h3>${requisition.employeeByOutboundEmp.empLoginName }</td>
 					</tr>
 					<tr style="height: 30px;">
-						<td><h3>调入仓库:</h3>阿斯蒂芬</td>
-						<td><h3>入库时间:</h3>的方式</td>
-						<td><h3>入库经办人:</h3>地方</td>
+						<td><h3>调入仓库:</h3>${requisition.storehouseByStorageStoreHouse.storeHouseId }</td>
+						<td><h3>入库时间:</h3><fmt:formatDate
+								value="${requisition.storageStoreHouseTime }" pattern="yyyy-MM-dd" /></td>
+						<td><h3>入库经办人:</h3>${requisition.employeeByStorageStoreHouseEmp.empLoginName }</td>
 					</tr>
 				</table>
 			</div>
@@ -223,7 +257,6 @@ h3 {
 							<th>产品编号</th>
 							<th>规格</th>
 							<th>数量</th>
-							<th>单价</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -232,25 +265,25 @@ h3 {
 							<td class="center">2012/01/01</td>
 							<td class="center">Member</td>
 							<td class="center">Active</td>
-							<td class="center">sss</td>
 						</tr>
 						<tr>
 							<td>Dennis Ji</td>
 							<td>2012/01/01</td>
 							<td class="center">Member</td>
 							<td class="center">Active</td>
-							<td class="center">sss</td>
 						</tr>
 					</tbody>
 				</table>
 				<div class="pagination pagination-centered">
-					<ul>
-						<li><a href="#">上一页</a></li>
+					<ul id="productPageButton">
+						<li><a href="javascript:goproductpage('pre');">上一页</a> <input
+							type="hidden" name="pageNo" value="${reslist.pageNum}" />
+						</li>
 						<li class="active"><a href="#">1</a></li>
 						<li><a href="#">2</a></li>
 						<li><a href="#">3</a></li>
 						<li><a href="#">4</a></li>
-						<li><a href="#">下一页</a></li>
+						<li><a href="javascript:goproductpage('next');">下一页</a></li>
 					</ul>
 				</div>
 			</div>
@@ -296,6 +329,56 @@ h3 {
 	<script src="static/js/bootstrap-transition.js"></script>
 	<script src="static/js/bootstrap-modal.js"></script>
 	<!-- end: JavaScript-->
-
+	<script type="text/javascript">
+		//产品信息分页实现  
+		function goproductpage(type) {
+			var pageNum = parseInt($("[name=pageNo]").val()); //获取当前的页码
+			var pagePageTotal = parseInt('${reslist.pages}'); //总页数
+			if(pageNum==1 && type=="pre"){
+				return;
+			}
+			if(pageNum==pagePageTotal && type=="next"){
+				return;
+			}
+			if (type == "next") { //下一页
+				pageNum = pageNum + 1;
+			} else if (type == "pre") { //上一页
+				pageNum = pageNum - 1;
+			} else {
+				pageNum = parseInt(type);
+			}
+			location.href="gorequisition?pageNo="+pageNum;
+		}
+		/* 
+		$.ajax({
+			type : "POST",
+			url :  "getProductByPage",
+			data : "pageNum=" + pageNum,
+			dataType : "JSON",
+			success : function(result) {
+				var s = "";
+				for ( var i in result) {
+					s += "<tr height='20px;'>"
+							+ "<td><input type='checkbox' /></td>"
+							+ "<td>"
+							+ result[i].productName
+							+ "</td>"
+							+ "<td>"
+							+ result[i].productId
+							+ "</td>"
+							+ "<td>"
+							+ result[i].producttype.productTypeName
+							+ "</td>"
+							+ "<td>"
+							+ result[i].productunit.puName 
+							+ "<input type='hidden' value='"+result[i].productunit.productUnitId+"' />"
+							+ "</td>"
+							+ "<td><input type='number' min='0' value='0' style='width: 80%; margin: 0px auto; height: 80%;' /></td>"
+							+ "</tr>";
+				}
+				$("#productBody").html(s);
+			}
+		});*/
+	</script>
 </body>
 </html>

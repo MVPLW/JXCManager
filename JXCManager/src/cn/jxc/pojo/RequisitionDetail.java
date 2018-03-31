@@ -10,11 +10,11 @@ public class RequisitionDetail implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private int reId;
-	private Product product;
-	private Requisition requisition;
-	private int count;
-	private ProductUnit productUnit;
+	private int reId;//调拨明细id
+	private Product product;//产品外键
+	private Requisition requisition;//调拨单外键
+	private int count;//产品数量
+	private ProductUnit productUnit;//批次外键
 
 	public RequisitionDetail() {
 	}
