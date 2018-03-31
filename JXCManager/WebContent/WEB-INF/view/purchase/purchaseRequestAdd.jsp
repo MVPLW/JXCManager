@@ -49,7 +49,7 @@
 			<div id="content" class="span10">
 				<ul class="breadcrumb">
 					<li><i class="icon-home"></i>首页 <i class="icon-angle-right"></i></li>
-					<li><a href="form">采购申请管理</a></li>
+					<li><a href="#">采购申请管理</a></li>
 				</ul>
 				<div class="row-fluid sortable">
 					<div class="box span12">
@@ -111,29 +111,29 @@
 										</tr>
 										<tr>
 											<td><div class="control-group">
-													<label class="control-label" for="SuppContact">供应商联系人</label>
+													<label class="control-label" for="suppContact">供应商联系人</label>
 													<div class="controls">
-														<input class="input-xlarge focused" id="SuppContact"
-															name="SuppContact" type="text" placeholder="此处填写供货商的联系人" />
+														<input class="input-xlarge focused" id="suppContact"
+															name="suppContact" type="text" placeholder="此处填写供货商的联系人" />
 													</div>
 												</div></td>
 											<td><div class="control-group">
-													<label class="control-label" for="SuppPhone">联系人电话</label>
+													<label class="control-label" for="suppPhone">联系人电话</label>
 													<div class="controls">
-														<input class="input-xlarge focused" id="SuppPhone"
-															name="SuppPhone" type="text" placeholder="此处填写联系人的电话" />
+														<input class="input-xlarge focused" id="suppPhone"
+															name="suppPhone" type="text" placeholder="此处填写联系人的电话" />
 													</div>
 												</div></td>
 										</tr>
 										<tr>
 											<td colspan="2">
 												<div class="control-group">
-													<label class="control-label" for="Remark">
+													<label class="control-label" for="remark">
 														备&nbsp;&nbsp;&nbsp;&nbsp;注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 													</label>
 													<div class="controls">
-														<input type="text" class="span6 typeahead" id="Remark"
-															name="Remark" data-provide="typeahead" data-items="4" />
+														<input type="text" class="span6 typeahead" id="remark"
+															name="remark" data-provide="typeahead" data-items="4" />
 													</div>
 												</div>
 											</td>

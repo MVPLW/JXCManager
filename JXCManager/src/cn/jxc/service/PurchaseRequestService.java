@@ -43,4 +43,11 @@ public interface PurchaseRequestService {
 	 * @return         是否成功
 	 */
 	int updateDeptReivewStatus(String singleNo,String reviewEmp,Date date,Integer status);
+	/**
+	 * 修改采购订单信息
+	 * @param purchaseRequest
+	 * @return
+	 */
+	int updatePurchaseRequest(PurchaseRequest purchaseRequest);
+	
 }
