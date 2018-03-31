@@ -44,4 +44,15 @@ public interface PurchaseRequestMapper {
 	 */
 	int updatePurchaseRequest(@Param("pr") PurchaseRequest purchaseRequest);
 
+	/**
+	 * 修改订单状态
+	 * 
+	 * @param singleNo
+	 *            订单号
+	 * @param status
+	 *            状态信息
+	 * @return
+	 */
+	int updatePurchaseOrderStatus(@Param("singleNo") String singleNo, @Param("no") Integer status);
+
 }

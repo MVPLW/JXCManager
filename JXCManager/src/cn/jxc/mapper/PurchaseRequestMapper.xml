@@ -10,6 +10,7 @@
 		<result property="deptReviewTime" column="DeptReviewTime" />
 		<result property="financialAuditTime" column="FinancialAuditTime" />
 		<result property="remark" column="Remark" />
+		<result property="orderStatus" column="OrderStatus" typeHandler="cn.jxc.util.OrderStatusTypeHandler"/>
 		<association property="employeeByRequestEmpId" column="RequestEmpId"
 			javaType="Employee">
 			<id column="RequestEmpId" property="empLoginName" />
@@ -42,9 +43,9 @@
 	<insert id="addPurchaseRequest" parameterType="PurchaseRequest">
 		INSERT INTO
 		PurchaseRequest(PurchaseRequest_id,
-		RequestEmpId,RequestTime,Supplier_id,SuppContact,SuppPhone,Remark)
+		RequestEmpId,RequestTime,Supplier_id,SuppContact,SuppPhone,Remark,OrderStatus)
 		VALUES(#{pr.purchaseRequestId},#{pr.employeeByRequestEmpId.empLoginName},
-		#{pr.requestTime},#{pr.supplier.supplierId},#{pr.suppContact},#{pr.suppPhone},#{pr.remark});
+		#{pr.requestTime},#{pr.supplier.supplierId},#{pr.suppContact},#{pr.suppPhone},#{pr.remark},1);
 	</insert>
 
 	<select id="getPurchaseRequestByBlurry" resultMap="purchaseRequestMap">
@@ -82,6 +83,11 @@
 		SuppContact=#{pr.suppContact} , SuppPhone=#{pr.suppPhone} ,
 		Remark=#{pr.remark}
 		where purchaseRequest_id=#{pr.purchaseRequestId}
+	</update>
+	
+	<update id="updatePurchaseOrderStatus">
+		update purchaserequest set orderStatus=#{no}  
+		where PurchaseRequest_id=#{singleNo}
 	</update>
 
 </mapper>

@@ -106,7 +106,8 @@ public class PurchaseRequestController {
 		PageInfo<PurchaseRequestDetail> pageInfos = purchaseRequestDetailService.getPurchaseRequestDetail(singleNo,
 				pageNo,3);
 		pageInfos.getList().get(0).setPurchaserequest(purchaseRequestBySingleNo);
-		return JSON.toJSONString(pageInfos);
+		String jsonString = JSON.toJSONString(pageInfos);
+		return jsonString;
 	}
 
 	/**
@@ -208,4 +209,19 @@ public class PurchaseRequestController {
 		} else
 			return "0";
 	}
+	
+	/**
+	 * 提交表单
+	 * @return
+	 */
+	@RequestMapping("operaOrder")
+	public String operaOrder(String singleNo,Integer statusNo) {
+		int updatePurchaseOrderStatus = purchaseRequestService.updatePurchaseOrderStatus(singleNo, statusNo);//直接把订单状态改成订单审核中
+		if (updatePurchaseOrderStatus>0) {  //修改成功
+			return "redirect:gopurchase";   //跳转到查询所有
+		}else {
+			return "error";
+		}
+	}
+	
 }

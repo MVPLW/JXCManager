@@ -88,4 +88,9 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService {
 		}
 	}
 
+	@Override
+	public int updatePurchaseOrderStatus(String singleNo, Integer status) {
+		return purchaseRequestMapper.updatePurchaseOrderStatus(singleNo, status);
+	}
+
 }

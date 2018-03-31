@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.jxc.util.OrderStatus;
+
 /**
  * 采购申请单据
  */
@@ -27,6 +29,7 @@ public class PurchaseRequest implements java.io.Serializable {
 	private Date deptReviewTime;
 	private Date financialAuditTime;
 	private String remark;
+	private OrderStatus orderStatus;
 	
 	//存放当前订单中明细
 	private List<PurchaseRequestDetail> purchaserequestdetails = new ArrayList<PurchaseRequestDetail>(0);
@@ -38,12 +41,14 @@ public class PurchaseRequest implements java.io.Serializable {
 	}
 
 	public PurchaseRequest(String purchaseRequestId, Employee employeeByRequestEmpId, Supplier supplier,
-			Date requestTime) {
+			Date requestTime,String remark,OrderStatus orderStatus) {
 		super();
 		this.purchaseRequestId = purchaseRequestId;
 		this.employeeByRequestEmpId = employeeByRequestEmpId;
 		this.supplier = supplier;
 		this.requestTime = requestTime;
+		this.remark=remark;
+		this.orderStatus=orderStatus;
 	}
 	
 	public PurchaseRequest(String purchaseRequestId, Employee employeeByFinancialAuditEmp,
@@ -51,7 +56,7 @@ public class PurchaseRequest implements java.io.Serializable {
 			ReviewStatus reviewstatusByDeptReviewStatus, ReviewStatus reviewstatusByFinancialAuditStatus,
 			Supplier supplier, String suppContact, String suppPhone, Date requestTime, Date deptReviewTime,
 			Date financialAuditTime, String remark, List<PurchaseRequestDetail> purchaserequestdetails,
-			List<PurchasePaymentSlip> purchasepaymentslips) {
+			List<PurchasePaymentSlip> purchasepaymentslips,OrderStatus orderStatus) {
 		super();
 		this.purchaseRequestId = purchaseRequestId;
 		this.employeeByFinancialAuditEmp = employeeByFinancialAuditEmp;
@@ -68,6 +73,7 @@ public class PurchaseRequest implements java.io.Serializable {
 		this.remark = remark;
 		this.purchaserequestdetails = purchaserequestdetails;
 		this.purchasepaymentslips = purchasepaymentslips;
+		this.orderStatus=orderStatus;
 	}
 
 	public String getPurchaseRequestId() {
@@ -190,4 +196,12 @@ public class PurchaseRequest implements java.io.Serializable {
 		this.remark = remark;
 	}
 
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+	
 }

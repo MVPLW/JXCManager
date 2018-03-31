@@ -74,9 +74,10 @@ h3 {
 								<input type="submit" value="搜索" class="btn btn-success" />
 								<div style="float: right;">
 									<a class="btn btn-primary" href="goPurchaseRequest"
-										data-command="Add"><i class="icon-plus"></i>&nbsp;申请</a> <a
+										data-command="Add"><i class="icon-plus"></i>&nbsp;申请</a>
+									<!-- <a
 										class="btn btn-warning" href="javascript:void(0)"
-										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a>
+										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a> -->
 									<a class="btn btn-danger" href="javascript:void(0)"
 										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 								</div>
@@ -100,9 +101,7 @@ h3 {
 											<th>申请人</th>
 											<th>申请时间</th>
 											<th>供应商</th>
-											<th>部门审核状态</th>
-											<th>部门审核人</th>
-											<th>部门审核时间</th>
+											<th>订单状态</th>
 											<th>操作</th>
 										</tr>
 									</thead>
@@ -114,19 +113,28 @@ h3 {
 												<td>${s.employeeByRequestEmpId.empLoginName}</td>
 												<td><fmt:formatDate value="${s.requestTime}"
 														pattern="yyyy-MM-dd" /></td>
-												<td><span class="label label-success">${s.supplier.suppName}</span>
+												<td>${s.supplier.suppName}</td>
+												
+												<td><span <c:choose>
+													<c:when test="${s.orderStatus.no==2}">class="label label-important"</c:when>
+													<c:when test="${s.orderStatus.no==1}">class="label label-warning"</c:when>
+													<c:when test="${s.orderStatus.no==7}">class="label label-success"</c:when>
+													<c:when test="${s.orderStatus.no==5}">class="label label-important"</c:when>
+													<c:otherwise>class="label label-info"</c:otherwise>
+												</c:choose>>${s.orderStatus.orderType}</span></td>
+												<td> 
+													<input type="hidden" value="${s.purchaseRequestId}" /> 
+													<a id="detail" >查看</a>
+													<c:if test="${s.orderStatus.no==1}">
+														<a id="update"> 编辑</a>
+														<a id="commit" onclick="operaOrder('${s.purchaseRequestId}',3)"> 提交</a>
+														<a id="cancelOrder" onclick="operaOrder('${s.purchaseRequestId}',2)">取消</a>
+													</c:if>
+													<c:if test="${s.orderStatus.no==6 }">
+														<a id="cancelOrder" onclick="operaOrder('${s.purchaseRequestId}',7)">入库</a>
+													</c:if>
+													<a id="deptreview" onclick="deptreview('${s.purchaseRequestId}')">审核</a>
 												</td>
-												<td>${s.reviewstatusByDeptReviewStatus.rsName}</td>
-												<td>${s.employeeByDeptReviewEmp.empLoginName}</td>
-												<td><fmt:formatDate value="${s.deptReviewTime}"
-														pattern="yyyy-MM-dd" /></td>
-												<td><a class="btn btn-info btn-setting" id="detail">
-														<input type="hidden" value="${s.purchaseRequestId}" /> <i
-														class="halflings-icon white zoom-in"></i>
-												</a> <a class="btn btn-info btn-success" id="update"> <input
-														type="hidden" value="${s.purchaseRequestId}" /> <i
-														class="halflings-icon white edit"></i>
-												</a></td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -216,12 +224,44 @@ h3 {
 				</table>
 				<div class="pagination pagination-centered">
 					<ul id="purchaseRequestDetailPage">
-
 					</ul>
 				</div>
 			</div>
 		</div>
 		<div class="modal-footer">
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+		</div>
+	</div>
+	
+	<div class="modal hide fade" id="reviewModal" style="width: 800px;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">x</button>
+			<h2>审核操作</h2>
+		</div>
+		<div class="modal-body">
+			<!-- 采购订单中所有内容 -->
+			<div>
+				<table style="width: 100%; table-layout: fixed;" >
+					<tbody >
+						<tr>
+							<th style="width: 120px;">是否通过审核</th>
+							<th>
+								<select>
+									<option>通过</option>
+									<option>不通过</option>
+								</select>
+							</th>
+						</tr>
+						<tr>
+						<td style="padding-top: 0px;">原因</td>
+							<td><textarea rows="8" cols="50" style="width: 100%;"></textarea></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary" >Save</a>
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
@@ -291,15 +331,21 @@ h3 {
 			}
 			location.href = "gopurchase?pageNo=" + pageNum;
 		}
-		$("#detail")
-				.live(
-						'click',
-						function() {
+
+		$("#productBody a").live('mouseover', function() {
+			$(this).css("cursor", "pointer");
+			$(this).css("color", "#298AEB");
+		});
+		$("#productBody a").live('mouseout', function() {
+			$(this).css("color", "#646464");
+		});
+		
+		$("#detail").live('click',function() {
 							empty();
+							$("#myModal").modal("show");
 							//获取选中的订单号
-							var singleNo = $(this).find("input:hidden").val();
-							$
-									.ajax({
+							var singleNo = $(this).parent().find("input:hidden").val();
+							$.ajax({
 										type : "POST",
 										url : "getPurchaseRequestBySingleNo",
 										data : "singleNo=" + singleNo,
@@ -397,7 +443,7 @@ h3 {
 
 		//跳到修改的页面
 		$("#update").live('click', function() {
-			var singleNo = $(this).find("input:hidden").val();
+			var singleNo = $(this).parent().find("input:hidden").val();
 			location.href = "goPurchaseUpdate?singleNo=" + singleNo;
 		});
 
@@ -469,6 +515,32 @@ h3 {
 					+ "," + pageTotal + ")'>Next</a></li>";
 			$("#purchaseRequestDetailPage").html(detailPages);
 		}
+		//点击审核进行操作
+		function deptreview(singleNo){
+			$("#reviewModal").modal("show");
+		}
+
+		//对订单进行操作
+		function operaOrder(singleNo,no){
+			var flag=true;
+			if(no==2){
+				var s=confirm("确认取消订单吗?");
+				if(s==false) flag=false;
+			}else if(no==3){
+				var s=confirm("确认提交订单吗?");
+				if(s==false) flag=false;
+			}else if(no==7){
+				var s=confirm("确认全部入库吗?");
+				if(s==false) flag=false;
+			}
+			if(flag==true){  //页面跳转
+				location.href="operaOrder?singleNo="+singleNo+"&statusNo="+no;
+			}
+		}
+		
+		/* $("#commit").live('click',function(){
+			alert("a");
+		}); */
 
 		//分页查询明细  ajax实现
 		function goDetailPage(type, pageNum, pageTotal) {
@@ -500,11 +572,13 @@ h3 {
 				}
 			});
 		}
+
+		
 	</script>
 	<script type="text/javascript">
-		$(function(){
-			var msg='${msg}';
-			if(msg=='a'){
+		$(function() {
+			var msg = '${msg}';
+			if (msg == 'a') {
 				$("#success").click();
 			}
 		});
