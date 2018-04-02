@@ -114,9 +114,10 @@ public class RequisitionController {
 	
 	
 	//跳转至修改
-	@RequestMapping("/gorequisitionupdate")
+	@RequestMapping("gorequisitionupdate")
 	public String gorequisitionupdate(String requisitionId,Model model) {
 		Requisition requ = requisitionmapperservice.requisitionByid(requisitionId);
+		System.out.println("调拨单的ID是："+requisitionId);
 		model.addAttribute("requ", requ);
 		return "resuisition/requisitionUpdate";
 	}
