@@ -32,4 +32,17 @@
 			where PurchaseRequest_id=#{singleNo}
 	</select>
 	
+	<delete id="delPurchaseRequestDetail">
+		DELETE FROM purchaserequestdetail where PRD_id=#{id}
+	</delete>
+	
+	<update id="updatePurchaseRequestDetailBySingleNoAndProductId" parameterType="string">
+		update purchaserequestdetail SET Count=#{count},Price=#{price}
+		where PurchaseRequest_id=#{purchaseId} and Product_id=#{productId}
+	</update>
+	
+	<delete id="delPurchaseRequestDetailBYSingleNo" parameterType="string">
+		DELETE FROM purchaserequestdetail WHERE PurchaseRequest_id=#{singleNo}
+	</delete>
+	
 </mapper>

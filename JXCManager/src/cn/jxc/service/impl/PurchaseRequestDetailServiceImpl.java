@@ -17,7 +17,7 @@ public class PurchaseRequestDetailServiceImpl implements PurchaseRequestDetailSe
 
 	@Autowired
 	private PurchaseRequestDetailMapper purchaseRequestDetailMapper;
-	
+
 	@Override
 	public int addPurchaseRequestDetail(PurchaseRequestDetail purchaseRequestDetail) {
 		return purchaseRequestDetailMapper.purchaseRequestDetailAdd(purchaseRequestDetail);
@@ -25,15 +25,27 @@ public class PurchaseRequestDetailServiceImpl implements PurchaseRequestDetailSe
 
 	@Override
 	public int delPurchaseRequestDetail(int id) {
+		return purchaseRequestDetailMapper.delPurchaseRequestDetail(id);
+	}
+
+	@Override
+	public PageInfo<PurchaseRequestDetail> getPurchaseRequestDetail(String purchaseRequestNo, Integer num,Integer pageSize) {
+		PageHelper.startPage(num, pageSize);
+		List<PurchaseRequestDetail> purchaseRequestDetailBySingleNo = purchaseRequestDetailMapper
+				.getPurchaseRequestDetailBySingleNo(purchaseRequestNo);
+		PageInfo<PurchaseRequestDetail> pageInfo = new PageInfo<PurchaseRequestDetail>(purchaseRequestDetailBySingleNo);
+		return pageInfo;
+	}
+
+	@Override
+	public int updatePurchaseRequestDetailBySingleNoAndProductId(String singleNo, String productId) {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public PageInfo<PurchaseRequestDetail> getPurchaseRequestDetail(String purchaseRequestNo, Integer num) {
-		PageHelper.startPage(num, 3);
-		List<PurchaseRequestDetail> purchaseRequestDetailBySingleNo = purchaseRequestDetailMapper.getPurchaseRequestDetailBySingleNo(purchaseRequestNo);
-		PageInfo<PurchaseRequestDetail> pageInfo=new PageInfo<PurchaseRequestDetail>(purchaseRequestDetailBySingleNo);
-		return pageInfo;
+	public int delPurchaseRequestDetailBYSingleNo(String singleNo) {
+		return purchaseRequestDetailMapper.delPurchaseRequestDetailBYSingleNo(singleNo);
 	}
 
 }

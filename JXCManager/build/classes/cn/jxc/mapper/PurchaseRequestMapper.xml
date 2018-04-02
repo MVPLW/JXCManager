@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.jxc.mapper.PurchaseRequestMapper">
-	
+
 	<resultMap type="PurchaseRequest" id="purchaseRequestMap">
 		<id property="purchaseRequestId" column="PurchaseRequest_id" />
 		<result property="suppContact" column="SuppContact" />
@@ -10,56 +10,84 @@
 		<result property="deptReviewTime" column="DeptReviewTime" />
 		<result property="financialAuditTime" column="FinancialAuditTime" />
 		<result property="remark" column="Remark" />
-		<association property="employeeByRequestEmpId" column="RequestEmpId" javaType="Employee">
-			<id column="RequestEmpId" property="empLoginName"/>
+		<result property="orderStatus" column="OrderStatus" typeHandler="cn.jxc.util.OrderStatusTypeHandler"/>
+		<association property="employeeByRequestEmpId" column="RequestEmpId"
+			javaType="Employee">
+			<id column="RequestEmpId" property="empLoginName" />
 		</association>
-		<association property="employeeByDeptReviewEmp" column="DeptReviewEmp" javaType="Employee">
-			<id column="DeptReviewEmp" property="empLoginName"/>
+		<association property="employeeByDeptReviewEmp" column="DeptReviewEmp"
+			javaType="Employee">
+			<id column="DeptReviewEmp" property="empLoginName" />
 		</association>
-		<association property="reviewstatusByDeptReviewStatus" column="DeptReviewStatus" javaType="ReviewStatus">
-			<id column="DeptReviewStatus" property="rsId"/>
-			<result column="deptStatus" property="rsName"/>
+		<association property="reviewstatusByDeptReviewStatus"
+			column="DeptReviewStatus" javaType="ReviewStatus">
+			<id column="DeptReviewStatus" property="rsId" />
+			<result column="deptStatus" property="rsName" />
 		</association>
-		<association property="employeeByFinancialAuditEmp" column="FinancialAuditEmp" javaType="Employee">
-			<id column="FinancialAuditEmp" property="empLoginName"/>
+		<association property="employeeByFinancialAuditEmp"
+			column="FinancialAuditEmp" javaType="Employee">
+			<id column="FinancialAuditEmp" property="empLoginName" />
 		</association>
-		<association property="reviewstatusByFinancialAuditStatus" column="FinancialAuditStatus" javaType="ReviewStatus">
-			<id column="FinancialAuditStatus" property="rsId"/>
-			<result column="finalStatus" property="rsName"/>
+		<association property="reviewstatusByFinancialAuditStatus"
+			column="FinancialAuditStatus" javaType="ReviewStatus">
+			<id column="FinancialAuditStatus" property="rsId" />
+			<result column="finalStatus" property="rsName" />
 		</association>
-		<association property="supplier" column="Supplier_id" javaType="Supplier">
-			<id column="Supplier_id" property="supplierId"/>
-			<result column="Supp_name" property="suppName"/>
+		<association property="supplier" column="Supplier_id"
+			javaType="Supplier">
+			<id column="Supplier_id" property="supplierId" />
+			<result column="Supp_name" property="suppName" />
 		</association>
 	</resultMap>
-	
+
 	<insert id="addPurchaseRequest" parameterType="PurchaseRequest">
-		INSERT INTO PurchaseRequest(PurchaseRequest_id,
-			RequestEmpId,RequestTime,Supplier_id,SuppContact,SuppPhone,Remark) 
+		INSERT INTO
+		PurchaseRequest(PurchaseRequest_id,
+		RequestEmpId,RequestTime,Supplier_id,SuppContact,SuppPhone,Remark,OrderStatus)
 		VALUES(#{pr.purchaseRequestId},#{pr.employeeByRequestEmpId.empLoginName},
-			#{pr.requestTime},#{pr.supplier.supplierId},#{pr.SuppContact},#{pr.SuppPhone},#{pr.Remark});
+		#{pr.requestTime},#{pr.supplier.supplierId},#{pr.suppContact},#{pr.suppPhone},#{pr.remark},1);
 	</insert>
-	
+
 	<select id="getPurchaseRequestByBlurry" resultMap="purchaseRequestMap">
-		SELECT pr.*,su.Supp_name,rs.`RS_name` AS deptStatus,final.`RS_name` AS finalStatus
-			FROM purchaseRequest pr
-			LEFT JOIN supplier su 
-			ON pr.`Supplier_id`= su.Supplier_id
-			LEFT JOIN reviewstatus rs
-			ON pr.`DeptReviewStatus`=rs.`RS_id`
-			LEFT JOIN reviewstatus final
-			ON pr.`FinancialAuditStatus`=final.`RS_id`
+		SELECT pr.*,su.Supp_name,rs.`RS_name` AS deptStatus,final.`RS_name` AS
+		finalStatus
+		FROM purchaseRequest pr
+		LEFT JOIN supplier su
+		ON
+		pr.`Supplier_id`= su.Supplier_id
+		LEFT JOIN reviewstatus rs
+		ON
+		pr.`DeptReviewStatus`=rs.`RS_id`
+		LEFT JOIN reviewstatus final
+		ON
+		pr.`FinancialAuditStatus`=final.`RS_id`
 		<where>
 			<if test="null!=empNo and ''!=empNo">
 				AND pr.`RequestEmpId` LIKE CONCAT('%',#{empNo},'%')
 			</if>
 			<if test="null!=singleNo and ''!=singleNo">
-				AND pr.`PurchaseRequest_id` LIKE CONCAT('%',#{singleNo},'%')
+				AND pr.`PurchaseRequest_id` LIKE
+				CONCAT('%',#{singleNo},'%')
 			</if>
 			<if test="null!=suppName and ''!=suppName">
 				AND su.Supp_name LIKE CONCAT('%',#{suppName},'%')
 			</if>
 		</where>
 	</select>
-		
+
+	<update id="updatePurchaseRequest" parameterType="PurchaseRequest">
+		update
+		purchaserequest set
+		RequestEmpId=#{pr.employeeByRequestEmpId.empLoginName}
+		,Supplier_id=#{pr.supplier.supplierId} ,
+		SuppContact=#{pr.suppContact} , SuppPhone=#{pr.suppPhone} ,
+		Remark=#{pr.remark}
+		where purchaseRequest_id=#{pr.purchaseRequestId}
+	</update>
+	
+	<update id="updatePurchaseOrderStatus">
+		update purchaserequest set orderStatus=#{no}  
+		where PurchaseRequest_id=#{singleNo}
+	</update>
+
 </mapper>

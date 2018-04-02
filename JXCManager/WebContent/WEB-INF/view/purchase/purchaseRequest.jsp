@@ -50,6 +50,7 @@ h3 {
 	display: inline;
 }
 </style>
+
 <body>
 	<div class="container-fluid-full">
 		<div class="row-fluid">
@@ -70,13 +71,13 @@ h3 {
 									type="text" name="empNo" value="${empNo}" class="input-medium"
 									placeholder="请输入申请人" /> 供应商:<input type="text" name="suppName"
 									class="input-medium" value="${suppName}" placeholder="请输入供应商" />
-								 <input
-									type="submit" value="搜索" class="btn btn-success" />
+								<input type="submit" value="搜索" class="btn btn-success" />
 								<div style="float: right;">
 									<a class="btn btn-primary" href="goPurchaseRequest"
-										data-command="Add"><i class="icon-plus"></i>&nbsp;申请</a> <a
+										data-command="Add"><i class="icon-plus"></i>&nbsp;申请</a>
+									<!-- <a
 										class="btn btn-warning" href="javascript:void(0)"
-										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a>
+										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a> -->
 									<a class="btn btn-danger" href="javascript:void(0)"
 										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 								</div>
@@ -95,14 +96,12 @@ h3 {
 									class="table table-striped table-bordered bootstrap-datatable">
 									<thead>
 										<tr>
-											<th><input type="checkbox" id="productCheckAll"/></th>
+											<th><input type="checkbox" id="productCheckAll" /></th>
 											<th>采购单号</th>
 											<th>申请人</th>
 											<th>申请时间</th>
 											<th>供应商</th>
-											<th>部门审核状态</th>
-											<th>部门审核人</th>
-											<th>部门审核时间</th>
+											<th>订单状态</th>
 											<th>操作</th>
 										</tr>
 									</thead>
@@ -114,19 +113,28 @@ h3 {
 												<td>${s.employeeByRequestEmpId.empLoginName}</td>
 												<td><fmt:formatDate value="${s.requestTime}"
 														pattern="yyyy-MM-dd" /></td>
-												<td><span class="label label-success">${s.supplier.suppName}</span>
+												<td>${s.supplier.suppName}</td>
+												
+												<td><span <c:choose>
+													<c:when test="${s.orderStatus.no==2}">class="label label-important"</c:when>
+													<c:when test="${s.orderStatus.no==1}">class="label label-warning"</c:when>
+													<c:when test="${s.orderStatus.no==7}">class="label label-success"</c:when>
+													<c:when test="${s.orderStatus.no==5}">class="label label-important"</c:when>
+													<c:otherwise>class="label label-info"</c:otherwise>
+												</c:choose>>${s.orderStatus.orderType}</span></td>
+												<td> 
+													<input type="hidden" value="${s.purchaseRequestId}" /> 
+													<a id="detail" >查看</a>
+													<c:if test="${s.orderStatus.no==1}">
+														<a id="update"> 编辑</a>
+														<a id="commit" onclick="operaOrder('${s.purchaseRequestId}',3)"> 提交</a>
+														<a id="cancelOrder" onclick="operaOrder('${s.purchaseRequestId}',2)">取消</a>
+													</c:if>
+													<c:if test="${s.orderStatus.no==6 }">
+														<a id="cancelOrder" onclick="operaOrder('${s.purchaseRequestId}',7)">入库</a>
+													</c:if>
+													<a id="deptreview" onclick="deptreview('${s.purchaseRequestId}')">审核</a>
 												</td>
-												<td>${s.reviewstatusByDeptReviewStatus.rsName}</td>
-												<td>${s.employeeByDeptReviewEmp.empLoginName}</td>
-												<td><fmt:formatDate value="${s.deptReviewTime}"
-														pattern="yyyy-MM-dd" /></td>
-												<td><a class="btn btn-info btn-setting" id="detail">
-													<input type="hidden" value="${s.purchaseRequestId}" />
-													<i class="halflings-icon white zoom-in"></i>
-												</a> <a class="btn btn-info btn-success" id="update" >
-													<input type="hidden" value="${s.purchaseRequestId}" />
-														<i class="halflings-icon white edit"></i>
-												</a></td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -141,16 +149,16 @@ h3 {
 									</c:if>
 									<c:forEach begin="1" end="${prbb.pages}" var="s">
 										<c:if test="${s>=prbb.pageNum-2 && s<=prbb.pageNum+2 }">
-											<li <c:if test="${s==prbb.pageNum}">class="active"</c:if>> 
-												<a href="javascript:goproductpage(${s});">${s}</a> 
+											<li <c:if test="${s==prbb.pageNum}">class="active"</c:if>>
+												<a href="javascript:goproductpage(${s});">${s}</a>
 											</li>
 										</c:if>
 									</c:forEach>
 									<c:if test="${prbb.pageNum+2<prbb.pages}">
 										<li><a>...</a></li>
 									</c:if>
-									<li><a href="javascript:goproductpage('next');">Next</a><!-- 隐藏域 存放当前页码 -->
-												<input type="hidden" name="pageNo" value="${prbb.pageNum}" /></li>
+									<li><a href="javascript:goproductpage('next');">Next</a> <!-- 隐藏域 存放当前页码 -->
+										<input type="hidden" name="pageNo" value="${prbb.pageNum}" /></li>
 									<li><a href="javascript:goproductpage(${prbb.pages});">Last</a></li>
 								</ul>
 							</div>
@@ -169,38 +177,39 @@ h3 {
 		<div class="modal-body">
 			<!-- 采购订单中所有内容 -->
 			<div>
-				<table style="width: 100%;table-layout: fixed;" >
-				<tbody id="purchaseDetail">
-					<tr style="height: 30px;">
-						<td><h3>订单编号:</h3> <span></span></td>
-						<td><h3>申请人:</h3>&nbsp;<span></span></td>
-						<td><h3>申请时间:</h3><span></span></td>
-					</tr>
-					<tr style="height: 30px;">
-						<td><h3>供应商编号:</h3><span></span></td>
-						<td><h3>联系人:</h3>&nbsp;<span></span></td>
-						<td><h3>电话:</h3>&nbsp;&nbsp;<span></span></td>
-					</tr>
-					<tr style="height: 30px;">
-						<td><h3>部门审核人:</h3><span></span></td>
-						<td><h3>审核时间:</h3><span></span></td>
-						<td><h3>审核状态:</h3><span></span></td>
-					</tr>
-					<tr style="height: 30px;">
-						<td><h3>财务审核:</h3><span></span></td>
-						<td><h3>审核时间:</h3><span></span></td>
-						<td><h3>审核状态:</h3><span></span></td>
-					</tr>
-					<tr style="height: 30px;">
-						<td colspan="3">
-							<h3>备注:</h3>&nbsp;&nbsp;&nbsp;&nbsp;<span id="remark"></span>
-						</td>
-					</tr></tbody>
+				<table style="width: 100%; table-layout: fixed;">
+					<tbody id="purchaseDetail">
+						<tr style="height: 30px;">
+							<td><h3>订单编号:</h3> <span></span></td>
+							<td><h3>申请人:</h3>&nbsp;<span></span></td>
+							<td><h3>申请时间:</h3> <span></span></td>
+						</tr>
+						<tr style="height: 30px;">
+							<td><h3>供应商编号:</h3> <span></span></td>
+							<td><h3>联系人:</h3>&nbsp;<span></span></td>
+							<td><h3>电话:</h3>&nbsp;&nbsp;<span></span></td>
+						</tr>
+						<tr style="height: 30px;">
+							<td><h3>部门审核人:</h3> <span></span></td>
+							<td><h3>审核时间:</h3> <span></span></td>
+							<td><h3>审核状态:</h3> <span></span></td>
+						</tr>
+						<tr style="height: 30px;">
+							<td><h3>财务审核:</h3> <span></span></td>
+							<td><h3>审核时间:</h3> <span></span></td>
+							<td><h3>审核状态:</h3> <span></span></td>
+						</tr>
+						<tr style="height: 30px;">
+							<td colspan="3">
+								<h3>备注:</h3>&nbsp;&nbsp;&nbsp;&nbsp;<span id="remark"></span>
+							</td>
+						</tr>
+					</tbody>
 				</table>
 			</div>
 			<div style="clear: both;">&nbsp;</div>
 			<div class="box-content">
-				<table class="table table-bordered" style="table-layout: fixed;" >
+				<table class="table table-bordered" style="table-layout: fixed;">
 					<thead>
 						<tr>
 							<th>产品名称</th>
@@ -214,8 +223,7 @@ h3 {
 					</tbody>
 				</table>
 				<div class="pagination pagination-centered">
-					<ul id="purchaseRequestDetailPage" >
-						
+					<ul id="purchaseRequestDetailPage">
 					</ul>
 				</div>
 			</div>
@@ -225,6 +233,50 @@ h3 {
 		</div>
 	</div>
 	
+	<div class="modal hide fade" id="reviewModal" style="width: 800px;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">x</button>
+			<h2>审核操作</h2>
+		</div>
+		<div class="modal-body">
+			<!-- 采购订单中所有内容 -->
+			<div>
+				<table style="width: 100%; table-layout: fixed;" >
+					<tbody >
+						<tr>
+							<th style="width: 120px;">是否通过审核</th>
+							<th>
+								<select>
+									<option>通过</option>
+									<option>不通过</option>
+								</select>
+							</th>
+						</tr>
+						<tr>
+						<td style="padding-top: 0px;">原因</td>
+							<td><textarea rows="8" cols="50" style="width: 100%;"></textarea></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary" >Save</a>
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+		</div>
+	</div>
+	<!-- 提示弹框 -->
+	<div style="display: none;">
+		<button class="btn btn-primary noty" id="success"
+			data-noty-options='{"text":"修改成功","layout":"center","type":"success"}'>
+			<i class="halflings-icon white white bell"></i>
+		</button>
+		<button class="btn btn-primary noty" id="error"
+			data-noty-options='{"text":"修改失败","layout":"center","type":"error"}'>
+			<i class="halflings-icon white white bell"></i>
+		</button>
+	</div>
+
 	<!-- start: JavaScript-->
 	<script src="static/js/jquery-1.9.1.min.js"></script>
 	<script src="static/js/jquery-migrate-1.0.0.min.js"></script>
@@ -257,17 +309,17 @@ h3 {
 	<script src="static/js/retina.js"></script>
 	<script src="static/js/custom.js"></script>
 	<!-- end: JavaScript-->
-	
+
 	<script src="static/own/purchase.js"></script>
-	
+
 	<script type="text/javascript">
 		function goproductpage(type) {
 			var pageNum = parseInt($("input[name=pageNo]").val()); //获取当前的页码
 			var pagePageTotal = parseInt('${prbb.pages}'); //总页数
-			if(pageNum==1 && type=='pre'){
+			if (pageNum == 1 && type == 'pre') {
 				return;
 			}
-			if(pageNum==pagePageTotal && type=='next'){
+			if (pageNum == pagePageTotal && type == 'next') {
 				return;
 			}
 			if (type == "next") { //下一页
@@ -277,146 +329,240 @@ h3 {
 			} else {
 				pageNum = parseInt(type);
 			}
-			location.href="gopurchase?pageNo="+pageNum;
+			location.href = "gopurchase?pageNo=" + pageNum;
 		}
-		$("#detail").live('click',function(){
-			empty();
-			//获取选中的订单号
-			var singleNo=$(this).find("input:hidden").val();
-			$.ajax({
-				type : "POST",
-				url : "getPurchaseRequestBySingleNo",
-				data : "singleNo=" + singleNo,
-				dataType : "JSON",
-				success : function(result) {
-					//采购详情表格赋值
-					puchaseDetailAss(result);
-					//显示所有页码
-					disPageNum(result);
-					//alert(result.list[0].purchaserequest.remark);
-					//为采购订单各种信息赋值
-					$("#purchaseDetail").children("tr:eq(0)").children("td:eq(0)").find("span")
-						.html(result.list[0].purchaserequest.purchaseRequestId);
-					$("#purchaseDetail").children("tr:eq(0)").children("td:eq(1)").find("span")
-						.html(result.list[0].purchaserequest.employeeByRequestEmpId.empLoginName);
-					var requestTime=dateformat(result.list[0].purchaserequest.requestTime);
-					$("#purchaseDetail").children("tr:eq(0)").children("td:eq(2)").find("span")
-						.html(requestTime);
-					$("#purchaseDetail").children("tr:eq(1)").children("td:eq(0)").find("span")
-						.html(result.list[0].purchaserequest.supplier.supplierId);
-					$("#purchaseDetail").children("tr:eq(1)").children("td:eq(1)").find("span")
-						.html(result.list[0].purchaserequest.suppContact);
-					$("#purchaseDetail").children("tr:eq(1)").children("td:eq(2)").find("span")
-						.html(result.list[0].purchaserequest.suppPhone);
-					//为备注赋值
-					$("#purchaseDetail").children("tr:eq(4)").children("td:eq(0)").find("span")
-						.html(result.list[0].purchaserequest.remark);
-					
-					$("#purchaseDetail").children("tr:eq(2)").children("td:eq(0)").find("span")
-						.html(result.list[0].purchaserequest.employeeByDeptReviewEmp.empLoginName);
-					var deptreviewTime=dateformat(result.list[0].purchaserequest.deptReviewTime);
-					$("#purchaseDetail").children("tr:eq(2)").children("td:eq(1)").find("span")
-						.html(deptreviewTime);
-					$("#purchaseDetail").children("tr:eq(2)").children("td:eq(2)").find("span")
-						.html(result.list[0].purchaserequest.reviewstatusByDeptReviewStatus.rsName);
-					$("#purchaseDetail").children("tr:eq(3)").children("td:eq(0)").find("span")
-						.html(result.list[0].purchaserequest.employeeByFinancialAuditEmp.empLoginName);
-					var finTime=dateformat(result.list[0].purchaserequest.financialAuditTime);
-					$("#purchaseDetail").children("tr:eq(3)").children("td:eq(1)").find("span")
-						.html(finTime);
-					$("#purchaseDetail").children("tr:eq(3)").children("td:eq(2)").find("span")
-						.html(result.list[0].purchaserequest.reviewstatusByFinancialAuditStatus.rsName);
-					/* $("#purchaseDetail").children("tr:eq(4)").children("td:eq(0)").find("span")
-						.html("今天周二"); */
-					//$("#remark").html(result.list[0].purchaserequest.remark);
-					
-				}
-			});
+
+		$("#productBody a").live('mouseover', function() {
+			$(this).css("cursor", "pointer");
+			$(this).css("color", "#298AEB");
+		});
+		$("#productBody a").live('mouseout', function() {
+			$(this).css("color", "#646464");
 		});
 		
-		$("#update").live('click',function(){
-			var singleNo=$(this).find("input:hidden").val();
+		$("#detail").live('click',function() {
+							empty();
+							$("#myModal").modal("show");
+							//获取选中的订单号
+							var singleNo = $(this).parent().find("input:hidden").val();
+							$.ajax({
+										type : "POST",
+										url : "getPurchaseRequestBySingleNo",
+										data : "singleNo=" + singleNo,
+										dataType : "JSON",
+										success : function(result) {
+											//采购详情表格赋值
+											puchaseDetailAss(result);
+											//显示所有页码
+											disPageNum(result);
+											//alert(result.list[0].purchaserequest.remark);
+											//为采购订单各种信息赋值
+											$("#purchaseDetail")
+													.children("tr:eq(0)")
+													.children("td:eq(0)")
+													.find("span")
+													.html(
+															result.list[0].purchaserequest.purchaseRequestId);
+											$("#purchaseDetail")
+													.children("tr:eq(0)")
+													.children("td:eq(1)")
+													.find("span")
+													.html(
+															result.list[0].purchaserequest.employeeByRequestEmpId.empLoginName);
+											var requestTime = dateformat(result.list[0].purchaserequest.requestTime);
+											$("#purchaseDetail").children(
+													"tr:eq(0)").children(
+													"td:eq(2)").find("span")
+													.html(requestTime);
+											$("#purchaseDetail")
+													.children("tr:eq(1)")
+													.children("td:eq(0)")
+													.find("span")
+													.html(
+															result.list[0].purchaserequest.supplier.supplierId);
+											$("#purchaseDetail")
+													.children("tr:eq(1)")
+													.children("td:eq(1)")
+													.find("span")
+													.html(
+															result.list[0].purchaserequest.suppContact);
+											$("#purchaseDetail")
+													.children("tr:eq(1)")
+													.children("td:eq(2)")
+													.find("span")
+													.html(
+															result.list[0].purchaserequest.suppPhone);
+											//为备注赋值
+											$("#purchaseDetail")
+													.children("tr:eq(4)")
+													.children("td:eq(0)")
+													.find("span")
+													.html(
+															result.list[0].purchaserequest.remark);
+
+											$("#purchaseDetail")
+													.children("tr:eq(2)")
+													.children("td:eq(0)")
+													.find("span")
+													.html(
+															result.list[0].purchaserequest.employeeByDeptReviewEmp.empLoginName);
+											var deptreviewTime = dateformat(result.list[0].purchaserequest.deptReviewTime);
+											$("#purchaseDetail").children(
+													"tr:eq(2)").children(
+													"td:eq(1)").find("span")
+													.html(deptreviewTime);
+											$("#purchaseDetail")
+													.children("tr:eq(2)")
+													.children("td:eq(2)")
+													.find("span")
+													.html(
+															result.list[0].purchaserequest.reviewstatusByDeptReviewStatus.rsName);
+											$("#purchaseDetail")
+													.children("tr:eq(3)")
+													.children("td:eq(0)")
+													.find("span")
+													.html(
+															result.list[0].purchaserequest.employeeByFinancialAuditEmp.empLoginName);
+											var finTime = dateformat(result.list[0].purchaserequest.financialAuditTime);
+											$("#purchaseDetail").children(
+													"tr:eq(3)").children(
+													"td:eq(1)").find("span")
+													.html(finTime);
+											$("#purchaseDetail")
+													.children("tr:eq(3)")
+													.children("td:eq(2)")
+													.find("span")
+													.html(
+															result.list[0].purchaserequest.reviewstatusByFinancialAuditStatus.rsName);
+											/* $("#purchaseDetail").children("tr:eq(4)").children("td:eq(0)").find("span")
+												.html("今天周二"); */
+											//$("#remark").html(result.list[0].purchaserequest.remark);
+										}
+									});
+						});
+
+		//跳到修改的页面
+		$("#update").live('click', function() {
+			var singleNo = $(this).parent().find("input:hidden").val();
+			location.href = "goPurchaseUpdate?singleNo=" + singleNo;
 		});
-		
-		function empty(){
-			$("#purchaseDetail").children("tr:eq(0)").children("td:eq(0)").find("span")
-				.html("");
-			$("#purchaseDetail").children("tr:eq(0)").children("td:eq(1)").find("span")
-				.html("");
-			$("#purchaseDetail").children("tr:eq(0)").children("td:eq(2)").find("span")
-				.html("");
-			$("#purchaseDetail").children("tr:eq(1)").children("td:eq(0)").find("span")
-				.html("");
-			$("#purchaseDetail").children("tr:eq(1)").children("td:eq(1)").find("span")
-				.html("");
-			$("#purchaseDetail").children("tr:eq(1)").children("td:eq(2)").find("span")
-				.html("");
-			$("#purchaseDetail").children("tr:eq(2)").children("td:eq(0)").find("span")
-				.html("");
-			$("#purchaseDetail").children("tr:eq(2)").children("td:eq(1)").find("span")
-				.html("");
-			$("#purchaseDetail").children("tr:eq(2)").children("td:eq(2)").find("span")
-				.html("");
-			$("#purchaseDetail").children("tr:eq(3)").children("td:eq(0)").find("span")
-				.html("");
-			$("#purchaseDetail").children("tr:eq(3)").children("td:eq(1)").find("span")
-				.html("");
-			$("#purchaseDetail").children("tr:eq(3)").children("td:eq(2)").find("span")
-				.html("");
-			$("#purchaseDetail").children("tr:eq(4)").children("td:eq(0)").find("span")
-				.html("");
+
+		function empty() {
+			$("#purchaseDetail").children("tr:eq(0)").children("td:eq(0)")
+					.find("span").html("");
+			$("#purchaseDetail").children("tr:eq(0)").children("td:eq(1)")
+					.find("span").html("");
+			$("#purchaseDetail").children("tr:eq(0)").children("td:eq(2)")
+					.find("span").html("");
+			$("#purchaseDetail").children("tr:eq(1)").children("td:eq(0)")
+					.find("span").html("");
+			$("#purchaseDetail").children("tr:eq(1)").children("td:eq(1)")
+					.find("span").html("");
+			$("#purchaseDetail").children("tr:eq(1)").children("td:eq(2)")
+					.find("span").html("");
+			$("#purchaseDetail").children("tr:eq(2)").children("td:eq(0)")
+					.find("span").html("");
+			$("#purchaseDetail").children("tr:eq(2)").children("td:eq(1)")
+					.find("span").html("");
+			$("#purchaseDetail").children("tr:eq(2)").children("td:eq(2)")
+					.find("span").html("");
+			$("#purchaseDetail").children("tr:eq(3)").children("td:eq(0)")
+					.find("span").html("");
+			$("#purchaseDetail").children("tr:eq(3)").children("td:eq(1)")
+					.find("span").html("");
+			$("#purchaseDetail").children("tr:eq(3)").children("td:eq(2)")
+					.find("span").html("");
+			$("#purchaseDetail").children("tr:eq(4)").children("td:eq(0)")
+					.find("span").html("");
 		}
-		
-		function puchaseDetailAss(result){
-			var s="";
-			for(var i=0;i<result.list.length;i++){
-				s+="<tr>"+
-						"<td>"+result.list[i].product.productName+"</td>"+
-						"<td>"+result.list[i].product.productId+"</td>"+
-						"<td>"+result.list[i].productUnit.puName+"</td>"+
-						"<td>"+result.list[i].count+"</td>"+
-						"<td>"+result.list[i].price+"</td>"+
-					"</tr>";
+
+		function puchaseDetailAss(result) {
+			var s = "";
+			for (var i = 0; i < result.list.length; i++) {
+				s += "<tr>" + "<td>" + result.list[i].product.productName
+						+ "</td>" + "<td>" + result.list[i].product.productId
+						+ "</td>" + "<td>" + result.list[i].productUnit.puName
+						+ "</td>" + "<td>" + result.list[i].count + "</td>"
+						+ "<td>" + result.list[i].price + "</td>" + "</tr>";
 			}
 			$("#purchaseRequestDetail").html(s);
 		}
 		//显示所有页码
-		function disPageNum(result){
-			var pageNo=result.pageNum;
-			var pageTotal=result.pages;
+		function disPageNum(result) {
+			var pageNo = result.pageNum;
+			var pageTotal = result.pages;
 			//页码数
-			var detailPages="<li><a href='javascript:goDetailPage(-1,"+pageNo+","+pageTotal+")'>Prev</a></li>";
-			for(var i = 1 ; i <= result.pages ; i++){
-				if(i==result.pageNum){
-					detailPages+="<li class='active'><a href='javascript:goDetailPage("+i+","+pageNo+","+pageTotal+")'>"+i+"</a></li>"
-				}else{
-					detailPages+="<li><a href='javascript:goDetailPage("+i+","+pageNo+","+pageTotal+")'>"+i+"</a></li>";
+			var detailPages = "<li><a href='javascript:goDetailPage(-1,"
+					+ pageNo + "," + pageTotal + ")'>Prev</a></li>";
+			for (var i = 1; i <= result.pages; i++) {
+				if (i == result.pageNum) {
+					detailPages += "<li class='active'><a href='javascript:goDetailPage("
+							+ i
+							+ ","
+							+ pageNo
+							+ ","
+							+ pageTotal
+							+ ")'>"
+							+ i
+							+ "</a></li>"
+				} else {
+					detailPages += "<li><a href='javascript:goDetailPage(" + i
+							+ "," + pageNo + "," + pageTotal + ")'>" + i
+							+ "</a></li>";
 				}
 			}
-			detailPages+="<li><a href='javascript:goDetailPage(-2,"+pageNo+","+pageTotal+")'>Next</a></li>";
+			detailPages += "<li><a href='javascript:goDetailPage(-2," + pageNo
+					+ "," + pageTotal + ")'>Next</a></li>";
 			$("#purchaseRequestDetailPage").html(detailPages);
 		}
-		
-		//分页查询明细  ajax实现
-		function goDetailPage(type,pageNum,pageTotal){
-			if(type==-1){  //上一页
-				if(pageNum==1){
-					return;
-				}
-				pageNum-=1;
-			}else if(type==-2){  //下一页
-				if(pageNum==pageTotal){
-					return;
-				}
-				pageNum+=1;
-			}else{
-				pageNum=type;
+		//点击审核进行操作
+		function deptreview(singleNo){
+			$("#reviewModal").modal("show");
+		}
+
+		//对订单进行操作
+		function operaOrder(singleNo,no){
+			var flag=true;
+			if(no==2){
+				var s=confirm("确认取消订单吗?");
+				if(s==false) flag=false;
+			}else if(no==3){
+				var s=confirm("确认提交订单吗?");
+				if(s==false) flag=false;
+			}else if(no==7){
+				var s=confirm("确认全部入库吗?");
+				if(s==false) flag=false;
 			}
-			var singleNo=$("#purchaseDetail").children("tr:eq(0)").children("td:eq(0)").find("span").html();
+			if(flag==true){  //页面跳转
+				location.href="operaOrder?singleNo="+singleNo+"&statusNo="+no;
+			}
+		}
+		
+		/* $("#commit").live('click',function(){
+			alert("a");
+		}); */
+
+		//分页查询明细  ajax实现
+		function goDetailPage(type, pageNum, pageTotal) {
+			if (type == -1) { //上一页
+				if (pageNum == 1) {
+					return;
+				}
+				pageNum -= 1;
+			} else if (type == -2) { //下一页
+				if (pageNum == pageTotal) {
+					return;
+				}
+				pageNum += 1;
+			} else {
+				pageNum = type;
+			}
+			var singleNo = $("#purchaseDetail").children("tr:eq(0)").children(
+					"td:eq(0)").find("span").html();
 			$.ajax({
 				type : "POST",
 				url : "getPurchaseRequestBySingleNo",
-				data : "singleNo=" + singleNo+"&pageNo="+pageNum,
+				data : "singleNo=" + singleNo + "&pageNo=" + pageNum,
 				dataType : "JSON",
 				success : function(result) {
 					//为表格详情赋值
@@ -426,7 +572,16 @@ h3 {
 				}
 			});
 		}
-	</script>
 
+		
+	</script>
+	<script type="text/javascript">
+		$(function() {
+			var msg = '${msg}';
+			if (msg == 'a') {
+				$("#success").click();
+			}
+		});
+	</script>
 </body>
 </html>
