@@ -10,53 +10,58 @@ import cn.jxc.util.OrderStatus;
  * 采购申请单据
  */
 public class PurchaseRequest implements java.io.Serializable {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private String purchaseRequestId;
-	private Employee employeeByFinancialAuditEmp;
 	private Employee employeeByRequestEmpId;
-	private Employee employeeByDeptReviewEmp;
-	private ReviewStatus reviewstatusByDeptReviewStatus;
-	private ReviewStatus reviewstatusByFinancialAuditStatus;
 	private Supplier supplier;
 	private String suppContact;
 	private String suppPhone;
 	private Date requestTime;
-	private Date deptReviewTime;
-	private Date financialAuditTime;
 	private String remark;
 	private OrderStatus orderStatus;
 	
-	//存放当前订单中明细
-	private List<PurchaseRequestDetail> purchaserequestdetails = new ArrayList<PurchaseRequestDetail>(0);
+	private Employee employeeByDeptReviewEmp;
+	private ReviewStatus reviewstatusByDeptReviewStatus;
+	private Date deptReviewTime;
+	private String deptReviewReason;// 部门审核原因
 	
+	private Employee employeeByFinancialAuditEmp;
+	private ReviewStatus reviewstatusByFinancialAuditStatus;
+	private Date financialAuditTime;
+	private String financialAuditReason;// 财务审核原因
+	
+	// 存放当前订单中明细
+	private List<PurchaseRequestDetail> purchaserequestdetails = new ArrayList<PurchaseRequestDetail>(0);
+
 	private List<PurchasePaymentSlip> purchasepaymentslips = new ArrayList<PurchasePaymentSlip>(0);
 
 	public PurchaseRequest() {
-		
+
 	}
 
 	public PurchaseRequest(String purchaseRequestId, Employee employeeByRequestEmpId, Supplier supplier,
-			Date requestTime,String remark,OrderStatus orderStatus) {
+			Date requestTime, String remark, OrderStatus orderStatus) {
 		super();
 		this.purchaseRequestId = purchaseRequestId;
 		this.employeeByRequestEmpId = employeeByRequestEmpId;
 		this.supplier = supplier;
 		this.requestTime = requestTime;
-		this.remark=remark;
-		this.orderStatus=orderStatus;
+		this.remark = remark;
+		this.orderStatus = orderStatus;
 	}
-	
+
 	public PurchaseRequest(String purchaseRequestId, Employee employeeByFinancialAuditEmp,
 			Employee employeeByRequestEmpId, Employee employeeByDeptReviewEmp,
 			ReviewStatus reviewstatusByDeptReviewStatus, ReviewStatus reviewstatusByFinancialAuditStatus,
 			Supplier supplier, String suppContact, String suppPhone, Date requestTime, Date deptReviewTime,
 			Date financialAuditTime, String remark, List<PurchaseRequestDetail> purchaserequestdetails,
-			List<PurchasePaymentSlip> purchasepaymentslips,OrderStatus orderStatus) {
+			List<PurchasePaymentSlip> purchasepaymentslips, OrderStatus orderStatus, String deptReviewReason,
+			String financialAuditReason) {
 		super();
 		this.purchaseRequestId = purchaseRequestId;
 		this.employeeByFinancialAuditEmp = employeeByFinancialAuditEmp;
@@ -73,7 +78,9 @@ public class PurchaseRequest implements java.io.Serializable {
 		this.remark = remark;
 		this.purchaserequestdetails = purchaserequestdetails;
 		this.purchasepaymentslips = purchasepaymentslips;
-		this.orderStatus=orderStatus;
+		this.orderStatus = orderStatus;
+		this.deptReviewReason = deptReviewReason;
+		this.financialAuditReason = financialAuditReason;
 	}
 
 	public String getPurchaseRequestId() {
@@ -203,5 +210,21 @@ public class PurchaseRequest implements java.io.Serializable {
 	public void setOrderStatus(OrderStatus orderStatus) {
 		this.orderStatus = orderStatus;
 	}
-	
+
+	public String getDeptReviewReason() {
+		return deptReviewReason;
+	}
+
+	public void setDeptReviewReason(String deptReviewReason) {
+		this.deptReviewReason = deptReviewReason;
+	}
+
+	public String getFinancialAuditReason() {
+		return financialAuditReason;
+	}
+
+	public void setFinancialAuditReason(String financialAuditReason) {
+		this.financialAuditReason = financialAuditReason;
+	}
+
 }

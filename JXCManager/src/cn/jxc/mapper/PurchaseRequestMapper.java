@@ -1,5 +1,6 @@
 package cn.jxc.mapper;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -54,5 +55,42 @@ public interface PurchaseRequestMapper {
 	 * @return
 	 */
 	int updatePurchaseOrderStatus(@Param("singleNo") String singleNo, @Param("no") Integer status);
+
+	/**
+	 * 部门审核操作
+	 * 
+	 * @param singleNo
+	 *            订单号
+	 * @param reviewEmp
+	 *            审核人
+	 * @param date
+	 *            时间
+	 * @param status
+	 *            审核状态
+	 * @param reason
+	 *            原因
+	 * @return
+	 */
+	int updateDeptReivewStatus(@Param("singleNo") String singleNo, @Param("emp") String reviewEmp,
+			@Param("date") Date date, @Param("no") Integer status, @Param("reason") String reason);
+	
+	/**
+	 * 财务审核操作
+	 * 
+	 * @param singleNo
+	 *            订单号
+	 * @param reviewEmp
+	 *            审核人
+	 * @param date
+	 *            时间
+	 * @param status
+	 *            审核状态
+	 * @param reason
+	 *            原因
+	 * @return
+	 */
+	int updateFinancialReivewStatus(@Param("singleNo") String singleNo, @Param("emp") String reviewEmp,
+			@Param("date") Date date, @Param("no") Integer status, @Param("reason") String reason);
+	
 
 }

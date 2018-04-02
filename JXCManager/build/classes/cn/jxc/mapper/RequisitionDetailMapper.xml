@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxc.mapper.RequisitionDetailMapper">
+	
+	<resultMap type="RequisitionDetail" id="RequisitionDetailMap">
+		<id column="RE_id" property="reId" />
+		<result column="Count" property="count" />
+		<association property="requisition" javaType="Requisition"
+			resultMap="cn.jxc.mapper.RequisitionMapper.Requisitionlist">
+		</association>
+		<association property="product" javaType="Product"
+			resultMap="cn.jxc.mapper.ProductMapper.productResultMap">
+		</association>
+		<association property="productUnit" javaType="ProductUnit" >
+			<id property="productUnitId" column="ProductUnit_id"/>
+		</association>
+	</resultMap>
+	<insert id="addRequisitionDetail">
+		INSERT INTO `requisitiondetail`(`Requisition_id`,`Product_id`,`Count`,`ProductUnitId`)
+		VALUES (#{rsd.requisition.requisitionId},#{rsd.product.productId},#{rsd.count},#{rsd.productUnit.productUnitId})
+	
+	</insert>
+</mapper>

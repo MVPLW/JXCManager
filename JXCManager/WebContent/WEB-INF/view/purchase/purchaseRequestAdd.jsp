@@ -61,7 +61,7 @@
 						</div>
 						<div style="clear: both;">&nbsp;</div>
 						<div class="box-content">
-							<form class="form-horizontal" action=""
+							<form class="form-horizontal" action="productRequestAdd"
 								method="post" id="myform">
 								<fieldset>
 									<table style="width: 80%; margin: 0px auto;">
