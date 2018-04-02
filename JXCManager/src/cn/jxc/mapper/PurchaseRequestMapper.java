@@ -73,7 +73,7 @@ public interface PurchaseRequestMapper {
 	 */
 	int updateDeptReivewStatus(@Param("singleNo") String singleNo, @Param("emp") String reviewEmp,
 			@Param("date") Date date, @Param("no") Integer status, @Param("reason") String reason);
-	
+
 	/**
 	 * 财务审核操作
 	 * 
@@ -91,6 +91,14 @@ public interface PurchaseRequestMapper {
 	 */
 	int updateFinancialReivewStatus(@Param("singleNo") String singleNo, @Param("emp") String reviewEmp,
 			@Param("date") Date date, @Param("no") Integer status, @Param("reason") String reason);
-	
+
+	/**
+	 * 根据采购单号删除所有相关信息
+	 * 
+	 * @param singleNo
+	 *            采购单号
+	 * @return
+	 */
+	int deletePurchaseRequest(@Param("singleNo")String singleNo);
 
 }

@@ -114,4 +114,9 @@
 		,FinancialAuditReason= #{reason}
 		where PurchaseRequest_id=#{singleNo}
 	</update>
+	<!-- 删除 -->
+	<delete id="deletePurchaseRequest" parameterType="string">
+		DELETE FROM
+		purchaserequest WHERE PurchaseRequest_id=#{singleNo}
+	</delete>
 </mapper>

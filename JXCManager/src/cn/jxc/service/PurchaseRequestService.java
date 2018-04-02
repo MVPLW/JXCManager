@@ -97,4 +97,13 @@ public interface PurchaseRequestService {
 	 */
 	int updatePurchaseOrderStatus(String singleNo, Integer status);
 
+	/**
+	 * 根据采购单号删除所有相关信息
+	 * 
+	 * @param singleNo
+	 *            采购单号
+	 * @return
+	 */
+	int deletePurchaseRequest(String singleNo);
+
 }

@@ -74,11 +74,12 @@ h3 {
 								<input type="submit" value="搜索" class="btn btn-success" />
 								<div style="float: right;">
 									<a class="btn btn-primary" href="goPurchaseRequest"
-										data-command="Add"><i class="icon-plus"></i>&nbsp;申请</a>
-									<!-- <a
+										data-command="Add"><i class="icon-plus"></i>&nbsp;申请</a> <a
 										class="btn btn-warning" href="javascript:void(0)"
-										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a> -->
-									<a class="btn btn-danger" href="javascript:void(0)"
+										onclick="deletePurchase()" data-command="Delete"><i
+										class="icon-remove"></i>&nbsp;删除</a> <a class="btn btn-danger"
+										href="javascript:void(0)"
+										onclick="javascript:location.href='gopurchase';"
 										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 								</div>
 							</div>
@@ -108,7 +109,8 @@ h3 {
 									<tbody id="productBody">
 										<c:forEach items="${prbb.list}" var="s">
 											<tr>
-												<th><input type="checkbox" name="productCheck" /></th>
+												<th><input type="checkbox" name="productCheck"
+													value="${s.purchaseRequestId}" /></th>
 												<td>${s.purchaseRequestId}</td>
 												<td>${s.employeeByRequestEmpId.empLoginName}</td>
 												<td><fmt:formatDate value="${s.requestTime}"
@@ -565,26 +567,28 @@ h3 {
 		}
 		//点击审核进行操作
 		function deptreview(purchase, status) {
-			if (status == 2) {           //财务审核
+			if (status == 2) { //财务审核
 				$("#finalReviewModal").modal("show");
-				$("#finalReviewCommit").live('click',function(){
-					var s=$("input[name=finalReview]:checked").val();
-					var reason=$("#finalReviewReason").val();       //审核原因
-					if(reason=="" || reason==undefined){
-						alert("请输入审核原因");
-						return;
-					}
-					location.href = "finalReview?singleNo=" + purchase
-						+ "&no=" + s + "&reason=" + reason;
-				});
+				$("#finalReviewCommit").live(
+						'click',
+						function() {
+							var s = $("input[name=finalReview]:checked").val();
+							var reason = $("#finalReviewReason").val(); //审核原因
+							if (reason == "" || reason == undefined) {
+								alert("请输入审核原因");
+								return;
+							}
+							location.href = "finalReview?singleNo=" + purchase
+									+ "&no=" + s + "&reason=" + reason;
+						});
 			} else { //部门审核
 				$("#deptReviewModal").modal("show");
 				$("#deptReviewCommit").live(
 						'click',
 						function() { //点击保存
 							var s = $("input[name=deptReview]:checked").val(); //审核是否通过 0 表示通过  1表示不通过
-							var reason = $("#deptReviewReason").val();           //审核原因
-							if(reason=="" || reason==undefined){
+							var reason = $("#deptReviewReason").val(); //审核原因
+							if (reason == "" || reason == undefined) {
 								alert("请输入原因");
 								return;
 							}
@@ -656,6 +660,34 @@ h3 {
 					disPageNum(result);
 				}
 			});
+		}
+		/* 删除采购订单订单 */
+		function deletePurchase() {
+			var s = $("#productBody input[name='productCheck']:checked");
+			if (s.length == 0) {
+				alert("请选择订单");
+				return;
+			}
+			$.ajaxSettings.async = false;
+			var purchases = "-";
+			var flag = false;
+			$(s).each(function() { //循环所有选中的框
+				var a = $(this).val();
+				$.get("judgmen", {
+					singleNo : $(this).val()
+				}, function(result) {
+					if (result == "0") {
+						alert("处于采购流程中的单据不可以删除");
+						flag = true;
+						return;
+					} else {
+						purchases += a + "-";
+					}
+				});
+			});
+			if (flag == false) {
+				location.href = "deletePurchases?singleNos=" + purchases;
+			}
 		}
 	</script>
 	<script type="text/javascript">

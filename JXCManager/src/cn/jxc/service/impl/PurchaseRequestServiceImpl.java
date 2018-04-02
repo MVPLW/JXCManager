@@ -100,7 +100,7 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService {
 		}
 		return purchaseRequestMapper.updateDeptReivewStatus(singleNo, reviewEmp, date, status, reason);
 	}
-
+	
 	@Override
 	public int updateFinancialReivewStatus(String singleNo, String reviewEmp, Date date, Integer status,
 			String reason) {
@@ -112,6 +112,18 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService {
 			status=3;
 		}
 		return purchaseRequestMapper.updateFinancialReivewStatus(singleNo, reviewEmp, date, status, reason);
+	}
+
+	@Override
+	public int deletePurchaseRequest(String singleNo) {
+		try {
+			purchaseRequestDetailService.delPurchaseRequestDetailBYSingleNo(singleNo);
+			purchaseRequestMapper.deletePurchaseRequest(singleNo);
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 }

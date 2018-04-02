@@ -244,21 +244,58 @@ public class PurchaseRequestController {
 		Employee employee = (Employee) request.getSession().getAttribute("loginEmp");
 		int updateDeptReivewStatus = purchaseRequestService.updateDeptReivewStatus(singleNo, employee.getEmpLoginName(),
 				new Date(), no, reason);
-		if (updateDeptReivewStatus > 0) {  //执行成功 
+		if (updateDeptReivewStatus > 0) { // 执行成功
 			return "redirect:gopurchase";
-		}else {
+		} else {
 			return "error";
 		}
 	}
-	
+
 	@RequestMapping("finalReview")
 	public String finalReview(String singleNo, Integer no, String reason, HttpServletRequest request) {
 		Employee employee = (Employee) request.getSession().getAttribute("loginEmp");
-		int updateFinancialReivewStatus = purchaseRequestService.updateFinancialReivewStatus(singleNo, employee.getEmpLoginName(), new Date(), no, reason);
-		if(updateFinancialReivewStatus>0) {//执行成功
+		int updateFinancialReivewStatus = purchaseRequestService.updateFinancialReivewStatus(singleNo,
+				employee.getEmpLoginName(), new Date(), no, reason);
+		if (updateFinancialReivewStatus > 0) {// 执行成功
 			return "redirect:gopurchase";
-		}else 
+		} else
 			return "error";
+	}
+
+	/**
+	 * 使用ajax验证是否可以执行操作
+	 * 
+	 * @param singleNo
+	 * @return
+	 */
+	@RequestMapping("judgmen")
+	@ResponseBody
+	public String judgmen(String singleNo) {
+		PurchaseRequest purchaseRequestBySingleNo = purchaseRequestService.getPurchaseRequestBySingleNo(singleNo);
+		int no = purchaseRequestBySingleNo.getOrderStatus().getNo();
+		System.out.println(no+"\t"+purchaseRequestBySingleNo.getOrderStatus().getOrderType());
+		if (no == 2 || no == 5 || no == 7) { // 当订单状态处于取消 拒绝 全部入库的状态才可以删除
+			return "1";
+		} else
+			return "0"; // 不可以删除
+	}
+	
+	/**
+	 * 删除所选订单
+	 * @return
+	 */
+	@RequestMapping("deletePurchases")
+	public String deletePurchases(String singleNos) {
+		try {
+			String[] single = singleNos.split("-");
+			for (int i = 1; i < single.length; i++) {
+				purchaseRequestService.deletePurchaseRequest(single[i]);
+			}
+			return "redirect:gopurchase";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
 	}
 
 }
