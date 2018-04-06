@@ -4,7 +4,7 @@ import java.util.List;
 
 import cn.jxc.pojo.SalesOrder;
 
-public interface SaleService {
+public interface SaleOrderService {
 	//查询所有销售订单
 	List<SalesOrder>getSaleAll();
 	//条件查询

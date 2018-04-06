@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <!-- start: Meta -->
 <meta charset="utf-8">
-<title>采购订单申请</title>
+<title>入库单申请</title>
 <meta name="description" content="Bootstrap Metro Dashboard">
 <meta name="author" content="Dennis Ji">
 <meta name="keyword"
@@ -49,14 +50,14 @@
 			<div id="content" class="span10">
 				<ul class="breadcrumb">
 					<li><i class="icon-home"></i>首页 <i class="icon-angle-right"></i></li>
-					<li><a href="form">采购申请管理</a></li>
+					<li><a href="form">入库单管理</a></li>
 				</ul>
 				<div class="row-fluid sortable">
 					<div class="box span12">
 						<div class="box-header" data-original-title>
 							<h2>
 								<i class="halflings-icon white edit"></i><span class="break"></span>
-								采购订单填写
+								入库申请单填写
 							</h2>
 						</div>
 						<div style="clear: both;">&nbsp;</div>
@@ -66,59 +67,58 @@
 									<table style="width: 80%; margin: 0px auto;">
 										<tr>
 											<td><div class="control-group">
-													<label class="control-label">采购订单号</label>
+													<label class="control-label">入库单号</label>
 													<div class="controls">
 														<span class="input-xlarge uneditable-input">随机生成
 															可不填</span>
 													</div>
 												</div></td>
 											<td><div class="control-group">
-													<label class="control-label" for="selectError">申请人</label>
+													<label class="control-label" for="focusedInput">仓&nbsp;&nbsp;库&nbsp;&nbsp;&nbsp;</label>
 													<div class="controls">
-														<select id="selectError" data-rel="chosen">
-															<option>Option 1</option>
-															<option>Option 2</option>
-															<option>Option 3</option>
-															<option>Option 4</option>
-															<option>Option 5</option>
+														<select id="storeHouse" data-rel="chosen">
+															<c:forEach items="${storeHouseAll }" var="s">
+																<option value="${s.storeHouseId}">${s.shName}</option>
+															</c:forEach>
 														</select>
 													</div>
 												</div></td>
 										</tr>
 										<tr>
 											<td><div class="control-group">
-													<label class="control-label" for="date01">申请时间</label>
+													<label class="control-label" for="date01">入库时间</label>
 													<div class="controls">
 														<input type="text" class="input-xlarge datepicker"
-															id="date01" value="02/16/12">
+															readonly="readonly" id="date01" />
 													</div>
 												</div></td>
 											<td><div class="control-group">
-													<label class="control-label" for="selectError1">供应商</label>
+													<label class="control-label" for="enterStockType">入库类型</label>
 													<div class="controls">
-														<select id="selectError1" data-rel="chosen">
-															<option>Option 1</option>
-															<option>Option 2</option>
-															<option>Option 3</option>
-															<option>Option 4</option>
-															<option>Option 5</option>
+														<select id="enterStockType" data-rel="chosen">
+															<c:forEach items="${estAll}" var="s">
+																<option value="${s.estId}">${s.estName}</option>
+															</c:forEach>
 														</select>
 													</div>
 												</div></td>
 										</tr>
 										<tr>
 											<td><div class="control-group">
-													<label class="control-label" for="focusedInput">联系人</label>
+													<label class="control-label" for="upstreamNo">上游单号</label>
 													<div class="controls">
-														<input class="input-xlarge focused" id="focusedInput"
-															type="text" value="此处填写供货商的联系人">
+														<input class="input-xlarge focused" id="upstreamNo"
+															name="upstreamNo" type="text" placeholder="此处填写上游单号" />
 													</div>
 												</div></td>
 											<td><div class="control-group">
-													<label class="control-label" for="focusedInput">联系电话</label>
+													<label class="control-label" for="selectError1">入库人&nbsp;&nbsp;</label>
 													<div class="controls">
-														<input class="input-xlarge focused" id="focusedInput"
-															type="text" value="此处填写联系人的电话">
+														<select id="employee" data-rel="chosen">
+															<c:forEach items="${employeeAll }" var="s">
+																<option value="${s.empLoginName}">${s.empLoginName}</option>
+															</c:forEach>
+														</select>
 													</div>
 												</div></td>
 										</tr>
@@ -128,15 +128,13 @@
 													<label class="control-label" for="typeahead">备注</label>
 													<div class="controls">
 														<input type="text" class="span6 typeahead" id="typeahead"
-															data-provide="typeahead" data-items="4"
+															data-provide="typeahead" data-items="4" placeholder="此处填写备注"
 															data-source='["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"]'>
 													</div>
 												</div>
 											</td>
 										</tr>
 									</table>
-
-
 									<div class="box-content">
 										<table
 											class="table table-bordered table-striped table-condensed"
@@ -147,22 +145,15 @@
 													<th>产品名称</th>
 													<th>单价</th>
 													<th>规格</th>
-													<th>数量</th>
+													<th>实际入库数量</th>
 													<th>操作</th>
 												</tr>
 											</thead>
-											<tbody>
-												<tr>
-													<td>Dennis Ji</td>
-													<td>A</td>
-													<td>M</td>
-													<td>ABC</td>
-													<td>A</td>
-													<td> <a class="label label-important" href="#">移除</a> </td>
-												</tr>
+											<tbody id="productTbody">
+												
 											</tbody>
 										</table>
-										<div class="pagination pagination-centered">
+										<!-- <div class="pagination pagination-centered">
 											<ul>
 												<li><a href="#">Prev</a></li>
 												<li class="active"><a href="#">1</a></li>
@@ -171,13 +162,15 @@
 												<li><a href="#">4</a></li>
 												<li><a href="#">Next</a></li>
 											</ul>
-										</div>
+										</div> -->
 										<!--/span-->
 									</div>
 									<div class="form-actions">
 										<button class="btn btn-info btn-setting"
-											onclick="javascript:void(0);">添加产品信息</button>
+											onclick="javascript:void(0);">添加入库信息</button>
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<button type="submit" class="btn btn-primary">提交申请</button>
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<button class="btn">取消</button>
 									</div>
 								</fieldset>
@@ -200,54 +193,52 @@
 		<div class="modal-body">
 			<!-- 采购订单中所有内容 -->
 			<div class="box-content">
-				<table class="table table-bordered" style="table-layout: fixed;">
+				<table class="table table-bordered" style="table-layout: fixed;"
+					id="productChoseModal">
 					<thead>
 						<tr>
-							<th width="20px;"><input type="checkbox" /></th>
+							<th width="20px;"><input type="checkbox"
+								id="productCheckAll" /></th>
 							<th>产品名称</th>
 							<th>产品编号</th>
 							<th>类别</th>
 							<th>计量单位</th>
-							<th>数量</th>
+							<th>入库数量</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr height="20px;">
-							<td><input type="checkbox" /></td>
-							<td>Dennis Ji</td>
-							<td>2012/01/01</td>
-							<td>Member</td>
-							<td>Active</td>
-							<td><input type="number" min="0"
-								style="width: 80%; margin: 0px auto; height: 80%;" /></td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>Dennis Ji</td>
-							<td>2012/01/01</td>
-							<td>Member</td>
-							<td>Active</td>
-							<td><input type="number" min="0"
-								style="width: 80%; margin: 0px auto; height: 80%;" /></td>
-						</tr>
+					<tbody id="productBody">
+						<c:forEach items="${productAll.list}" var="s">
+							<tr height="20px;">
+								<td><input type="checkbox" name="productCheck" /></td>
+								<td>${s.productName}</td>
+								<td>${s.productId}</td>
+								<td>${s.producttype.productTypeName}</td>
+								<td>${s.productunit.puName}<input type="hidden"
+									value="${s.productunit.productUnitId}" />
+								</td>
+								<td><input type="number" min="0" value="0"
+									style="width: 80%; margin: 0px auto; height: 80%;" /></td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 				<div class="pagination pagination-centered">
-					<ul>
-						<li><a href="#">上一页</a></li>
-						<li class="active"><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">下一页</a></li>
+					<ul id="productPageButton">
+						<li><a href="javascript:goproductpage('pre');">上一页</a> <input
+							type="hidden" name="productPageNow" value="${productAll.pageNum}" />
+						</li>
+						<c:forEach begin="1" end="${productAll.pages}" var="s">
+							<li><a href="javascript:goproductpage(${s});"
+								<c:if test="${productAll.pageNum==s}">class="active"</c:if>>${s}</a></li>
+						</c:forEach>
+						<li><a href="javascript:goproductpage('next');">下一页</a></li>
 					</ul>
 				</div>
 			</div>
-
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn btn-primary">选择</a> <a href="#" class="btn"
-				data-dismiss="modal">关闭</a>
+			<a href="#" class="btn btn-primary" id="productChose">选择</a> <a
+				href="#" class="btn" data-dismiss="modal">关闭</a>
 		</div>
 	</div>
 
@@ -283,7 +274,21 @@
 	<script src="static/js/counter.js"></script>
 	<script src="static/js/retina.js"></script>
 	<script src="static/js/custom.js"></script>
+	
+	<script src="static/own/purchase.js"></script>
+	
 	<!-- end: JavaScript-->
+	
+	<script type="text/javascript">
+		$("#enterStockType").live('change',function(){
+			var id=$(this).val();
+			$("#upstreamNo").append("<option>"+id+"</option>");
+			$("#upstreamNo").next().find("ul").append("<li id='upstreamNo_chzn_o_3' class='active-result' style>"+id+"</li>");
+			/* var s=$("#upstreamNo").next().find("ul li");
+			alert(s.length); */
+			//$("#upstreamNo").html("<option>a</option>");
+		});
+	</script>
 
 </body>
 </html>

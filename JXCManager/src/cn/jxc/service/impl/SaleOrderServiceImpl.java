@@ -4,15 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import cn.jxc.mapper.SaleMapper;
+import cn.jxc.mapper.SalesOrderMapper;
 import cn.jxc.pojo.SalesOrder;
-import cn.jxc.service.SaleService;
+import cn.jxc.service.SaleOrderService;
 
-public class SaleServiceImpl implements SaleService {
+public class SaleOrderServiceImpl implements SaleOrderService {
 
 	@Autowired
-	private SaleMapper saleMap;
-
+	private SalesOrderMapper saleMap;
+	
 	//²éÑ¯ËùÓÐ
 	@Override
 	public List<SalesOrder> getSaleAll() {

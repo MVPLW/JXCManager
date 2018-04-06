@@ -1,8 +1,8 @@
 package cn.jxc.pojo;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * 仓库表
@@ -20,25 +20,27 @@ public class StoreHouse implements java.io.Serializable {
 	private String shPhone;//电话
 	private Date createDate;//仓库成立时间
 	private String shName;//仓库名字
+
+	private List<EnterStock> enterstocks = new ArrayList<EnterStock>(0);
+	private List<Requisition> requisitionsForOutboundStoreHouse = new ArrayList<Requisition>(0);
+	private List<LeaveStock> leavestocks = new ArrayList<LeaveStock>(0);
+	private List<StockPile> stockpiles = new ArrayList<StockPile>(0);
+	private List<Requisition> requisitionsForStorageStoreHouse = new ArrayList<Requisition>(0);
 	
 	public String getShName() {
 		return shName;
 	}
-
+	
 	public void setShName(String shName) {
 		this.shName = shName;
 	}
 
-	private Set<EnterStock> enterstocks = new HashSet<EnterStock>(0);
-	private Set requisitionsForOutboundStoreHouse = new HashSet(0);
-	private Set<LeaveStock> leavestocks = new HashSet<LeaveStock>(0);
-	private Set<StockPile> stockpiles = new HashSet<StockPile>(0);
-	private Set requisitionsForStorageStoreHouse = new HashSet(0);
-
 	public StoreHouse() {
+		super();
 	}
 
 	public StoreHouse(int storeHouseId, Employee employee, String shAddress, String shPhone, Date createDate) {
+		super();
 		this.storeHouseId = storeHouseId;
 		this.employee = employee;
 		this.shAddress = shAddress;
@@ -47,8 +49,9 @@ public class StoreHouse implements java.io.Serializable {
 	}
 
 	public StoreHouse(int storeHouseId, Employee employee, String shAddress, String shPhone, Date createDate,
-			Set enterstocks, Set requisitionsForOutboundStoreHouse, Set leavestocks, Set stockpiles,
-			Set requisitionsForStorageStoreHouse) {
+			List<EnterStock> enterstocks, List<Requisition> requisitionsForOutboundStoreHouse, List<LeaveStock> leavestocks, List<StockPile> stockpiles,
+			List<Requisition> requisitionsForStorageStoreHouse) {
+		super();
 		this.storeHouseId = storeHouseId;
 		this.employee = employee;
 		this.shAddress = shAddress;
@@ -101,43 +104,43 @@ public class StoreHouse implements java.io.Serializable {
 		this.createDate = createDate;
 	}
 
-	public Set getEnterstocks() {
+	public List<EnterStock> getEnterstocks() {
 		return this.enterstocks;
 	}
 
-	public void setEnterstocks(Set enterstocks) {
+	public void setEnterstocks(List<EnterStock> enterstocks) {
 		this.enterstocks = enterstocks;
 	}
 
-	public Set getRequisitionsForOutboundStoreHouse() {
+	public List<Requisition> getRequisitionsForOutboundStoreHouse() {
 		return this.requisitionsForOutboundStoreHouse;
 	}
 
-	public void setRequisitionsForOutboundStoreHouse(Set requisitionsForOutboundStoreHouse) {
+	public void setRequisitionsForOutboundStoreHouse(List<Requisition> requisitionsForOutboundStoreHouse) {
 		this.requisitionsForOutboundStoreHouse = requisitionsForOutboundStoreHouse;
 	}
 
-	public Set getLeavestocks() {
+	public List<LeaveStock> getLeavestocks() {
 		return this.leavestocks;
 	}
 
-	public void setLeavestocks(Set leavestocks) {
+	public void setLeavestocks(List<LeaveStock> leavestocks) {
 		this.leavestocks = leavestocks;
 	}
 
-	public Set getStockpiles() {
+	public List<StockPile> getStockpiles() {
 		return this.stockpiles;
 	}
 
-	public void setStockpiles(Set stockpiles) {
+	public void setStockpiles(List<StockPile> stockpiles) {
 		this.stockpiles = stockpiles;
 	}
 
-	public Set getRequisitionsForStorageStoreHouse() {
+	public List<Requisition> getRequisitionsForStorageStoreHouse() {
 		return this.requisitionsForStorageStoreHouse;
 	}
 
-	public void setRequisitionsForStorageStoreHouse(Set requisitionsForStorageStoreHouse) {
+	public void setRequisitionsForStorageStoreHouse(List<Requisition> requisitionsForStorageStoreHouse) {
 		this.requisitionsForStorageStoreHouse = requisitionsForStorageStoreHouse;
 	}
 
