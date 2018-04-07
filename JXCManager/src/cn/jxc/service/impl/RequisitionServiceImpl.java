@@ -30,8 +30,8 @@ public class RequisitionServiceImpl implements RequisitionService{
 	
 	//查询所有的调拨订单详情
 	@Override
-	public PageInfo<Requisition> getRequisition(String requisitionId,Integer rsid,Integer num) {
-		PageHelper.startPage(num, 10);
+	public PageInfo<Requisition> getRequisition(String requisitionId,Integer rsid,Integer num,Integer pageSize) {
+		PageHelper.startPage(num, pageSize);
 		List<Requisition> requisition = resMapper.getRequisition(requisitionId,rsid);
 		PageInfo<Requisition> pageInfos=new PageInfo<Requisition>(requisition);
 		return pageInfos;

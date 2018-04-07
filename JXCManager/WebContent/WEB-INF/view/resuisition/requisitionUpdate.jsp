@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +49,7 @@
 			<!-- start: Content -->
 			<div id="content" class="span10">
 				<ul class="breadcrumb">
-					<li><i class="icon-home"></i>首页 <i class="icon-angle-right"></i></li>
+					<li><i class="icon-home"></i>首页<i class="icon-angle-right"></i></li>
 					<li><a href="form">调拨管理</a></li>
 				</ul>
 				<div class="row-fluid sortable">
@@ -61,32 +62,30 @@
 						</div>
 						<div style="clear: both;">&nbsp;</div>
 						<div class="box-content">
-							<form class="form-horizontal" action="requisitionAdd"
-								method="post" id="myform">
+							<form class="form-horizontal" action="productRequestUpdate"
+								method="post" id="updateform">
 								<fieldset>
 									<table style="width: 80%; margin: 0px auto;">
 										<tr>
 											<td><div class="control-group">
 													<label class="control-label">调拨单号&nbsp;&nbsp;</label>
 													<div class="controls">
-														<input value="asd" name="" disabled="disabled">
+														<input value="${requisition.requisitionId }" name="" disabled="disabled">
 													</div>
 												</div></td>
 											<td><div class="control-group">
-													<label class="control-label"
-														for="employeeByRequestEmpId.empLoginName">制单人&nbsp;&nbsp;</label>
+													<label class="control-label" for="employeeByRequestEmpId.empLoginName">制单人&nbsp;&nbsp;</label>
 													<div class="controls">
 														<select id="employeeByRequestEmp.empLoginName"
-															name="employeeByRequestEmp.empLoginName"
+														name="employeeByRequestEmp.empLoginName"
 															data-rel="chosen">
-																<option value="as">aadsaa</option>
-															<c:forEach items="${employees}" var="s">
-																<option value="${s.empLoginName}"
-																	<c:if test="${s.empLoginName==sessionScope.loginEmp.empLoginName }">selected="selected"</c:if>>${s.empLoginName}</option>
-															</c:forEach>
+														<c:forEach items="${employees}" var="s">
+															<option value="${s.empLoginName}"
+															<c:if test="${s.empLoginName==requisition.employeeByRequestEmp.empLoginName }">selected="selected"</c:if>>${s.empLoginName}</option>
+														</c:forEach>
 														</select>
 													</div>
-												</div></td>
+											</div></td>
 										</tr>
 										<tr>
 											<td><div class="control-group">
@@ -94,7 +93,7 @@
 													<div class="controls">
 														<input type="text" class="input-xlarge datepicker"
 															readonly="readonly" id="requestTime" name="requestTime"
-															placeholder="申请时间" disabled="disabled"/>
+															placeholder="制单时间" />
 													</div>
 												</div></td>
 											<td><div class="control-group">
@@ -102,9 +101,9 @@
 													<div class="controls">
 														<select id="supplier.supplierId"
 															name="storehouseByOutboundStoreHouse.storeHouseId" data-rel="chosen">
-															<option value="as">aadsaa</option>
 															<c:forEach items="${storehouse}" var="s">
-																<option value="${s.storeHouseId }">${s.shName}</option>
+																<option value="${s.storeHouseId }"
+																<c:if test="${s.storeHouseId==requisition.storehouseByOutboundStoreHouse.shName }">selected="selected"</c:if>>${s.shName}</option>
 															</c:forEach>
 														</select>
 													</div>
@@ -118,9 +117,9 @@
 													<div class="controls">
 														<select id=""
 															name="storehouseByStorageStoreHouse.storeHouseId" data-rel="chosen">
-															<option value="as">aadsaa</option>
 															<c:forEach items="${storehouse}" var="s">
-																<option value="${s.storeHouseId }">${s.shName}</option>
+																<option value="${s.storeHouseId }"
+																<c:if test="${s.storeHouseId==requisition.storehouseByStorageStoreHouse.shName}">selected="selected"</c:if>>${s.shName}</option>
 															</c:forEach>
 														</select>
 													</div>
@@ -143,31 +142,52 @@
 												</tr>
 											</thead>
 											<tbody id="productTbody">
+												<c:forEach items="${requisitionDetail.list}" var="r">
+													<tr>
+														<td>${r.product.productId}</td>
+														<td>${r.product.productName}</td>
+														<td>${r.productUnit.puName}<%-- ${s.productUnit.puName}  --%> <input type="hidden" value="${s.productUnit.productUnitId}"/></td>
+														<td>${r.count}</td>
+														<td><a class='label label-important'
+															href="javascript:;" id='removeproductDetail'
+															onclick="removeproductDetail(${r.reId},this)">移除</a></td>
+													</tr>
+												</c:forEach>
 											</tbody>
 										</table>
-										<!-- <div class="pagination pagination-centered">
-											<ul>
-												<li><a href="#">Prev</a></li>
-												<li class="active"><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">Next</a></li>
-											</ul>
-										</div> -->
+										<!-- <div class="pagination pagination-centered"> -->
+											<%-- <ul id="muluUl">
+												<li><a href="javascript:;"
+													onclick="goProductPageByRID('pre')">Prev</a></li>
+												<c:forEach begin="1" end="${purchaseDetails.pages}" var="s">
+													<li
+														<c:if test="${s==purchaseDetails.pageNum}">class="active"</c:if>><a
+														href="javascript:;" onclick="goProductPageByRID(${s})">${s}</a></li>
+												</c:forEach>
+												<li><a href="javascript:;"
+													onclick="goProductPageByRID('next')">Next</a></li>
+											</ul> --%>
+										<!-- </div> -->
 										<!--/span-->
 									</div>
 									<div class="form-actions">
+										<input type="hidden" name="purchaseRequestId"
+											value="${purchase.purchaseRequestId}" />
 										<input type="hidden" name="products" id="products" />
 										<button class="btn btn-info btn-setting" id="addPro"
 											onclick="javascript:void(0);">添加产品信息</button>
-										<button type="submit" class="btn btn-primary">提交申请</button>
-										<button class="btn" >取消</button>
+										<button type="submit" class="btn btn-primary">保存信息</button>
+										<button class="btn" type="button" onclick="javascript:history.go(-1);">取消</button>
+										<div style="display: none;">
+											<button class="btn btn-primary noty" id="error"
+												data-noty-options='{"text":"修改失败","layout":"center","type":"error"}'>
+												<i class="halflings-icon white white bell"></i>
+											</button>
+										</div>
 									</div>
 								</fieldset>
 							</form>
 						</div>
-						<!--/span-->
 					</div>
 				</div>
 			</div>
@@ -216,20 +236,20 @@
 				</table>
 				<div class="pagination pagination-centered">
 					<ul id="productPageButton">
-						<li><a href="javascript:goproductpage('pre');">上一页</a> <input
-							type="hidden" name="productPageNow" value="${productAll.pageNum}" />
-						</li>
+						<li><a href="javascript:;" onclick="goproductpage('pre')">上一页</a>
+							<input type="hidden" name="productPageNow"
+							value="${productAll.pageNum}" /></li>
 						<c:forEach begin="1" end="${productAll.pages}" var="s">
-							<li><a href="javascript:goproductpage(${s});"
+							<li><a href="javascript:;" onclick="goproductpage(${s})"
 								<c:if test="${productAll.pageNum==s}">class="active"</c:if>>${s}</a></li>
 						</c:forEach>
-						<li><a href="javascript:goproductpage('next');">下一页</a></li>
+						<li><a href="javascript:;" onclick="goproductpage('next')">下一页</a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn btn-primary" id="productChose">选择</a> <a
+			<a href="#" class="btn btn-primary" id="requisitionproductChose">选择</a> <a
 				href="#" class="btn" data-dismiss="modal">关闭</a>
 		</div>
 	</div>
@@ -267,274 +287,213 @@
 	<script src="static/js/custom.js"></script>
 	<!-- end: JavaScript-->
 
+	<script src="static/own/purchase.js"></script>
+
 	<script type="text/javascript">
 		$(function() {
 			whetherPro();
 			$("#employeeByRequestEmpId.empLoginName").attr("readonly",
 					"readonly"); //设置下拉列表为只读
-			//设置时间控件默认为当前时间
-			var date = new Date();
+			/* var date = '${purchase.requestTime}';
 			$("#requestTime").val(
 					parseInt(date.getMonth()) + 1 + "/" + date.getDate() + "/"
-							+ date.getFullYear());
+							+ date.getFullYear()); */
 		});
-		//产品信息分页实现  
-		function goproductpage(type) {
-			//移除全选的选中
-			$("#productCheckAll").removeAttr("checked");
-			$("#productCheckAll").parent().removeClass("checked");
-			var pageNum = parseInt($("[name=productPageNow]").val()); //获取当前的页码
-			var pagePageTotal = parseInt('${productAll.pages}'); //总页数
-			if (type == "next") { //下一页
-				pageNum = pageNum + 1 > pagePageTotal ? pagePageTotal
-						: pageNum + 1;
-			} else if (type == "pre") { //上一页
-				pageNum = pageNum - 1 < 1 ? 1 : pageNum - 1;
-			} else {
-				pageNum = parseInt(type);
-			}
+		/* $("#removeproduct").live('click', function() {
 			
-			$.ajax({
-						type : "POST",
-						url : "getProductByPage",
-						data : "pageNum=" + pageNum,
-						dataType : "JSON",
-						success : function(result) {
-							var s = "";
-							for ( var i in result) {
-								s += "<tr height='20px;'>"
-										+ "<td><input type='checkbox' name='productCheck' /></td>"
-										+ "<td>"
-										+ result[i].productName
-										+ "</td>"
-										+ "<td>"
-										+ result[i].productId
-										+ "</td>"
-										+ "<td>"
-										+ result[i].producttype.productTypeName
-										+ "</td>"
-										+ "<td>"
-										+ result[i].productunit.puName
-										+ "<input type='hidden' value='"+result[i].productunit.productUnitId+"' />"
-										+ "</td>"
-										+ "<td><input type='number' min='0' value='0' style='width: 80%; margin: 0px auto; height: 80%;' /></td>"
-										+ "</tr>";
-							}
-							$("#productBody").html(s);
+		}); */
+		/* 使用ajax实现采购订单详情的删除 */
+		function removeproductDetail(id,dom){
+			var s=confirm("此操作不可撤销,确认删除吗?");
+			if(s==true){
+				$(dom).parent().parent("tr").remove();//移除dom元素
+				$.ajax({
+					type : "POST",
+					url : "delrequisitionDetailById",
+					data : "id="+id,
+					dataType : "text",
+					success : function(result) {
+						if(result=="1"){  //删除成功
+							alert("删除成功");
+						}else{
+							alert("删除失败");
 						}
-					});
+					},
+					error:function(){
+						
+					}
+				});
+			}
 		}
 
-		/* 
-		 $("#productCheckAll").change(function(){//判断全选框的改变
-			 var flage =$(this).is(":checked");//全选选中为true，否则为false
-			 $("input[type=checkbox]").each(function(){
-				 $(this).prop("checked",flage);
-			 });
-		 )};
-		 */
-
-		//产品全选
-		$("#productCheckAll").change(function() {
-			var flage = $(this).prop('checked');
-			$("#productBody").find("input[name='productCheck']").each(function(i,n){
-				if(flage==true){
-					$(n).prop("checked",true);
-					$(n).parent().addClass("checked");
-				}else{
-					$(n).removeAttr("checked");
-					$(n).parent().removeClass("checked");
+		//点击选择框  把选中的商品添加到数据库中  使用ajax实现
+		/* $("#productChose").live('click',function(){
+			
+		}); */
+		
+		/* 表单提交事件 */
+		$("#updateform").submit(function(){
+			var productTbody = $("#productTbody").find("tr[id!=message]"); // 已经有的产品
+			var s = "[";
+			for (var i = 0; i < productTbody.length; i++) { // 循环已选择的产品列表
+				var tbodytr = $(productTbody[i]).children();
+				var proid = tbodytr.eq(0).html(); // 产品编号
+				var pronum = parseInt(tbodytr.eq(3).html()); // 产品数量
+				var prounit = parseInt(tbodytr.eq(2).find("input").val()); // 产品规格id
+				//var proprice = parseFloat(tbodytr.eq(2).find("input").val()); // 产品价格
+				s += "{\"product\":{\"productId\":\"" + proid
+						+ "\"},\"count\":\"" + pronum
+						+ "\",\"productUnit\":{\"productUnitId\":\"" + prounit
+						+ "\"}}";
+				if (i != productTbody.length - 1) { // 代表不是最后一个
+					s += ",";
 				}
-			})
+			}
+			s += "]";
+			alert("asadadadasdadsaadadsadsa");
+			$("#products").val(s); // 为产品隐藏域赋值
+			return true;
 		});
 		
-		//点击选中框  如果有false值  取消全选框 
-		$("[name=productCheck]").live('change',function(){
-			var flag = true;
-			$("#productBody").find("input[name='productCheck']").each(function(i,n){
-				var s=$(n).prop("checked");
-				if(s==false){
-					flag=false;
-				}
-			})
-			if(flag==true){
-				$("#productCheckAll").prop("checked",true);
-				$("#productCheckAll").parent().addClass("checked");
-			}else{
-				$("#productCheckAll").removeAttr("checked");
-				$("#productCheckAll").parent().removeClass("checked");
+		//根据采购单号分页
+		function goProductPageByRID(type) {
+			var existPurchaseId = '${purchase.purchaseRequestId}';//当前单号
+			var existProductPageNum = parseInt('${purchaseDetails.pageNum}');//当前页码
+			var existProductPageTotal = parseInt('${purchaseDetails.pages}');//总页码
+			if (type == "pre") {
+				existProductPageNum = existProductPageNum - 1 < 1 ? 1
+						: existProductPageNum - 1;
+			} else if (type == 'next') {
+				existProductPageNum = existProductPageNum + 1 > existProductPageTotal ? existProductPageTotal
+						: existProductPageNum + 1;
+			} else {
+				existProductPageNum = parseInt(type);
 			}
-		});
-
-		//移除按钮点击实现产品移除
-		$("#removeproduct").live('click', function() {
-			$(this).parent().parent("tr").remove();
-			//判断是否还有产品  如果没有 加上提示字样
-			whetherPro();
-		});
-
-		//点击选择  把选中的产品添加到调拨订单中
-		$("#productChose")
-				.click(
-						function() {
-							var tbody = $("#productBody").find("tr");
-							var toadd = new Array();
-							for (var i = 0; i < tbody.length; i++) {
-								var tbodytr = $(tbody[i]).children(); //获取tr中所有子元素
-								//获取第一个复选框的值    判断是否选中  选中的值为true  未选中值为false
-								var checkBox = tbodytr.eq(0).find('input')
-										.prop('checked');
-								//获取数字框的值
-								var num = parseInt(tbodytr.eq(5).find('input')
-										.val());
-								//如果复选框选中或者数量大于0的时候
-								if (checkBox == true && num > 0) {
-									var product = new Object();
-									product.id = tbodytr.eq(2).html(); //产品编号
-									product.name = tbodytr.eq(1).html(); //产品名称
-									product.unit = tbodytr.eq(4).html(); //产品计量单位名称
-									product.unitid = tbodytr.eq(4)
-											.find("input").val(); //产品计量单位id
-									product.num = num; //为对象的数量赋值
-									//创建的对象添加到数组中
-									toadd.push(product);
-								}
-							}
-							if (toadd.length < 1) {
-								alert("请选择产品或者输入数量");
-								return;
-							}
-
-							//合并产品的方法   如果选择重复的  则直接更改数量  向已选择产品添加的时候  判断是否已经包含  如果包含  则合并
-							//toadd  是 从模态框中选择的产品
-							var productHtml = "";
-							//var flag=new Array();
-							var productTbody = $("#productTbody").find(
-									"tr[id!=message]"); //已经有的产品
-							for (var i = 0; i < productTbody.length; i++) { //循环已选择的产品列表
-								var tbodytr = $(productTbody[i]).children();
-								var proid = tbodytr.eq(0).html();
-								for (var j = 0; j < toadd.length; j++) { //循环选择的产品
-									if (proid == toadd[j].id) { //则把已经选择的产品数量修改 
-										//flag.push();
-										var pronum = tbodytr.eq(4).html(); //已经存在的产品数量
-										var sum = parseInt(parseInt(pronum)
-												+ toadd[j].num); //两个数量相加
-										tbodytr.eq(4).html(sum); //赋值
-										toadd[j].flag = true;
-										break;
-									}
-								}
-							}
-
-							//根据在模态框中选择的商品拼接成html
-							for (var i = 0; i < toadd.length; i++) {
-								//判断是否包含某个属性对象.属性 !==undefined  包含属性返回true  不包含返回false
-								if ((toadd[i].flag !== undefined) == false) {
-									productHtml += "<tr>"
-											+ "<td>"
-											+ toadd[i].id
-											+ "</td>"
-											+ "<td>"
-											+ toadd[i].name
-											+ "</td>"
-											+ "<td>"
-											+ toadd[i].unit
-											+ "</td>"
-											+ "<td>"
-											+ toadd[i].num
-											+ "</td>"
-											+ "<td><a class='label label-important' id='removeproduct' >移除</a></td>"
-											+ "</tr>";
-								}
-							}
-							//调用移除提示字样方法
-							removeWhether();
-							//在已选择的产品中添加已选择的
-							$("#productTbody").append(productHtml);
-							$("#myModal").modal("hide");
-						});
-		//文本框只能输入数字和小数
-		function nan(obj) {
-			//t.value=t.value.replace(/[^\d]/g,"");
-			//得到第一个字符是否为负号
-			var t = obj.value.charAt(0);
-			//先把非数字的都替换掉，除了数字和. 
-			obj.value = obj.value.replace(/[^\d\.]/g, '');
-			//必须保证第一个为数字而不是. 
-			obj.value = obj.value.replace(/^\./g, '');
-			//保证只有出现一个.而没有多个. 
-			obj.value = obj.value.replace(/\.{2,}/g, '.');
-			//保证.只出现一次，而不能出现两次以上 
-			obj.value = obj.value.replace('.', '$#$').replace(/\./g, '')
-					.replace('$#$', '.');
-			//如果第一位是负号，则允许添加
-			if (t == '-') {
-				obj.value = '-' + obj.value;
-			}
-		}
-
-		//判断是否有产品如果没有则添加提示字样
-		function whetherPro() {
-			var prompt = "<tr id='message'><td colspan='6' rowspan='2' align='center'"+ 
-							"height='50px' ><h2 style='margin-left: 420px;'>请添加采购产品</h2>"
-					+ "</td>" + "</tr>";
-			var pros = $("#productTbody").find("tr");
-			if (pros.length < 1) {
-				$("#productTbody").html(prompt);
-			}
-		}
-
-		//移除提示字样
-		function removeWhether() {
-			var pro = $("#productTbody").find("#message");
-			$(pro).remove();
-		}
-
-		//表单提交  封装好json字符串带到后台
-		$("#myform").submit(
-				function() {
-					var productTbody = $("#productTbody").find(
-							"tr[id!=message]"); //已经有的产品
-					var s = "[";
-					for (var i = 0; i < productTbody.length; i++) { //循环已选择的产品列表
-						var tbodytr = $(productTbody[i]).children();
-						var proid = tbodytr.eq(0).html(); //产品编号
-						var pronum = parseInt(tbodytr.eq(4).html()); //产品数量
-						var prounit = parseInt(tbodytr.eq(3).find("input")
-								.val()); //产品规格id
-						/* var proprice = parseInt(tbodytr.eq(2).find("input")
-								.val()); //产品价格 */
-						s += "{\"product\":{\"productId\":\"" + proid
-								+ "\"},\"count\":\"" + pronum
-								+ "\",\"productUnit\":{\"productUnitId\":\""
-								+ prounit + "\"}";
-						if (i != productTbody.length - 1) { //代表不是最后一个
-							s += ",";
-						}
+			//ajax实现分页查看订单明细
+			$.ajax({
+				type : "POST",
+				url : "getExistProductByPage",
+				data : "pageNum=" + existProductPageNum
+						+ "&purchaseId=" + existPurchaseId,
+				dataType : "JSON",
+				success : function(result) {
+					//为已存在的产品信息赋值
+					var existProductHtml = "";
+					for (var i = 0; i < result.list.length; i++) {
+						existProductHtml += "<tr>"
+								+ "<td>"
+								+ result.list[i].product.productId
+								+ "</td>"
+								+ "<td>"
+								+ result.list[i].product.productName
+								+ "</td>"
+								+ "<td>"   
+								+ result.list[i].productUnit.puName +"<input type=\"hidden\" value=\""+result.list[i].productUnit.productUnitId+"\"/>" 
+								+ "</td>"
+								+ "<td>"
+								+ result.list[i].count
+								+ "</td>"
+								+ "<td><a class='label label-important' id=\"removeproductDetail\" "
+								+" href=\"javascript:;\" onclick=\"removeproductDetail("+result.list[i].prdId+",this)\" >移除</a></td>"
+								+ "</tr>";
 					}
-					s += "]";
-					$("#products").val(s); //为产品隐藏域赋值
-					return true;
-				});
+					/* <a class='label label-important' href="javascript:;"
+						id='removeproduct' onclick="removeproduct(${s.prdId})">移除</a> */
+					$("#productTbody").html(existProductHtml);
+					//为页码目录赋值
+					/* var muluUl="<li><a href=\"javascript:;\" onclick=\"goProductPageByRID('pre')\">Prev</a></li>";
+					for(var i=1;i<=result.pages;i++){
+						muluUl+="<li";
+						if(i==result.pageNum){
+							muluUl+=" class=\"active\" ";
+						}
+						muluUl+=" ><a href=\"javascript:;\" onclick=\"goProductPageByRID("+i+")\">"+i+"</a></li >";
+					}
+					muluUl+="<li><a href=\"javascript:;\" onclick=\"goProductPageByRID('next')\">Next</a></li>";
+					$("#muluUl").html(muluUl); */
+				}
+			});
+		}
+		
 
-		//点击选择产品时  把checkbox和数量框清空  
-		$("#addPro").click(function() {
+		// 点击选择 把选中的产品添加到采购订单中
+		$("#requisitionproductChose").click(function() {
 			var tbody = $("#productBody").find("tr");
+			var toadd = new Array();
 			for (var i = 0; i < tbody.length; i++) {
-				var tbodytr = $(tbody[i]).children();
-				var s=tbodytr.eq(0).find("input[name=productCheck]");
-				/* tbodytr.eq(0).find("input[name=productCheck]").prop("checked",false); */
-				$(s).removeAttr("checked");
-				$(s).parent().removeClass("checked");
-				$("#productCheckAll").removeAttr("checked");
-				$("#productCheckAll").parent().removeClass("checked");
-				tbodytr.eq(5).find("input").val(0);
+				var tbodytr = $(tbody[i]).children(); // 获取tr中所有子元素
+				// 获取第一个复选框的值 判断是否选中 选中的值为true 未选中值为false
+				var checkBox = tbodytr.eq(0).find('input').prop(
+						'checked');
+				// 获取数字框的值
+				var num = parseInt(tbodytr.eq(5).find('input').val());
+				// 如果复选框选中或者数量大于0的时候
+				if (checkBox == true && num > 0) {
+					var product = new Object();
+					product.id = tbodytr.eq(2).html(); // 产品编号
+					product.name = tbodytr.eq(1).html(); // 产品名称
+					product.unit = tbodytr.eq(4).html(); // 产品计量单位名称
+					product.unitid = tbodytr.eq(4).find("input").val(); // 产品计量单位id
+					product.num = num; // 为对象的数量赋值
+					// 创建的对象添加到数组中
+					toadd.push(product);
+				}
 			}
+			if (toadd.length < 1) {
+				alert("请选择产品或者输入数量");
+				return;
+			}
+			
+			// 合并产品的方法 如果选择重复的 则直接更改数量 向已选择产品添加的时候 判断是否已经包含 如果包含 则合并
+			// toadd 是 从模态框中选择的产品
+			var productHtml = "";
+			// var flag=new Array();
+			var productTbody = $("#productTbody").find(
+					"tr[id!=message]"); // 已经有的产品
+			for (var i = 0; i < productTbody.length; i++) { // 循环已选择的产品列表
+				var tbodytr = $(productTbody[i]).children();
+				var proid = tbodytr.eq(0).html();
+				for (var j = 0; j < toadd.length; j++) { // 循环选择的产品
+					if (proid == toadd[j].id) { // 则把已经选择的产品数量修改
+						// flag.push();
+						var pronum = tbodytr.eq(3).html(); // 已经存在的产品数量
+						var sum = parseInt(parseInt(pronum)+toadd[j].num); // 两个数量相加
+						alert(pronum);
+						alert(sum);
+						tbodytr.eq(3).html(sum); // 赋值
+						toadd[j].flag = true;
+						break;
+					}
+				}
+			}
+			
+			// 根据在模态框中选择的商品拼接成html
+			for (var i = 0; i < toadd.length; i++) {
+				// 判断是否包含某个属性 对象.属性 !==undefined 包含属性返回true 不包含返回false
+				if ((toadd[i].flag !== undefined) == false) {
+					productHtml += "<tr>"
+							+ "<td>"
+							+ toadd[i].id
+							+ "</td>"
+							+ "<td>"
+							+ toadd[i].name
+							+ "</td>"
+							+ "<td>"
+							+ toadd[i].unit
+							+ "</td>"
+							+ "<td>"
+							+ toadd[i].num
+							+ "</td>"
+							+ "<td><a class='label label-important' id='removeproduct' >移除</a></td>"
+							+ "</tr>";
+				}
+			}
+			// 调用移除提示字样方法
+			removeWhether();
+			// 在已选择的产品中添加已选择的
+			$("#productTbody").append(productHtml);
+			$("#myModal").modal("hide");
 		});
-		/* 
-		 *	为什么下拉列表变成disable后台就不能读取到
-		 */
 	</script>
 
 </body>

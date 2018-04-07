@@ -122,6 +122,7 @@ public class PurchaseRequestController {
 	 */
 	@RequestMapping("/productRequestAdd")
 	public String productRequestAdd(PurchaseRequest purchaseRequestadd, String products) {
+		System.out.println("今天周二");
 		List<PurchaseRequestDetail> purchaseRequestDetails = JSONObject.parseArray(products,
 				PurchaseRequestDetail.class);
 		purchaseRequestadd.setPurchaserequestdetails(purchaseRequestDetails);

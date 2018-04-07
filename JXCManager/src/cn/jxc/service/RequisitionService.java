@@ -17,7 +17,7 @@ public interface RequisitionService {
 	 * */
 	// 查询所有的调拨订单详情
 	PageInfo<Requisition> getRequisition(String requisitionId,
-			Integer rsid,Integer num);
+			Integer rsid,Integer pageNo,Integer pageSize);
 
 	// 按条件查询
 	Requisition requisitionByid(String requisitionId);

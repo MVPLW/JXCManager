@@ -140,45 +140,20 @@ h3 {
 											<td>${res.storehouseByOutboundStoreHouse.shName }</td>
 											<td>${res.storehouseByStorageStoreHouse.shName }</td>
 											<td class="center"><a class="btn btn-info btn-setting"
-												href="requisitionId?requisitionId=${res.requisitionId }"> <i 
-													class="halflings-icon white zoom-in"></i>
+												href="requisitionId?requisitionId=${res.requisitionId }">查看
 											</a><a class="btn btn-info btn-success"
 												href="gorequisitionupdate?requisitionId=${res.requisitionId }">
-													<i class="halflings-icon white edit"></i>
-											</a></td>
+													修改
+											</a><a class="btn btn-info btn-success"
+												href="gorequisitionupdate?requisitionId=${res.requisitionId }">审核</a>
+												<a class="btn btn-info btn-success"
+												href="gorequisitionupdate?requisitionId=${res.requisitionId }">删除</a>
+											</td>
 										</tr>
 									</c:forEach>
 								</tbody>
 							</table>
 						</div>
-						
-						
-						
-						
-						<%-- <ul>
-									<li>< a href=" ">First</ a></li>
-									<li>< a href="javascript:goproductpage('pre');">Prev</ a></li>
-									<c:if test="${prbb.pageNum-2>1}">
-										<li><a>...</ a></li>
-									</c:if>
-									<c:forEach begin="1" end="${prbb.pages}" var="s">
-										<c:if test="${s>=prbb.pageNum-2 && s<=prbb.pageNum+2 }">
-											<li <c:if test="${s==prbb.pageNum}">class="active"</c:if>> 
-												< a href="javascript:goproductpage(${s});">${s}</ a> 
-											</li> 
-										</c:if>
-									</c:forEach>
-									<c:if test="${prbb.pageNum+2<prbb.pages}">
-										<li><a>...</ a></li>
-									</c:if>
-									<li>< a href="javascript:goproductpage('next');">Next</ a><!-- 隐藏域 存放当前页码 -->
-												<input type="hidden" name="pageNo" value="${prbb.pageNum}" /></li>
-									<li>< a href="javascript:goproductpage(${prbb.pages});">Last</ a></li>
-								</ul> --%>
-						
-						
-						
-						
 						<div class="pagination pagination-centered">
 							<ul id="productPageButton">
 								<li><a href="gorequisition?pageNo=1">首页</a></li>
@@ -290,7 +265,7 @@ h3 {
 
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+			<a href="#" class="btn btn-primary" data-dismiss="modal">关闭</a>
 		</div>
 	</div>
 

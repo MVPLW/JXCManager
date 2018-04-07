@@ -13,12 +13,14 @@ import com.github.pagehelper.PageInfo;
 
 import cn.jxc.pojo.Employee;
 import cn.jxc.pojo.Product;
+import cn.jxc.pojo.PurchaseRequestDetail;
 import cn.jxc.pojo.Requisition;
 import cn.jxc.pojo.RequisitionDetail;
 import cn.jxc.pojo.ReviewStatus;
 import cn.jxc.pojo.StoreHouse;
 import cn.jxc.service.EmployeeService;
 import cn.jxc.service.ProductService;
+import cn.jxc.service.RequisitionDetailService;
 import cn.jxc.service.RequisitionService;
 import cn.jxc.service.ReviewStatusService;
 import cn.jxc.service.StoreHouseService;
@@ -36,6 +38,8 @@ public class RequisitionController {
 	private StoreHouseService storehouseservice;
 	@Autowired
 	private ProductService productService;
+	@Autowired
+	private RequisitionDetailService requisitiondetailservice;
 	//进入调拨查询页面
 	@RequestMapping("/gorequisition")
 	public String gorequisition(Integer pageNo,Model model) {
@@ -45,7 +49,7 @@ public class RequisitionController {
 		//审核状态
 		List<ReviewStatus> rslist = rsmapperservice.getReviewStatus();
 		//调拨订单表查询
-		PageInfo<Requisition> reslist = requisitionmapperservice.getRequisition(null,null,pageNo);
+		PageInfo<Requisition> reslist = requisitionmapperservice.getRequisition(null,null,pageNo,10);
 		model.addAttribute("rslist", rslist);
 		model.addAttribute("reslist", reslist);
 		return "resuisition/requisition";
@@ -68,7 +72,7 @@ public class RequisitionController {
 		if(rsid==0) {
 			rsid=null;
 		}
-		PageInfo<Requisition> reslist = requisitionmapperservice.getRequisition(requisitionId,rsid,pageNo);
+		PageInfo<Requisition> reslist = requisitionmapperservice.getRequisition(requisitionId,rsid,pageNo,10);
 		model.addAttribute("rslist", rslist);
 		model.addAttribute("reslist", reslist);
 		return "resuisition/requisition";
@@ -115,10 +119,40 @@ public class RequisitionController {
 	
 	//跳转至修改
 	@RequestMapping("gorequisitionupdate")
-	public String gorequisitionupdate(String requisitionId,Model model) {
-		Requisition requ = requisitionmapperservice.requisitionByid(requisitionId);
-		System.out.println("调拨单的ID是："+requisitionId);
-		model.addAttribute("requ", requ);
+	public String gorequisitionupdate(String requisitionId,Model model, Integer productPageNo) {
+		if (null == productPageNo) {
+			productPageNo = 1;
+		}
+		//调拨订单表
+		Requisition requisition = requisitionmapperservice.requisitionByid(requisitionId);
+		//调拨订单详情表
+		PageInfo<RequisitionDetail> requisitionDetail = requisitiondetailservice
+				.requisitionDetailById(requisitionId, 1, 1000);
+		//员工信息
+		List<Employee> employees = employeeservice.getEmployeeAll();
+		//仓库信息
+		List<StoreHouse> storehouse = storehouseservice.getStoreHouselist();
+		//产品信息
+		PageInfo<Product> productAll = productService.getProductAll(1); 
+		model.addAttribute("requisition",requisition);
+		model.addAttribute("requisitionDetail",requisitionDetail);
+		model.addAttribute("employees",employees);
+		model.addAttribute("storehouse",storehouse);
+		model.addAttribute("productAll",productAll);
 		return "resuisition/requisitionUpdate";
+	}
+	/**
+	 * 使用ajax实现根据id删除一条采购明细
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("delrequisitionDetailById")
+	public String delrequisitionByid(int id) {
+		int delPurchaseRequestDetail = requisitiondetailservice.delrequisitionByid(id);
+		if (delPurchaseRequestDetail > 0) { // 删除成功
+			return "1";
+		} else
+			return "0";
 	}
 }
