@@ -69,7 +69,7 @@
 											<td><div class="control-group">
 													<label class="control-label">入库单号</label>
 													<div class="controls">
-														<span class="input-xlarge uneditable-input">随机生成
+														<span class="input-large uneditable-input">随机生成
 															可不填</span>
 													</div>
 												</div></td>
@@ -88,7 +88,7 @@
 											<td><div class="control-group">
 													<label class="control-label" for="date01">入库时间</label>
 													<div class="controls">
-														<input type="text" class="input-xlarge datepicker"
+														<input type="text" class="input-large datepicker"
 															readonly="readonly" id="date01" />
 													</div>
 												</div></td>
@@ -107,8 +107,11 @@
 											<td><div class="control-group">
 													<label class="control-label" for="upstreamNo">上游单号</label>
 													<div class="controls">
-														<input class="input-xlarge focused" id="upstreamNo"
-															name="upstreamNo" type="text" placeholder="此处填写上游单号" />
+														<!-- <input class="input-xlarge focused" id="upstreamNo"
+															name="upstreamNo" type="text" placeholder="此处填写上游单号" /> -->
+														<select id="upstreamNo" data-rel="chosen">
+															<option>1</option>
+														</select>
 													</div>
 												</div></td>
 											<td><div class="control-group">
@@ -280,7 +283,7 @@
 	<!-- end: JavaScript-->
 	
 	<script type="text/javascript">
-		$("#enterStockType").live('change',function(){
+		$("#enterStockType").live('change',function(){    //入库类型改变事件
 			var id=$(this).val();
 			$("#upstreamNo").append("<option>"+id+"</option>");
 			$("#upstreamNo").next().find("ul").append("<li id='upstreamNo_chzn_o_3' class='active-result' style>"+id+"</li>");

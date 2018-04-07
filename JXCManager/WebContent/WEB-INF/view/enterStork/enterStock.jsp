@@ -63,17 +63,20 @@ h3 {
 				</ul>
 
 				<div class="row-fluid">
-					<form action="gopurchase" method="post" class="form-horizontal">
+					<form action="goenterstock" method="post" class="form-horizontal">
 						<div class="control-group">
 							<div data-condition="search">
 								入库单号:<input type="text" name="singleNo" class="input-medium"
-									placeholder="请输入入库单号" /> 仓库名字:<input type="text" name="empNo"
-									class="input-medium" placeholder="请输入仓库名字" /> 时间: 
-									<input type="text" class="input-small datepicker" readonly="readonly"
-									 id="dateStart" name="dateStart" placeholder="开始日期"/>
-									 <input type="text" class="input-small datepicker" readonly="readonly"
-									 id="dateEnd" name="dateEnd" placeholder="结束日期"/>
-									<input type="submit" value="搜索" class="btn btn-success" />
+									value="${singleNo}" placeholder="请输入入库单号" /> 仓库名字:<input
+									type="text" name="shName" value="${shName}"
+									class="input-medium" placeholder="请输入仓库名字" /> 时间: <input
+									type="text" class="input-small datepicker" readonly="readonly"
+									<c:if test="${start!=null}">value="${start }"</c:if> id="start"
+									name="start" placeholder="开始日期" /> <input type="text"
+									class="input-small datepicker" readonly="readonly"
+									<c:if test="${end!=null}">value="${end }"</c:if> id="end"
+									name="end" placeholder="结束日期" /> <input type="submit"
+									value="搜索" class="btn btn-success" />
 								<div style="float: right;">
 									<a class="btn btn-primary" href="goenterstockadd"
 										data-command="Add"><i class="icon-plus"></i>&nbsp;添加</a> <a
@@ -92,57 +95,38 @@ h3 {
 							</div>
 							<div style="clear: both;">&nbsp;</div>
 							<div class="box-content" style="z-index: 1;">
-								<table 
+								<table
 									class="table table-striped table-bordered bootstrap-datatable">
 									<thead>
 										<tr>
 											<th><input type="checkbox" id="productCheckAll" /></th>
 											<th>入库单号</th>
-											<th>产品名称</th>
-											<th>产品编号</th>
-											<th>数量</th>
 											<th>仓库</th>
 											<th>入库时间</th>
 											<th>入库类型</th>
+											<th>审核人</th>
 											<th>审核状态</th>
 											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody id="productBody">
-										<%-- <c:forEach items="${prbb.list}" var="s">
+										<c:forEach items="${ess.list}" var="s">
 											<tr>
 												<th><input type="checkbox" name="productCheck"
-													value="${s.purchaseRequestId}" /></th>
-												<td>${s.purchaseRequestId}</td>
-												<td>${s.employeeByRequestEmpId.empLoginName}</td>
-												<td><fmt:formatDate value="${s.requestTime}"
+													value="${s.enterStockId}" /></th>
+												<td>${s.enterStockId }</td>
+												<td>${s.storehouse.shName}</td>
+												<td><fmt:formatDate value="${s.enterDate}"
 														pattern="yyyy-MM-dd" /></td>
-												<td>${s.supplier.suppName}</td>
-
-												<td><span
-													<c:choose>
-													<c:when test="${s.orderStatus.no==2}">class="label label-important"</c:when>
-													<c:when test="${s.orderStatus.no==1}">class="label label-warning"</c:when>
-													<c:when test="${s.orderStatus.no==7}">class="label label-success"</c:when>
-													<c:when test="${s.orderStatus.no==5}">class="label label-important"</c:when>
-													<c:otherwise>class="label label-info"</c:otherwise>
-												</c:choose>>${s.orderStatus.orderType}</span></td>
-												<td><input type="hidden" value="${s.purchaseRequestId}" />
-													<a id="detail">查看</a> <c:if test="${s.orderStatus.no==1}">
-														<a id="update"> 编辑</a>
-														<a id="commit"
-															onclick="operaOrder('${s.purchaseRequestId}',3)"> 提交</a>
-														<a id="cancelOrder"
-															onclick="operaOrder('${s.purchaseRequestId}',2)">取消</a>
-													</c:if> <c:if test="${s.orderStatus.no==6}">
-														<a id="cancelOrder"
-															onclick="operaOrder('${s.purchaseRequestId}',7)">入库</a>
-													</c:if> <c:if test="${s.orderStatus.no==3 }">
-														<a id="deptreview"
-															onclick="deptreview('${s.purchaseRequestId}','${s.reviewstatusByDeptReviewStatus.rsId}')">审核</a>
-													</c:if></td>
+												<td>${s.enterstocktype.estName}</td>
+												<td>${s.reviewEmp.empLoginName }</td>
+												<td>${s.reviewStatus.rsName}</td>
+												<td><input type="hidden" value="${s.enterStockId}" />
+													<a id="detail">查看</a> <a id="update"> 编辑</a> <a id="commit">
+														提交</a> <a id="cancelOrder">取消</a> <a id="cancelOrder">入库</a> <a
+													id="deptreview">审核</a></td>
 											</tr>
-										</c:forEach> --%>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>
@@ -150,21 +134,21 @@ h3 {
 								<ul>
 									<li><a href="#">First</a></li>
 									<li><a href="#">Prev</a></li>
-									<%-- <c:if test="${prbb.pageNum-2>1}">
+									<c:if test="${ess.pageNum-2>1}">
 										<li><a>...</a></li>
 									</c:if>
-									<c:forEach begin="1" end="${prbb.pages}" var="s">
-										<c:if test="${s>=prbb.pageNum-2 && s<=prbb.pageNum+2 }">
-											<li <c:if test="${s==prbb.pageNum}">class="active"</c:if>>
+									<c:forEach begin="1" end="${ess.pages}" var="s">
+										<c:if test="${s>=ess.pageNum-2 && s<=ess.pageNum+2 }">
+											<li <c:if test="${s==ess.pageNum}">class="active"</c:if>>
 												<a href="javascript:goproductpage(${s});">${s}</a>
 											</li>
 										</c:if>
 									</c:forEach>
-									<c:if test="${prbb.pageNum+2<prbb.pages}">
+									<c:if test="${ess.pageNum+2<ess.pages}">
 										<li><a>...</a></li>
 									</c:if>
 									<li><a href="javascript:goproductpage('next');">Next</a> <!-- 隐藏域 存放当前页码 -->
-										<input type="hidden" name="pageNo" value="${prbb.pageNum}" /></li> --%>
+										<input type="hidden" name="pageNo" value="${ess.pageNum}" /></li>
 									<li><a href="#">Last</a></li>
 								</ul>
 							</div>
@@ -271,7 +255,7 @@ h3 {
 	<script src="static/js/counter.js"></script>
 	<script src="static/js/retina.js"></script>
 	<script src="static/js/custom.js"></script>
-	
+
 	<script src="static/own/purchase.js"></script>
 	<!-- end: JavaScript-->
 	<script type="text/javascript">
