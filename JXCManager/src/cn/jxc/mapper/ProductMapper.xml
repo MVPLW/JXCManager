@@ -11,26 +11,14 @@
 			<result property="productTypeName" column="TName"/>
 			<result property="remark" column="TRemark"/>
 		</association>
-		<association property="productunit" javaType="ProductUnit" >
-			<id property="productUnitId" column="uid"/>
-			<result property="puName" column="UName"/>
-			<result property="puDes" column="udes"/>
-			<result property="createTime" column="utime"/>
-			<association property="employeeId" javaType="Employee" >
-				<id property="empLoginName" column="uempid"/>
-			</association>
+		<association property="productunit" resultMap="cn.jxc.mapper.ProductUnitMapper.productunitmap"  >
 		</association>
 		<association property="employeeId" javaType="Employee" resultMap="cn.jxc.mapper.EmployeeMapper.employeeResultMap" >
 		</association>
-		
 	</resultMap>
 
 	<sql id="product">
 		p.`Product_id` AS PDid,p.`Product_name` AS PDname ,p.`CreateDate` AS PDtime
-	</sql>
-	
-	<sql id="productunit">
-		u.`ProductUnit_id` AS uid,u.`PU_name` AS UName,u.`PU_des` AS udes,u.`Employee_id` AS uempid,u.`CreateTime` AS utime
 	</sql>
 	
 	<sql id="producttype">
@@ -41,7 +29,7 @@
 		SELECT 
 			<include refid="product" />,
 			<include refid="producttype"/>,
-			<include refid="productunit" />,
+			<include refid="cn.jxc.mapper.ProductUnitMapper.productunitsql" />,
 			<include refid="cn.jxc.mapper.EmployeeMapper.employeeMap" />
 		FROM product p 
 		LEFT JOIN producttype t 

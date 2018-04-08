@@ -35,7 +35,7 @@ public interface PurchaseRequestService {
 	 *            供应商
 	 * @return
 	 */
-	PageInfo<PurchaseRequest> getPurchaseRequestByBlurry(Integer num, String empNo, String singleNo, String suppName);
+	PageInfo<PurchaseRequest> getPurchaseRequestByBlurry(Integer num,Integer pageSize, String empNo, String singleNo, String suppName);
 
 	/**
 	 * 根据单号查询采购申请单

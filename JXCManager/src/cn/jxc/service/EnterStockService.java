@@ -2,6 +2,7 @@ package cn.jxc.service;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 
@@ -17,4 +18,5 @@ public interface EnterStockService {
 	int enterStockReview(String singleNo, String emp, Date date, Integer reviewStatus, String reason);
 
 	int enterStockUpdate(EnterStock enterStock);
+	
 }

@@ -52,7 +52,7 @@ public class PurchaseRequestController {
 			pageNo = 1;
 		}
 		PageInfo<PurchaseRequest> purchaseRequestByBlurry = purchaseRequestService.getPurchaseRequestByBlurry(pageNo,
-				empNo, singleNo, suppName);
+				5,empNo, singleNo, suppName);
 		model.addAttribute("prbb", purchaseRequestByBlurry);
 		model.addAttribute("empNo", empNo); // 查询条件保存
 		model.addAttribute("singleNo", singleNo);

@@ -23,6 +23,7 @@
 <link id="base-style" href="static/css/style.css" rel="stylesheet">
 <link id="base-style-responsive" href="static/css/style-responsive.css"
 	rel="stylesheet">
+<link rel="stylesheet" href="static/css/bootstrap-select.css">
 <link
 	href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext'
 	rel='stylesheet' type='text/css'>
@@ -62,15 +63,14 @@
 						</div>
 						<div style="clear: both;">&nbsp;</div>
 						<div class="box-content">
-							<form class="form-horizontal" action="#" method="post">
+							<form class="form-horizontal" action="#" method="post" id="enterStockForm">
 								<fieldset>
 									<table style="width: 80%; margin: 0px auto;">
 										<tr>
 											<td><div class="control-group">
 													<label class="control-label">入库单号</label>
 													<div class="controls">
-														<span class="input-large uneditable-input">随机生成
-															可不填</span>
+														<span class="input-large uneditable-input">随机生成 可不填</span>
 													</div>
 												</div></td>
 											<td><div class="control-group">
@@ -109,8 +109,8 @@
 													<div class="controls">
 														<!-- <input class="input-xlarge focused" id="upstreamNo"
 															name="upstreamNo" type="text" placeholder="此处填写上游单号" /> -->
-														<select id="upstreamNo" data-rel="chosen">
-															<option>1</option>
+														<select id="upstreamNo">
+															<option>请选择入库类型</option>
 														</select>
 													</div>
 												</div></td>
@@ -131,8 +131,10 @@
 													<label class="control-label" for="typeahead">备注</label>
 													<div class="controls">
 														<input type="text" class="span6 typeahead" id="typeahead"
-															data-provide="typeahead" data-items="4" placeholder="此处填写备注"
+															data-provide="typeahead" data-items="4"
+															placeholder="此处填写备注"
 															data-source='["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"]'>
+															<input type="hidden" id="enterStockProducts" />
 													</div>
 												</div>
 											</td>
@@ -153,7 +155,7 @@
 												</tr>
 											</thead>
 											<tbody id="productTbody">
-												
+
 											</tbody>
 										</table>
 										<!-- <div class="pagination pagination-centered">
@@ -169,12 +171,12 @@
 										<!--/span-->
 									</div>
 									<div class="form-actions">
-										<button class="btn btn-info btn-setting"
-											onclick="javascript:void(0);">添加入库信息</button>
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<button type="submit" class="btn btn-primary">提交申请</button>
+										<!-- <button class="btn btn-info btn-setting"
+											onclick="javascript:void(0);">添加入库信息</button> -->
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<button class="btn">取消</button>
+										<button type="submit" class="btn btn-primary">提交入库单</button>
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<button class="btn" type="button" onclick="javascript:history.go(-1);">取消</button>
 									</div>
 								</fieldset>
 							</form>
@@ -187,7 +189,7 @@
 	</div>
 	<!-- END Content -->
 
-	<div class="modal hide fade" id="myModal" style="width: 800px;">
+	<%-- <div class="modal hide fade" id="myModal" style="width: 800px;">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">x</button>
 			<h2>选择产品</h2>
@@ -243,7 +245,7 @@
 			<a href="#" class="btn btn-primary" id="productChose">选择</a> <a
 				href="#" class="btn" data-dismiss="modal">关闭</a>
 		</div>
-	</div>
+	</div> --%>
 
 	<!-- start: JavaScript-->
 
@@ -277,19 +279,116 @@
 	<script src="static/js/counter.js"></script>
 	<script src="static/js/retina.js"></script>
 	<script src="static/js/custom.js"></script>
-	
+	<script src="static/js/bootstrap-select.js"></script>
+
 	<script src="static/own/purchase.js"></script>
-	
+
 	<!-- end: JavaScript-->
-	
+
 	<script type="text/javascript">
-		$("#enterStockType").live('change',function(){    //入库类型改变事件
-			var id=$(this).val();
-			$("#upstreamNo").append("<option>"+id+"</option>");
-			$("#upstreamNo").next().find("ul").append("<li id='upstreamNo_chzn_o_3' class='active-result' style>"+id+"</li>");
-			/* var s=$("#upstreamNo").next().find("ul li");
-			alert(s.length); */
-			//$("#upstreamNo").html("<option>a</option>");
+		$("#enterStockType")
+				.live(
+						'change',
+						function() { //入库类型改变事件
+							var type = $(this).val();
+							//$("#upstreamNo").next().find("ul").append("<li id='upstreamNo_chzn_o_3' class='active-result' style>"+id+"</li>");
+							$
+									.ajax({
+										type : "POST",
+										url : "getUpstreamNo",
+										data : "type=" + type,
+										dataType : "JSON",
+										success : function(result) {
+											var s = "";
+											if (type == "1") { //采购
+												for (var i = 0; i < result.length; i++) {
+													s += "<option>"
+															+ result[i].purchaseRequestId
+															+ "</option>";
+												}
+												getSingleNoDetail(
+														result[0].purchaseRequestId,
+														"1");
+											} else if (type == "2") { //退货入库
+												for (var i = 0; i < result.length; i++) {
+													s += "<option>"
+															+ result[i].bsaId
+															+ "</option>";
+												}
+												getSingleNoDetail(
+														result[0].bsaId, "2");
+											} else if (type == "3") { //调拨入库
+												for (var i = 0; i < result.length; i++) {
+													s += "<option>"
+															+ result[i].requisitionId
+															+ "</option>";
+												}
+												getSingleNoDetail(
+														result[0].requisitionId,
+														"3");
+											}
+											$("#upstreamNo").html(s);
+
+										}
+									});
+						});
+
+		$("#upstreamNo").live('change', function() {
+			var val = $(this).val(); //获取选中的值
+			var type = $("#enterStockType").val();
+			getSingleNoDetail(val,type);
+		});
+		/* 根据选中的订单号  拼接单子的详情 */
+		function getSingleNoDetail(singleNo, type) {
+			$
+					.ajax({
+						type : "POST",
+						url : "getSingleNoDetail",
+						data : "singleNo=" + singleNo + "&type=" + type,
+						dataType : "JSON",
+						success : function(result) {
+							var s = "";
+							if (type == "1") {                        //采购入库
+								for (var i = 0; i < result.length; i++) {
+									s += "<tr><td>"
+											+ result[i].product.productId
+											+ "</td>"
+											+ "<td>"
+											+ result[i].product.productName
+											+ "</td>"
+											+ "<td>"
+											+ result[i].price
+											+ "</td>"
+											+ "<td>"+result[i].productUnit.puName
+											+"<td><input type='text' style='width: 80%; margin: 0px auto; height: 80%;' value='0' onkeyup='nan(this)' onchange='nan(this)' /></td>"
+											+ "<td><!-- <a class='label label-important' id='removeproduct' >移除</a> --></td>"
+											+ "</tr>";
+								}
+							} else if (type == "2") {  //退货入库
+								for (var i = 0; i < result.length; i++) {
+									s += "<tr><td>"
+											+ result[i].product.productId
+											+ "</td><td>"
+											+ result[i].product.productName
+											+ "</td><td>"
+											+ result[i].price
+											+ "</td>"
+											+ "<td>"+result[i].productUnit.puName
+											+"<td><input type='text' style='width: 80%; margin: 0px auto; height: 80%;' value='0' onkeyup='nan(this)' onchange='nan(this)' /></td>"
+											+ "<td><!--<a class='label label-important' id='removeproduct' >移除</a> --></td>"
+											+ "</tr>";
+								}
+							} else if (type == "3") {  //调拨入库
+
+							}
+							$("#productTbody").html(s);
+						}
+					});
+		}
+
+		$("#enterStockForm").submit(function(){
+			alert("a");
+			return false;
 		});
 	</script>
 

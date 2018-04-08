@@ -45,10 +45,10 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService {
 	}
 
 	@Override
-	public PageInfo<PurchaseRequest> getPurchaseRequestByBlurry(Integer num, String empNo, String singleNo,
-			String suppName) {
+	public PageInfo<PurchaseRequest> getPurchaseRequestByBlurry(Integer num, Integer pageSize, String empNo,
+			String singleNo, String suppName) {
 		// 开始分页 num是页码 第二个参数是每页显示的数量
-		PageHelper.startPage(num, 5);
+		PageHelper.startPage(num, pageSize);
 		List<PurchaseRequest> purchaseRequests = purchaseRequestMapper.getPurchaseRequestByBlurry(empNo, singleNo,
 				suppName);
 		PageInfo<PurchaseRequest> pageInfos = new PageInfo<PurchaseRequest>(purchaseRequests);
@@ -86,30 +86,30 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService {
 
 	@Override
 	public int updatePurchaseOrderStatus(String singleNo, Integer status) {
-		
+
 		return purchaseRequestMapper.updatePurchaseOrderStatus(singleNo, status);
 	}
-	
+
 	@Override
 	public int updateDeptReivewStatus(String singleNo, String reviewEmp, Date date, Integer status, String reason) {
-		if (status == 1) {   //通过
-			status=2;
-		} else if (status == 0) {  //不通过
-			purchaseRequestMapper.updatePurchaseOrderStatus(singleNo, 5);   //订单状态改成拒绝
-			status=3;
+		if (status == 1) { // 通过
+			status = 2;
+		} else if (status == 0) { // 不通过
+			purchaseRequestMapper.updatePurchaseOrderStatus(singleNo, 5); // 订单状态改成拒绝
+			status = 3;
 		}
 		return purchaseRequestMapper.updateDeptReivewStatus(singleNo, reviewEmp, date, status, reason);
 	}
-	
+
 	@Override
 	public int updateFinancialReivewStatus(String singleNo, String reviewEmp, Date date, Integer status,
 			String reason) {
 		if (status == 1) {
 			purchaseRequestMapper.updatePurchaseOrderStatus(singleNo, 6);
-			status=2;
+			status = 2;
 		} else if (status == 0) {
-			purchaseRequestMapper.updatePurchaseOrderStatus(singleNo, 5);   //订单状态改成拒绝
-			status=3;
+			purchaseRequestMapper.updatePurchaseOrderStatus(singleNo, 5); // 订单状态改成拒绝
+			status = 3;
 		}
 		return purchaseRequestMapper.updateFinancialReivewStatus(singleNo, reviewEmp, date, status, reason);
 	}

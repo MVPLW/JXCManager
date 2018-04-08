@@ -37,7 +37,6 @@ public class DateConverter {
 			String year=date.substring(date.lastIndexOf('/')+1);
 			return year+"-"+month+"-"+day;
 		} catch (Exception e) {
-			// TODO: handle exception
 			return null;
 		}
 		

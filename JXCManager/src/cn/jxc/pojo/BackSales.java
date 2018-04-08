@@ -13,7 +13,7 @@ public class BackSales implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private int bsaId;
+	private String bsaId;
 	private Customer customerId;
 	private Date requestDate;
 	private Employee reviewEmp;
@@ -24,13 +24,13 @@ public class BackSales implements java.io.Serializable {
 		super();
 	}
 
-	public BackSales(int bsaId, Customer customerId, Employee reviewEmp) {
+	public BackSales(String bsaId, Customer customerId, Employee reviewEmp) {
 		this.bsaId = bsaId;
 		this.customerId = customerId;
 		this.reviewEmp = reviewEmp;
 	}
 
-	public BackSales(int bsaId, Customer customerId, Date requestDate, Employee reviewEmp, ReviewStatus reviewState,
+	public BackSales(String bsaId, Customer customerId, Date requestDate, Employee reviewEmp, ReviewStatus reviewState,
 			String backReason) {
 		super();
 		this.bsaId = bsaId;
@@ -41,11 +41,11 @@ public class BackSales implements java.io.Serializable {
 		this.backReason = backReason;
 	}
 
-	public int getBsaId() {
+	public String getBsaId() {
 		return this.bsaId;
 	}
 
-	public void setBsaId(int bsaId) {
+	public void setBsaId(String bsaId) {
 		this.bsaId = bsaId;
 	}
 

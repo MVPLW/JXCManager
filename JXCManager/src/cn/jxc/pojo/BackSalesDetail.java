@@ -12,51 +12,73 @@ public class BackSalesDetail implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private int bsadId;
-	private int bsaId;
-	private int productId;
+	private BackSales bs;
+	private Product product;
+	private ProductUnit productUnit;
+	private double price;
 	private int count;
-
-	public BackSalesDetail() {
-		
-	}
-
-	public BackSalesDetail(int bsadId, int bsaId, int productId, int count) {
+	
+	public BackSalesDetail(int bsadId, BackSales bs, Product product, ProductUnit productUnit, double price,
+			int count) {
+		super();
 		this.bsadId = bsadId;
-		this.bsaId = bsaId;
-		this.productId = productId;
+		this.bs = bs;
+		this.product = product;
+		this.productUnit = productUnit;
+		this.price = price;
 		this.count = count;
 	}
 
+	public BackSalesDetail() {
+		super();
+	}
+
 	public int getBsadId() {
-		return this.bsadId;
+		return bsadId;
 	}
 
 	public void setBsadId(int bsadId) {
 		this.bsadId = bsadId;
 	}
 
-	public int getBsaId() {
-		return this.bsaId;
+	public BackSales getBs() {
+		return bs;
 	}
 
-	public void setBsaId(int bsaId) {
-		this.bsaId = bsaId;
+	public void setBs(BackSales bs) {
+		this.bs = bs;
 	}
 
-	public int getProductId() {
-		return this.productId;
+	public Product getProduct() {
+		return product;
 	}
 
-	public void setProductId(int productId) {
-		this.productId = productId;
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public ProductUnit getProductUnit() {
+		return productUnit;
+	}
+
+	public void setProductUnit(ProductUnit productUnit) {
+		this.productUnit = productUnit;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	public int getCount() {
-		return this.count;
+		return count;
 	}
 
 	public void setCount(int count) {
 		this.count = count;
 	}
-
+	 
 }

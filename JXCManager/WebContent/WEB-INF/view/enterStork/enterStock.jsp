@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,7 +64,7 @@ h3 {
 				</ul>
 
 				<div class="row-fluid">
-					<form action="goenterstock" method="post" class="form-horizontal">
+					<form action="goenterstock" method="post" class="form-horizontal" id="enterMyForm">
 						<div class="control-group">
 							<div data-condition="search">
 								入库单号:<input type="text" name="singleNo" class="input-medium"
@@ -75,7 +76,7 @@ h3 {
 									name="start" placeholder="开始日期" /> <input type="text"
 									class="input-small datepicker" readonly="readonly"
 									<c:if test="${end!=null}">value="${end }"</c:if> id="end"
-									name="end" placeholder="结束日期" /> <input type="submit"
+									name="end" placeholder="结束日期" /> <input type="submit" id="searchblueey"
 									value="搜索" class="btn btn-success" />
 								<div style="float: right;">
 									<a class="btn btn-primary" href="goenterstockadd"
@@ -127,29 +128,34 @@ h3 {
 													id="deptreview">审核</a></td>
 											</tr>
 										</c:forEach>
+										<c:if test="${fn:length(ess.list)==0}">
+											<tr><th colspan="8">对不起  没有查询到数据</th></tr>
+										</c:if>
 									</tbody>
 								</table>
 							</div>
 							<div class="pagination pagination-centered">
 								<ul>
-									<li><a href="#">First</a></li>
-									<li><a href="#">Prev</a></li>
+									<li><a href="javascript:;" onclick="goenterstock(1)">First</a></li>
+									<li><a href="javascript:;" onclick="goenterstock('prev')">Prev</a></li>
 									<c:if test="${ess.pageNum-2>1}">
 										<li><a>...</a></li>
 									</c:if>
 									<c:forEach begin="1" end="${ess.pages}" var="s">
 										<c:if test="${s>=ess.pageNum-2 && s<=ess.pageNum+2 }">
 											<li <c:if test="${s==ess.pageNum}">class="active"</c:if>>
-												<a href="javascript:goproductpage(${s});">${s}</a>
+												<a href="javascript:;" onclick="goenterstock(${s})">${s}</a>
 											</li>
 										</c:if>
 									</c:forEach>
 									<c:if test="${ess.pageNum+2<ess.pages}">
 										<li><a>...</a></li>
 									</c:if>
-									<li><a href="javascript:goproductpage('next');">Next</a> <!-- 隐藏域 存放当前页码 -->
-										<input type="hidden" name="pageNo" value="${ess.pageNum}" /></li>
-									<li><a href="#">Last</a></li>
+									<li><a href="javascript:;" onclick="goenterstock('next')">Next</a>
+										<!-- 隐藏域 存放当前页码 --> <input type="hidden" name="pageNo"
+										value="${ess.pageNum}" /></li>
+									<li><a href="javascript:;"
+										onclick="goenterstock(${ess.pages})">Last</a></li>
 								</ul>
 							</div>
 						</div>
@@ -262,6 +268,32 @@ h3 {
 		$(function() {
 
 		});
+		/* 分页跳转页面 */
+		function goenterstock(type){
+			var pageNo = parseInt($("input[name=pageNo]").val());
+			var pagetotal=parseInt('${ess.pages}');
+			if(type=='prev'){
+				if(pageNo==1) return;
+				pageNo-=1;
+			}else if(type=='next'){
+				if(pageNo==pagetotal) return;
+				pageNo+=1;
+			}else{
+				pageNo=parseInt(type);
+			}
+			//location.href="goenterstock?pageNo="+pageNo;
+			$("input[name=pageNo]").val(pageNo);
+			//$("#searchblueey").click();
+			$("#enterMyForm").submit();
+		}
+		$("#productBody a").live('mouseover', function() {
+			$(this).css("cursor", "pointer");
+			$(this).css("color", "#298AEB");
+		});
+		$("#productBody a").live('mouseout', function() {
+			$(this).css("color", "#646464");
+		});
+		//$("#productBody").find("a").mouseover
 	</script>
 </body>
 </html>
