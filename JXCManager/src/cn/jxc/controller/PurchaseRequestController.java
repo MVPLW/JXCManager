@@ -1,7 +1,10 @@
 
 package cn.jxc.controller;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,7 +52,7 @@ public class PurchaseRequestController {
 			pageNo = 1;
 		}
 		PageInfo<PurchaseRequest> purchaseRequestByBlurry = purchaseRequestService.getPurchaseRequestByBlurry(pageNo,
-				empNo, singleNo, suppName);
+				5,empNo, singleNo, suppName);
 		model.addAttribute("prbb", purchaseRequestByBlurry);
 		model.addAttribute("empNo", empNo); // 查询条件保存
 		model.addAttribute("singleNo", singleNo);
@@ -104,7 +107,7 @@ public class PurchaseRequestController {
 		}
 		PurchaseRequest purchaseRequestBySingleNo = purchaseRequestService.getPurchaseRequestBySingleNo(singleNo);
 		PageInfo<PurchaseRequestDetail> pageInfos = purchaseRequestDetailService.getPurchaseRequestDetail(singleNo,
-				pageNo,3);
+				pageNo, 3);
 		pageInfos.getList().get(0).setPurchaserequest(purchaseRequestBySingleNo);
 		String jsonString = JSON.toJSONString(pageInfos);
 		return jsonString;
@@ -149,7 +152,7 @@ public class PurchaseRequestController {
 		// 根据订单号查询一个订单所有信息
 		PurchaseRequest purchase = purchaseRequestService.getPurchaseRequestBySingleNo(singleNo);
 		PageInfo<PurchaseRequestDetail> purchaseRequestDetails = purchaseRequestDetailService
-				.getPurchaseRequestDetail(singleNo, 1,1000);
+				.getPurchaseRequestDetail(singleNo, 1, 1000);
 		List<Employee> employeeAll = employeeService.getEmployeeAll();
 		List<Supplier> supplierAll = supplierService.getSupplierAll();
 		PageInfo<Product> productAll = productService.getProductAll(productPageNo);
@@ -160,21 +163,21 @@ public class PurchaseRequestController {
 		model.addAttribute("productAll", productAll);
 		return "purchase/purchaseUpdate";
 	}
-	
+
 	/**
-	 * 采购申请修改的方法
-	 * 同时添加采购订单明细
+	 * 采购申请修改的方法 同时添加采购订单明细
+	 * 
 	 * @return
 	 */
 	@RequestMapping("productRequestUpdate")
-	public String productRequestUpdate(PurchaseRequest purchaseRequest, Model model,String products) {
+	public String productRequestUpdate(PurchaseRequest purchaseRequest, Model model, String products) {
 		// 修改基本信息
-		List<PurchaseRequestDetail> parseArray = JSONObject.parseArray(products,PurchaseRequestDetail.class);
-		purchaseRequest.setPurchaserequestdetails(parseArray);//为产品详情赋值
+		List<PurchaseRequestDetail> parseArray = JSONObject.parseArray(products, PurchaseRequestDetail.class);
+		purchaseRequest.setPurchaserequestdetails(parseArray);// 为产品详情赋值
 		int updatePurchaseRequest = purchaseRequestService.updatePurchaseRequest(purchaseRequest);
-		if (updatePurchaseRequest > 0) {             // 修改成功
+		if (updatePurchaseRequest > 0) { // 修改成功
 			return "redirect:gopurchase";
-		} else {                             // 修改失败
+		} else { // 修改失败
 			return "error";
 		}
 	}
@@ -191,7 +194,7 @@ public class PurchaseRequestController {
 	@ResponseBody
 	public String getExistProductByPage(Integer pageNum, String purchaseId) {
 		PageInfo<PurchaseRequestDetail> purchaseRequestDetail = purchaseRequestDetailService
-				.getPurchaseRequestDetail(purchaseId, pageNum,1000);
+				.getPurchaseRequestDetail(purchaseId, pageNum, 1000);
 		return JSON.toJSONString(purchaseRequestDetail);
 	}
 
@@ -210,19 +213,90 @@ public class PurchaseRequestController {
 		} else
 			return "0";
 	}
-	
+
 	/**
 	 * 提交表单
+	 * 
 	 * @return
 	 */
 	@RequestMapping("operaOrder")
-	public String operaOrder(String singleNo,Integer statusNo) {
-		int updatePurchaseOrderStatus = purchaseRequestService.updatePurchaseOrderStatus(singleNo, statusNo);//直接把订单状态改成订单审核中
-		if (updatePurchaseOrderStatus>0) {  //修改成功
-			return "redirect:gopurchase";   //跳转到查询所有
-		}else {
+	public String operaOrder(String singleNo, Integer statusNo) {
+		int updatePurchaseOrderStatus = purchaseRequestService.updatePurchaseOrderStatus(singleNo, statusNo);// 直接把订单状态改成订单审核中
+		if (updatePurchaseOrderStatus > 0) { // 修改成功
+			return "redirect:gopurchase"; // 跳转到查询所有
+		} else {
 			return "error";
 		}
 	}
+
+	/**
+	 * 订单审核 部门经理审核
+	 * 
+	 * @param singleNo
+	 *            订单号
+	 * @param no
+	 *            是否通过
+	 * @param reason
+	 *            原因
+	 * @return
+	 */
+	@RequestMapping("deptReview")
+	public String deptReview(String singleNo, Integer no, String reason, HttpServletRequest request) {
+		Employee employee = (Employee) request.getSession().getAttribute("loginEmp");
+		int updateDeptReivewStatus = purchaseRequestService.updateDeptReivewStatus(singleNo, employee.getEmpLoginName(),
+				new Date(), no, reason);
+		if (updateDeptReivewStatus > 0) { // 执行成功
+			return "redirect:gopurchase";
+		} else {
+			return "error";
+		}
+	}
+
+	@RequestMapping("finalReview")
+	public String finalReview(String singleNo, Integer no, String reason, HttpServletRequest request) {
+		Employee employee = (Employee) request.getSession().getAttribute("loginEmp");
+		int updateFinancialReivewStatus = purchaseRequestService.updateFinancialReivewStatus(singleNo,
+				employee.getEmpLoginName(), new Date(), no, reason);
+		if (updateFinancialReivewStatus > 0) {// 执行成功
+			return "redirect:gopurchase";
+		} else
+			return "error";
+	}
+
+	/**
+	 * 使用ajax验证是否可以执行操作
+	 * 
+	 * @param singleNo
+	 * @return
+	 */
+	@RequestMapping("judgmen")
+	@ResponseBody
+	public String judgmen(String singleNo) {
+		PurchaseRequest purchaseRequestBySingleNo = purchaseRequestService.getPurchaseRequestBySingleNo(singleNo);
+		int no = purchaseRequestBySingleNo.getOrderStatus().getNo();
+		System.out.println(no+"\t"+purchaseRequestBySingleNo.getOrderStatus().getOrderType());
+		if (no == 2 || no == 5 || no == 7) { // 当订单状态处于取消 拒绝 全部入库的状态才可以删除
+			return "1";
+		} else
+			return "0"; // 不可以删除
+	}
 	
+	/**
+	 * 删除所选订单
+	 * @return
+	 */
+	@RequestMapping("deletePurchases")
+	public String deletePurchases(String singleNos) {
+		try {
+			String[] single = singleNos.split("-");
+			for (int i = 1; i < single.length; i++) {
+				purchaseRequestService.deletePurchaseRequest(single[i]);
+			}
+			return "redirect:gopurchase";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+	}
+
 }

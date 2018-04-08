@@ -14,8 +14,8 @@
 			<li><a href="a.jsp" target="page-Content"> <i
 					class="icon-tasks"></i> <span class="hidden-tablet"> A</span>
 			</a></li>
-			<li><a href="c.jsp" target="page-Content"> <i
-					class="icon-eye-open"></i> <span class="hidden-tablet">C</span>
+			<li><a href="goenterstock" target="page-Content"> <i
+					class="icon-eye-open"></i> <span class="hidden-tablet">入库管理</span>
 			</a></li>
 			<li><a href="ui.jsp" target="page-Content"> <i
 					class="icon-dashboard"></i> <span class="hidden-tablet">UI</span>

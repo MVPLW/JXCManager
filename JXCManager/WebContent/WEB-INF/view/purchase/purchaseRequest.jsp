@@ -74,11 +74,12 @@ h3 {
 								<input type="submit" value="搜索" class="btn btn-success" />
 								<div style="float: right;">
 									<a class="btn btn-primary" href="goPurchaseRequest"
-										data-command="Add"><i class="icon-plus"></i>&nbsp;申请</a>
-									<!-- <a
+										data-command="Add"><i class="icon-plus"></i>&nbsp;申请</a> <a
 										class="btn btn-warning" href="javascript:void(0)"
-										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a> -->
-									<a class="btn btn-danger" href="javascript:void(0)"
+										onclick="deletePurchase()" data-command="Delete"><i
+										class="icon-remove"></i>&nbsp;删除</a> <a class="btn btn-danger"
+										href="javascript:void(0)"
+										onclick="javascript:location.href='gopurchase';"
 										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 								</div>
 							</div>
@@ -108,33 +109,36 @@ h3 {
 									<tbody id="productBody">
 										<c:forEach items="${prbb.list}" var="s">
 											<tr>
-												<th><input type="checkbox" name="productCheck" /></th>
+												<th><input type="checkbox" name="productCheck"
+													value="${s.purchaseRequestId}" /></th>
 												<td>${s.purchaseRequestId}</td>
 												<td>${s.employeeByRequestEmpId.empLoginName}</td>
 												<td><fmt:formatDate value="${s.requestTime}"
 														pattern="yyyy-MM-dd" /></td>
 												<td>${s.supplier.suppName}</td>
-												
-												<td><span <c:choose>
+
+												<td><span
+													<c:choose>
 													<c:when test="${s.orderStatus.no==2}">class="label label-important"</c:when>
 													<c:when test="${s.orderStatus.no==1}">class="label label-warning"</c:when>
 													<c:when test="${s.orderStatus.no==7}">class="label label-success"</c:when>
 													<c:when test="${s.orderStatus.no==5}">class="label label-important"</c:when>
 													<c:otherwise>class="label label-info"</c:otherwise>
 												</c:choose>>${s.orderStatus.orderType}</span></td>
-												<td> 
-													<input type="hidden" value="${s.purchaseRequestId}" /> 
-													<a id="detail" >查看</a>
-													<c:if test="${s.orderStatus.no==1}">
+												<td><input type="hidden" value="${s.purchaseRequestId}" />
+													<a id="detail">查看</a> <c:if test="${s.orderStatus.no==1}">
 														<a id="update"> 编辑</a>
-														<a id="commit" onclick="operaOrder('${s.purchaseRequestId}',3)"> 提交</a>
-														<a id="cancelOrder" onclick="operaOrder('${s.purchaseRequestId}',2)">取消</a>
-													</c:if>
-													<c:if test="${s.orderStatus.no==6 }">
-														<a id="cancelOrder" onclick="operaOrder('${s.purchaseRequestId}',7)">入库</a>
-													</c:if>
-													<a id="deptreview" onclick="deptreview('${s.purchaseRequestId}')">审核</a>
-												</td>
+														<a id="commit"
+															onclick="operaOrder('${s.purchaseRequestId}',3)"> 提交</a>
+														<a id="cancelOrder"
+															onclick="operaOrder('${s.purchaseRequestId}',2)">取消</a>
+													</c:if> <c:if test="${s.orderStatus.no==6}">
+														<a id="cancelOrder"
+															onclick="operaOrder('${s.purchaseRequestId}',7)">入库</a>
+													</c:if> <c:if test="${s.orderStatus.no==3 }">
+														<a id="deptreview"
+															onclick="deptreview('${s.purchaseRequestId}','${s.reviewstatusByDeptReviewStatus.rsId}')">审核</a>
+													</c:if></td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -232,36 +236,77 @@ h3 {
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
-	
-	<div class="modal hide fade" id="reviewModal" style="width: 800px;">
+	<!-- 部门审核弹框 -->
+	<div class="modal hide fade" id="deptReviewModal" style="width: 800px;">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">x</button>
-			<h2>审核操作</h2>
+			<h2>部门审核</h2>
 		</div>
 		<div class="modal-body">
-			<!-- 采购订单中所有内容 -->
 			<div>
-				<table style="width: 100%; table-layout: fixed;" >
-					<tbody >
+				<table style="width: 100%; table-layout: fixed;">
+					<tbody>
 						<tr>
-							<th style="width: 120px;">是否通过审核</th>
+							<th style="width: 120px;">部门审核是否通过</th>
 							<th>
-								<select>
-									<option>通过</option>
-									<option>不通过</option>
-								</select>
+								<div class="controls">
+									<label class="radio"> <input type="radio"
+										name="deptReview" value="1" checked="checked" /> 是
+									</label> <label class="radio" style="position: relative; top: 3px;">
+										<input type="radio" name="deptReview" value="0" /> 否
+									</label>
+								</div>
 							</th>
 						</tr>
 						<tr>
-						<td style="padding-top: 0px;">原因</td>
-							<td><textarea rows="8" cols="50" style="width: 100%;"></textarea></td>
+							<th>原因</th>
+							<th style="padding-right: 20px;"><textarea rows="4"
+									id="deptReviewReason" cols="30" style="width: 100%;"></textarea></th>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn btn-primary" >Save</a>
+			<a href="javascript:;" class="btn btn-primary" id="deptReviewCommit">Save</a>
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+		</div>
+	</div>
+	<!-- 财务审核弹框 -->
+	<div class="modal hide fade" id="finalReviewModal"
+		style="width: 800px;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">x</button>
+			<h2>财务审核</h2>
+		</div>
+		<div class="modal-body">
+			<!-- 审核框 -->
+			<div>
+				<table style="width: 100%; table-layout: fixed;">
+					<tbody>
+						<tr>
+							<th style="width: 120px;">财务审核是否通过</th>
+							<th>
+								<div class="controls">
+									<label class="radio"> <input type="radio"
+										name="finalReview" value="1" checked="checked" /> 是
+									</label> <label class="radio" style="position: relative; top: 3px;">
+										<input type="radio" name="finalReview" value="0" /> 否
+									</label>
+								</div>
+							</th>
+						</tr>
+						<tr>
+							<th>原因</th>
+							<th style="padding-right: 20px;"><textarea rows="4"
+									id="finalReviewReason" cols="30" style="width: 100%;"></textarea></th>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a href="javascript:;" class="btn btn-primary" id="finalReviewCommit">Save</a>
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
@@ -339,13 +384,18 @@ h3 {
 		$("#productBody a").live('mouseout', function() {
 			$(this).css("color", "#646464");
 		});
-		
-		$("#detail").live('click',function() {
+
+		$("#detail")
+				.live(
+						'click',
+						function() {
 							empty();
 							$("#myModal").modal("show");
 							//获取选中的订单号
-							var singleNo = $(this).parent().find("input:hidden").val();
-							$.ajax({
+							var singleNo = $(this).parent()
+									.find("input:hidden").val();
+							$
+									.ajax({
 										type : "POST",
 										url : "getPurchaseRequestBySingleNo",
 										data : "singleNo=" + singleNo,
@@ -516,28 +566,67 @@ h3 {
 			$("#purchaseRequestDetailPage").html(detailPages);
 		}
 		//点击审核进行操作
-		function deptreview(singleNo){
-			$("#reviewModal").modal("show");
+		function deptreview(purchase, status) {
+			if (status == 2) { //财务审核
+				$("#finalReviewModal").modal("show");
+				$("#finalReviewCommit").live(
+						'click',
+						function() {
+							var s = $("input[name=finalReview]:checked").val();
+							var reason = $("#finalReviewReason").val(); //审核原因
+							if (reason == "" || reason == undefined) {
+								alert("请输入审核原因");
+								return;
+							}
+							location.href = "finalReview?singleNo=" + purchase
+									+ "&no=" + s + "&reason=" + reason;
+						});
+			} else { //部门审核
+				$("#deptReviewModal").modal("show");
+				$("#deptReviewCommit").live(
+						'click',
+						function() { //点击保存
+							var s = $("input[name=deptReview]:checked").val(); //审核是否通过 0 表示通过  1表示不通过
+							var reason = $("#deptReviewReason").val(); //审核原因
+							if (reason == "" || reason == undefined) {
+								alert("请输入原因");
+								return;
+							}
+							location.href = "deptReview?singleNo=" + purchase
+									+ "&no=" + s + "&reason=" + reason;
+						});
+			}
 		}
+		//提交
+		/* function commitreview(singleNo){
+			$("#deptReviewModal").modal("hide");
+			var s = $("[name=deptReview]").val();  //审核是否通过 0 表示通过  1表示不通过
+			var reason=$("#deptReviewReason").val(); //审核原因
+			location.href="deptReview?singleNo="+singleNo+"&no="+s+"&reason="+reason;
+		} */
 
 		//对订单进行操作
-		function operaOrder(singleNo,no){
-			var flag=true;
-			if(no==2){
-				var s=confirm("确认取消订单吗?");
-				if(s==false) flag=false;
-			}else if(no==3){
-				var s=confirm("确认提交订单吗?");
-				if(s==false) flag=false;
-			}else if(no==7){
-				var s=confirm("确认全部入库吗?");
-				if(s==false) flag=false;
+		function operaOrder(singleNo, no) {
+			var flag = true;
+			if (no == 2) {
+				var s = confirm("确认取消订单吗?");
+				if (s == false)
+					flag = false;
+			} else if (no == 3) {
+				var s = confirm("确认提交订单吗?");
+				if (s == false)
+					flag = false;
+			} else if (no == 7) {
+				var s = confirm("确认全部入库吗?");
+				if (s == false)
+					flag = false;
 			}
-			if(flag==true){  //页面跳转
-				location.href="operaOrder?singleNo="+singleNo+"&statusNo="+no;
+			if (flag == true) { //页面跳转
+				location.href = "operaOrder?singleNo=" + singleNo
+						+ "&statusNo=" + no;
 			}
 		}
-		
+
 		/* $("#commit").live('click',function(){
 			alert("a");
 		}); */
@@ -572,8 +661,34 @@ h3 {
 				}
 			});
 		}
-
-		
+		/* 删除采购订单订单 */
+		function deletePurchase() {
+			var s = $("#productBody input[name='productCheck']:checked");
+			if (s.length == 0) {
+				alert("请选择订单");
+				return;
+			}
+			$.ajaxSettings.async = false;
+			var purchases = "-";
+			var flag = false;
+			$(s).each(function() { //循环所有选中的框
+				var a = $(this).val();
+				$.get("judgmen", {
+					singleNo : $(this).val()
+				}, function(result) {
+					if (result == "0") {
+						alert("处于采购流程中的单据不可以删除");
+						flag = true;
+						return;
+					} else {
+						purchases += a + "-";
+					}
+				});
+			});
+			if (flag == false) {
+				location.href = "deletePurchases?singleNos=" + purchases;
+			}
+		}
 	</script>
 	<script type="text/javascript">
 		$(function() {

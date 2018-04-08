@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxc.mapper.BackSalesMapper">
+	<resultMap type="BackSales" id="backSalesMap">
+		<id column="bsa_id" property="bsaId" />
+		<result column="requestdate" property="requestDate" />
+		<result column="backreason" property="backReason" />
+		<association property="customerId" column="customer_id"
+			javaType="Customer">
+			<id column="customer_id" property="customerId" />
+			<result column="cus_name" property="cusName" />
+		</association>
+		<association property="reviewEmp" column="reviewemp"
+			javaType="Employee">
+			<id column="reviewemp" property="empLoginName" />
+		</association>
+		<association property="reviewState" column="reviewstate"
+			javaType="ReviewStatus">
+			<id column="reviewstate" property="rsId" />
+			<result column="re_name" property="rsName" />
+		</association>
+	</resultMap>
+
+	<sql id="backsalessql">
+		b.bsa_id,b.customer_id,b.requestdate,b.reviewemp,b.reviewstate,b.backreason
+	</sql>
+
+	<select id="getBackSalesAll" resultMap="backSalesMap">
+		SELECT
+		<include refid="backsalessql"></include>
+		,c.cus_name,r.rs_name
+		FROM backsales b
+		LEFT JOIN customer c
+		ON b.customer_id=c.customer_id
+		LEFT JOIN employee e
+		on b.reviewemp=e.emploginname
+		LEFT JOIN reviewstatus r
+		on b.reviewstate = r.rs_id
+	</select>
+</mapper>

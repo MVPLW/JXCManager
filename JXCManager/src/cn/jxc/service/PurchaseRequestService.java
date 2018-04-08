@@ -35,7 +35,7 @@ public interface PurchaseRequestService {
 	 *            供应商
 	 * @return
 	 */
-	PageInfo<PurchaseRequest> getPurchaseRequestByBlurry(Integer num, String empNo, String singleNo, String suppName);
+	PageInfo<PurchaseRequest> getPurchaseRequestByBlurry(Integer num,Integer pageSize, String empNo, String singleNo, String suppName);
 
 	/**
 	 * 根据单号查询采购申请单
@@ -57,9 +57,28 @@ public interface PurchaseRequestService {
 	 *            时间
 	 * @param status
 	 *            状态
+	 * @param reason
+	 *            原因
 	 * @return 是否成功
 	 */
-	int updateDeptReivewStatus(String singleNo, String reviewEmp, Date date, Integer status);
+	int updateDeptReivewStatus(String singleNo, String reviewEmp, Date date, Integer status, String reason);
+
+	/**
+	 * 财务审核操作
+	 * 
+	 * @param singleNo
+	 *            订单号
+	 * @param reviewEmp
+	 *            审核人
+	 * @param date
+	 *            时间
+	 * @param status
+	 *            审核状态
+	 * @param reason
+	 *            原因
+	 * @return
+	 */
+	int updateFinancialReivewStatus(String singleNo, String reviewEmp, Date date, Integer status, String reason);
 
 	/**
 	 * 修改采购订单信息
@@ -68,13 +87,23 @@ public interface PurchaseRequestService {
 	 * @return
 	 */
 	int updatePurchaseRequest(PurchaseRequest purchaseRequest);
-	
+
 	/**
 	 * 根据订单号和状态修改订单状态
-	 * @param singleNo 
-	 * @param status   
+	 * 
+	 * @param singleNo
+	 * @param status
 	 * @return
 	 */
 	int updatePurchaseOrderStatus(String singleNo, Integer status);
+
+	/**
+	 * 根据采购单号删除所有相关信息
+	 * 
+	 * @param singleNo
+	 *            采购单号
+	 * @return
+	 */
+	int deletePurchaseRequest(String singleNo);
 
 }

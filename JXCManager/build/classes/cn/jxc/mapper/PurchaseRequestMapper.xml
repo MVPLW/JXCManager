@@ -10,7 +10,10 @@
 		<result property="deptReviewTime" column="DeptReviewTime" />
 		<result property="financialAuditTime" column="FinancialAuditTime" />
 		<result property="remark" column="Remark" />
-		<result property="orderStatus" column="OrderStatus" typeHandler="cn.jxc.util.OrderStatusTypeHandler"/>
+		<result property="orderStatus" column="OrderStatus"
+			typeHandler="cn.jxc.util.OrderStatusTypeHandler" />
+		<result property="deptReviewReason" column="DeptReviewReason" />
+		<result property="financialAuditReason" column="FinancialAuditReason" />
 		<association property="employeeByRequestEmpId" column="RequestEmpId"
 			javaType="Employee">
 			<id column="RequestEmpId" property="empLoginName" />
@@ -43,9 +46,9 @@
 	<insert id="addPurchaseRequest" parameterType="PurchaseRequest">
 		INSERT INTO
 		PurchaseRequest(PurchaseRequest_id,
-		RequestEmpId,RequestTime,Supplier_id,SuppContact,SuppPhone,Remark,OrderStatus)
+		RequestEmpId,RequestTime,Supplier_id,SuppContact,SuppPhone,DeptReviewStatus,FinancialAuditStatus,Remark,OrderStatus)
 		VALUES(#{pr.purchaseRequestId},#{pr.employeeByRequestEmpId.empLoginName},
-		#{pr.requestTime},#{pr.supplier.supplierId},#{pr.suppContact},#{pr.suppPhone},#{pr.remark},1);
+		#{pr.requestTime},#{pr.supplier.supplierId},#{pr.suppContact},#{pr.suppPhone},1,1,#{pr.remark},1);
 	</insert>
 
 	<select id="getPurchaseRequestByBlurry" resultMap="purchaseRequestMap">
@@ -73,6 +76,7 @@
 				AND su.Supp_name LIKE CONCAT('%',#{suppName},'%')
 			</if>
 		</where>
+		ORDER BY requesttime DESC
 	</select>
 
 	<update id="updatePurchaseRequest" parameterType="PurchaseRequest">
@@ -80,14 +84,39 @@
 		purchaserequest set
 		RequestEmpId=#{pr.employeeByRequestEmpId.empLoginName}
 		,Supplier_id=#{pr.supplier.supplierId} ,
-		SuppContact=#{pr.suppContact} , SuppPhone=#{pr.suppPhone} ,
+		SuppContact=#{pr.suppContact}
+		, SuppPhone=#{pr.suppPhone} ,
 		Remark=#{pr.remark}
-		where purchaseRequest_id=#{pr.purchaseRequestId}
-	</update>
-	
-	<update id="updatePurchaseOrderStatus">
-		update purchaserequest set orderStatus=#{no}  
-		where PurchaseRequest_id=#{singleNo}
+		where
+		purchaseRequest_id=#{pr.purchaseRequestId}
 	</update>
 
+	<update id="updatePurchaseOrderStatus">
+		update purchaserequest set orderStatus=#{no}
+		where
+		PurchaseRequest_id=#{singleNo}
+	</update>
+	<!-- 部门审核操作 -->
+	<update id="updateDeptReivewStatus">
+		update purchaserequest
+		set DeptReviewStatus=#{no}
+		,DeptReviewTime = #{date},DeptReviewEmp=#{emp}
+		,DeptReviewReason=
+		#{reason}
+		where PurchaseRequest_id=#{singleNo}
+	</update>
+	<!-- 财务审核操作 -->
+	<update id="updateFinancialReivewStatus">
+		update purchaserequest
+		set FinancialAuditStatus=#{no}
+		,FinancialAuditTime =
+		#{date},FinancialAuditEmp=#{emp}
+		,FinancialAuditReason= #{reason}
+		where PurchaseRequest_id=#{singleNo}
+	</update>
+	<!-- 删除 -->
+	<delete id="deletePurchaseRequest" parameterType="string">
+		DELETE FROM
+		purchaserequest WHERE PurchaseRequest_id=#{singleNo}
+	</delete>
 </mapper>

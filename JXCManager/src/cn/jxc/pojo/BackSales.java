@@ -12,48 +12,48 @@ public class BackSales implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private int bsaId;
-	private int customerId;
+
+	private String bsaId;
+	private Customer customerId;
 	private Date requestDate;
-	private int reviewEmp;
-	private String reviewState;
-	private String backNum;
+	private Employee reviewEmp;
+	private ReviewStatus reviewState;
 	private String backReason;
 
 	public BackSales() {
+		super();
 	}
 
-	public BackSales(int bsaId, int customerId, int reviewEmp) {
+	public BackSales(String bsaId, Customer customerId, Employee reviewEmp) {
 		this.bsaId = bsaId;
 		this.customerId = customerId;
 		this.reviewEmp = reviewEmp;
 	}
 
-	public BackSales(int bsaId, int customerId, Date requestDate, int reviewEmp, String reviewState, String backNum,
+	public BackSales(String bsaId, Customer customerId, Date requestDate, Employee reviewEmp, ReviewStatus reviewState,
 			String backReason) {
+		super();
 		this.bsaId = bsaId;
 		this.customerId = customerId;
 		this.requestDate = requestDate;
 		this.reviewEmp = reviewEmp;
 		this.reviewState = reviewState;
-		this.backNum = backNum;
 		this.backReason = backReason;
 	}
 
-	public int getBsaId() {
+	public String getBsaId() {
 		return this.bsaId;
 	}
 
-	public void setBsaId(int bsaId) {
+	public void setBsaId(String bsaId) {
 		this.bsaId = bsaId;
 	}
 
-	public int getCustomerId() {
+	public Customer getCustomerId() {
 		return this.customerId;
 	}
 
-	public void setCustomerId(int customerId) {
+	public void setCustomerId(Customer customerId) {
 		this.customerId = customerId;
 	}
 
@@ -65,28 +65,20 @@ public class BackSales implements java.io.Serializable {
 		this.requestDate = requestDate;
 	}
 
-	public int getReviewEmp() {
+	public Employee getReviewEmp() {
 		return this.reviewEmp;
 	}
 
-	public void setReviewEmp(int reviewEmp) {
+	public void setReviewEmp(Employee reviewEmp) {
 		this.reviewEmp = reviewEmp;
 	}
 
-	public String getReviewState() {
+	public ReviewStatus getReviewState() {
 		return this.reviewState;
 	}
 
-	public void setReviewState(String reviewState) {
+	public void setReviewState(ReviewStatus reviewState) {
 		this.reviewState = reviewState;
-	}
-
-	public String getBackNum() {
-		return this.backNum;
-	}
-
-	public void setBackNum(String backNum) {
-		this.backNum = backNum;
 	}
 
 	public String getBackReason() {

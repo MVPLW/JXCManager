@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import cn.jxc.pojo.SalesOrder;
 
-public interface SaleMapper {
+public interface SalesOrderMapper {
 		List<SalesOrder> getSaleAll();
 		
 		List<SalesOrder> getSale(
