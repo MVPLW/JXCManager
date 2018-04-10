@@ -63,7 +63,7 @@
 						</div>
 						<div style="clear: both;">&nbsp;</div>
 						<div class="box-content">
-							<form class="form-horizontal" action="#" method="post" id="enterStockForm">
+							<form class="form-horizontal" action="enterStockInsert" method="post" id="enterStockForm">
 								<fieldset>
 									<table style="width: 80%; margin: 0px auto;">
 										<tr>
@@ -74,9 +74,9 @@
 													</div>
 												</div></td>
 											<td><div class="control-group">
-													<label class="control-label" for="focusedInput">仓&nbsp;&nbsp;库&nbsp;&nbsp;&nbsp;</label>
+													<label class="control-label" for="storehouse.storeHouseId">仓&nbsp;&nbsp;库&nbsp;&nbsp;&nbsp;</label>
 													<div class="controls">
-														<select id="storeHouse" data-rel="chosen">
+														<select id="storehouse.storeHouseId" name="storehouse.storeHouseId" data-rel="chosen">
 															<c:forEach items="${storeHouseAll }" var="s">
 																<option value="${s.storeHouseId}">${s.shName}</option>
 															</c:forEach>
@@ -86,16 +86,16 @@
 										</tr>
 										<tr>
 											<td><div class="control-group">
-													<label class="control-label" for="date01">入库时间</label>
+													<label class="control-label" for="enterDate">入库时间</label>
 													<div class="controls">
 														<input type="text" class="input-large datepicker"
-															readonly="readonly" id="date01" />
+															readonly="readonly" id="enterDate" name="enterDate" />
 													</div>
 												</div></td>
 											<td><div class="control-group">
 													<label class="control-label" for="enterStockType">入库类型</label>
 													<div class="controls">
-														<select id="enterStockType" data-rel="chosen">
+														<select id="enterStockType" data-rel="chosen" name="enterstocktype.estId" >
 															<c:forEach items="${estAll}" var="s">
 																<option value="${s.estId}">${s.estName}</option>
 															</c:forEach>
@@ -109,15 +109,15 @@
 													<div class="controls">
 														<!-- <input class="input-xlarge focused" id="upstreamNo"
 															name="upstreamNo" type="text" placeholder="此处填写上游单号" /> -->
-														<select id="upstreamNo">
+														<select id="upstreamNo" name="upstreamNo">
 															<option>请选择入库类型</option>
 														</select>
 													</div>
 												</div></td>
 											<td><div class="control-group">
-													<label class="control-label" for="selectError1">入库人&nbsp;&nbsp;</label>
+													<label class="control-label" for="employee.empLoginName">入库人&nbsp;&nbsp;</label>
 													<div class="controls">
-														<select id="employee" data-rel="chosen">
+														<select id="employee.empLoginName" data-rel="chosen" name="employee.empLoginName" >
 															<c:forEach items="${employeeAll }" var="s">
 																<option value="${s.empLoginName}">${s.empLoginName}</option>
 															</c:forEach>
@@ -128,13 +128,13 @@
 										<tr>
 											<td colspan="2">
 												<div class="control-group">
-													<label class="control-label" for="typeahead">备注</label>
+													<label class="control-label" for="remark">备注</label>
 													<div class="controls">
-														<input type="text" class="span6 typeahead" id="typeahead"
+														<input type="text" class="span6 typeahead" id="remark" name="remark"
 															data-provide="typeahead" data-items="4"
 															placeholder="此处填写备注"
 															data-source='["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"]'>
-															<input type="hidden" id="enterStockProducts" />
+															<input type="hidden" id="enterStockProducts" name="enterStockProducts" />
 													</div>
 												</div>
 											</td>
@@ -150,6 +150,7 @@
 													<th>产品名称</th>
 													<th>单价</th>
 													<th>规格</th>
+													<th>应入库</th>
 													<th>实际入库数量</th>
 													<th>操作</th>
 												</tr>
@@ -286,6 +287,13 @@
 	<!-- end: JavaScript-->
 
 	<script type="text/javascript">
+		$(function(){
+			var date = new Date();
+			$("#enterDate").val(
+					parseInt(date.getMonth()) + 1 + "/" + date.getDate() + "/"
+							+ date.getFullYear());
+		});
+		
 		$("#enterStockType")
 				.live(
 						'change',
@@ -352,15 +360,14 @@
 								for (var i = 0; i < result.length; i++) {
 									s += "<tr><td>"
 											+ result[i].product.productId
-											+ "</td>"
-											+ "<td>"
+											+ "</td><td>"
 											+ result[i].product.productName
-											+ "</td>"
-											+ "<td>"
+											+ "</td><td>"
 											+ result[i].price
 											+ "</td>"
-											+ "<td>"+result[i].productUnit.puName
-											+"<td><input type='text' style='width: 80%; margin: 0px auto; height: 80%;' value='0' onkeyup='nan(this)' onchange='nan(this)' /></td>"
+											+ "<td>"+result[i].productUnit.puName+"<input type=\"hidden\" value=\""+result[i].productUnit.productUnitId+"\"/></td>"
+											+ "<td>"+result[i].count+"</td>"
+											+ "<td><input type='text' style='width: 80%; margin: 0px auto; height: 80%;' value='0' onkeyup='nan(this)' onchange='nan(this)' /></td>"
 											+ "<td><!-- <a class='label label-important' id='removeproduct' >移除</a> --></td>"
 											+ "</tr>";
 								}
@@ -373,13 +380,26 @@
 											+ "</td><td>"
 											+ result[i].price
 											+ "</td>"
-											+ "<td>"+result[i].productUnit.puName
-											+"<td><input type='text' style='width: 80%; margin: 0px auto; height: 80%;' value='0' onkeyup='nan(this)' onchange='nan(this)' /></td>"
+											+ "<td>"+result[i].productUnit.puName+"<input type=\"hidden\" value=\""+result[i].productUnit.productUnitId+"\"/></td>"
+											+ "<td>"+result[i].count+"</td>"
+											+ "<td><input type='text' style='width: 80%; margin: 0px auto; height: 80%;' value='0' onkeyup='nan(this)' onchange='nan(this)' /></td>"
 											+ "<td><!--<a class='label label-important' id='removeproduct' >移除</a> --></td>"
 											+ "</tr>";
 								}
 							} else if (type == "3") {  //调拨入库
-
+								for (var i = 0; i < result.length; i++) {
+									s += "<tr><td>"
+											+ result[i].product.productId
+											+ "</td><td>"
+											+ result[i].product.productName
+											+ "</td><td>0"
+											+ "</td>"
+											+ "<td>"+result[i].productUnit.puName+"<input type=\"hidden\" value=\""+result[i].productUnit.productUnitId+"\"/></td>" 
+											+ "<td>"+result[i].count+"</td>"
+											+ "<td><input type='text' style='width: 80%; margin: 0px auto; height: 80%;' value='0' onkeyup='nan(this)' onchange='nan(this)' /></td>"
+											+ "<td><!--<a class='label label-important' id='removeproduct' >移除</a> --></td>"
+											+ "</tr>";
+								}
 							}
 							$("#productTbody").html(s);
 						}
@@ -387,8 +407,25 @@
 		}
 
 		$("#enterStockForm").submit(function(){
-			alert("a");
-			return false;
+			var productTbody = $("#productTbody").find("tr");
+			var s = "[";
+			for(var i=0;i<productTbody.length;i++){
+				var tbodytr = $(productTbody[i]).children();                  //获取子元素
+				var proid = tbodytr.eq(0).html();                             // 产品编号
+				var prounit = parseInt(tbodytr.eq(3).find("input").val());    // 产品规格id
+				var pronum = parseInt(tbodytr.eq(5).find("input").val());     // 入库数量
+				var proprice = parseFloat(tbodytr.eq(2).html()); // 产品价格
+				s += "{\"product\":{\"productId\":\"" + proid
+						+ "\"},\"productCount\":\"" + pronum
+						+ "\",\"productUnit\":{\"productUnitId\":\"" + prounit
+						+ "\"},\"productPrice\":\"" + proprice + "\"}";
+				if (i != productTbody.length - 1) { // 代表不是最后一个
+					s += ",";
+				}
+			}
+			s += "]";
+			$("#enterStockProducts").val(s);
+			return true;
 		});
 	</script>
 

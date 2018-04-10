@@ -22,11 +22,8 @@ public interface EnterStockMapper {
 	 *            入库结束时间
 	 * @return
 	 */
-	List<EnterStock> getEnterStockBySuless(
-			@Param("singleNo") String singleNo, 
-			@Param("shName") String shName,
-			@Param("start") String start, 
-			@Param("end") String end);
+	List<EnterStock> getEnterStockBySuless(@Param("singleNo") String singleNo, @Param("shName") String shName,
+			@Param("start") String start, @Param("end") String end);
 
 	/**
 	 * 入库信息的添加
@@ -51,12 +48,8 @@ public interface EnterStockMapper {
 	 *            审核原因
 	 * @return
 	 */
-	int enterStockReview(
-			@Param("singleNo") String singleNo, 
-			@Param("emp") String emp, 
-			@Param("date") Date date,
-			@Param("reviewStatus") Integer reviewStatus, 
-			@Param("reason") String reason);
+	int enterStockReview(@Param("singleNo") String singleNo, @Param("emp") String emp, @Param("date") Date date,
+			@Param("reviewStatus") Integer reviewStatus, @Param("reason") String reason);
 
 	/**
 	 * 入库信息的修改

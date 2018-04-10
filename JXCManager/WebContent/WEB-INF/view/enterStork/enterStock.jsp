@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,7 +64,8 @@ h3 {
 				</ul>
 
 				<div class="row-fluid">
-					<form action="goenterstock" method="post" class="form-horizontal" id="enterMyForm">
+					<form action="goenterstock" method="post" class="form-horizontal"
+						id="enterMyForm">
 						<div class="control-group">
 							<div data-condition="search">
 								入库单号:<input type="text" name="singleNo" class="input-medium"
@@ -76,8 +77,8 @@ h3 {
 									name="start" placeholder="开始日期" /> <input type="text"
 									class="input-small datepicker" readonly="readonly"
 									<c:if test="${end!=null}">value="${end }"</c:if> id="end"
-									name="end" placeholder="结束日期" /> <input type="submit" id="searchblueey"
-									value="搜索" class="btn btn-success" />
+									name="end" placeholder="结束日期" /> <input type="submit"
+									id="searchblueey" value="搜索" class="btn btn-success" />
 								<div style="float: right;">
 									<a class="btn btn-primary" href="goenterstockadd"
 										data-command="Add"><i class="icon-plus"></i>&nbsp;添加</a> <a
@@ -123,13 +124,15 @@ h3 {
 												<td>${s.reviewEmp.empLoginName }</td>
 												<td>${s.reviewStatus.rsName}</td>
 												<td><input type="hidden" value="${s.enterStockId}" />
-													<a id="detail">查看</a> <a id="update"> 编辑</a> <a id="commit">
-														提交</a> <a id="cancelOrder">取消</a> <a id="cancelOrder">入库</a> <a
-													id="deptreview">审核</a></td>
+													<a id="detail" href="javascript:;">查看</a> <a id="update">
+														编辑</a> <a id="commit"> 提交</a> <a id="cancelOrder">取消</a> <a
+													id="cancelOrder">入库</a> <a id="deptreview">审核</a></td>
 											</tr>
 										</c:forEach>
 										<c:if test="${fn:length(ess.list)==0}">
-											<tr><th colspan="8">对不起  没有查询到数据</th></tr>
+											<tr>
+												<th colspan="8">对不起 没有查询到数据</th>
+											</tr>
 										</c:if>
 									</tbody>
 								</table>
@@ -168,30 +171,25 @@ h3 {
 	<div class="modal hide fade" id="myModal" style="width: 800px;">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">x</button>
-			<h2>采购订单明细</h2>
+			<h2>入库单明细</h2>
 		</div>
 		<div class="modal-body">
 			<!-- 采购订单中所有内容 -->
 			<div>
 				<table style="width: 100%; table-layout: fixed;">
-					<tbody id="purchaseDetail">
+					<tbody id="enterStockDetail">
 						<tr style="height: 30px;">
-							<td><h3>订单编号:</h3> <span></span></td>
+							<td><h3>入库单号:</h3> <span></span></td>
 							<td><h3>申请人:</h3>&nbsp;<span></span></td>
 							<td><h3>申请时间:</h3> <span></span></td>
 						</tr>
 						<tr style="height: 30px;">
-							<td><h3>供应商编号:</h3> <span></span></td>
-							<td><h3>联系人:</h3>&nbsp;<span></span></td>
-							<td><h3>电话:</h3>&nbsp;&nbsp;<span></span></td>
+							<td><h3>仓库:</h3> <span></span></td>
+							<td><h3>入库类型:</h3>&nbsp;<span></span></td>
+							<td><h3>上游单号:</h3>&nbsp;&nbsp;<span></span></td>
 						</tr>
 						<tr style="height: 30px;">
 							<td><h3>部门审核人:</h3> <span></span></td>
-							<td><h3>审核时间:</h3> <span></span></td>
-							<td><h3>审核状态:</h3> <span></span></td>
-						</tr>
-						<tr style="height: 30px;">
-							<td><h3>财务审核:</h3> <span></span></td>
 							<td><h3>审核时间:</h3> <span></span></td>
 							<td><h3>审核状态:</h3> <span></span></td>
 						</tr>
@@ -215,11 +213,11 @@ h3 {
 							<th>单价</th>
 						</tr>
 					</thead>
-					<tbody id="purchaseRequestDetail">
+					<tbody id="enterStockProductDetails">
 					</tbody>
 				</table>
 				<div class="pagination pagination-centered">
-					<ul id="purchaseRequestDetailPage">
+					<ul id="enterStockDetailPage">
 
 					</ul>
 				</div>
@@ -266,7 +264,7 @@ h3 {
 	<!-- end: JavaScript-->
 	<script type="text/javascript">
 		$(function() {
-
+			
 		});
 		/* 分页跳转页面 */
 		function goenterstock(type){
@@ -293,7 +291,165 @@ h3 {
 		$("#productBody a").live('mouseout', function() {
 			$(this).css("color", "#646464");
 		});
-		//$("#productBody").find("a").mouseover
+		//查看详细信息
+		$("#detail").live('click',function() {
+			empty();
+			/* 每次点击详情之前  清空详情 */
+			$("#enterStockProductDetails").html(" ");
+			$("#enterStockDetailPage").html(" "); //每次点击之前 目录清空
+			$("#myModal").modal("show");
+			var singleNo = $(this).parent().find("input:hidden").val();
+			$.ajax({
+				type:"POST",
+				url:"getEnterStockBySingleNo",
+				data:"singleNo="+singleNo,
+				dataType:"JSON",
+				success:function(result){
+					enterStockDetailAss(result);
+					disDetailPageNum(result);
+					assignmentForEnterStock(result);
+				}
+			});
+		});
+		/* 显示所有页码 */
+		function disDetailPageNum(result) {
+			var pageNo = result.pageNum;
+			var pageTotal = result.pages;
+			//页码数
+			var detailPages = "<li><a href='javascript:goDetailPage(-1,"
+					+ pageNo + "," + pageTotal + ")'>Prev</a></li>";
+			for (var i = 1; i <= result.pages; i++) {
+				if (i == result.pageNum) {
+					detailPages += "<li class='active'><a href='javascript:goDetailPage("
+							+ i
+							+ ","
+							+ pageNo
+							+ ","
+							+ pageTotal
+							+ ")'>"
+							+ i
+							+ "</a></li>"
+				} else {
+					detailPages += "<li><a href='javascript:goDetailPage(" + i
+							+ "," + pageNo + "," + pageTotal + ")'>" + i
+							+ "</a></li>";
+				}
+			}
+			detailPages += "<li><a href='javascript:goDetailPage(-2," + pageNo
+					+ "," + pageTotal + ")'>Next</a></li>";
+			$("#enterStockDetailPage").html(detailPages);
+		}
+
+		//分页查询明细  ajax实现
+		function goDetailPage(type, pageNum, pageTotal) {
+			if (type == -1) { //上一页
+				if (pageNum == 1) {
+					return;
+				}
+				pageNum -= 1;
+			} else if (type == -2) { //下一页
+				if (pageNum == pageTotal) {
+					return;
+				}
+				pageNum += 1;
+			} else {
+				pageNum = type;
+			}
+			var singleNo = $("#enterStockDetail").children("tr:eq(0)").children(
+					"td:eq(0)").find("span").html();
+			$.ajax({
+				type : "POST",
+				url : "getEnterStockBySingleNo",
+				data : "singleNo=" + singleNo + "&pageNo=" + pageNum,
+				dataType : "JSON",
+				success : function(result) {
+					//为表格详情赋值
+					enterStockDetailAss(result);
+					//显示页码目录
+					disDetailPageNum(result);
+				}
+			});
+		}
+		
+		/* 为入库的详情商品赋值 */
+		function enterStockDetailAss(result) {
+			var s = "";
+			for (var i = 0; i < result.list.length; i++) {
+				s += "<tr><td>" + result.list[i].product.productName
+						+ "</td><td>" + result.list[i].product.productId
+						+ "</td><td>" + result.list[i].productUnit.puName
+						+ "</td><td>" + result.list[i].productCount + "</td>"
+						+ "<td>" + result.list[i].productPrice + "</td>" + "</tr>";
+			}
+			$("#enterStockProductDetails").html(s);
+		}
+		/* 为入库基本信息的弹框赋值  */
+		function assignmentForEnterStock(result){
+			$("#enterStockDetail")
+				.children("tr:eq(0)")
+				.children("td:eq(0)")
+				.find("span")
+				.html(result.list[0].enterstock.enterStockId);
+			$("#enterStockDetail")
+				.children("tr:eq(0)")
+				.children("td:eq(1)")
+				.find("span")
+				.html(result.list[0].enterstock.employee.empLoginName);
+			var requestTime = dateformat(result.list[0].enterstock.enterDate);
+			$("#enterStockDetail").children(
+					"tr:eq(0)").children(
+					"td:eq(2)").find("span")
+					.html(requestTime);
+			$("#enterStockDetail")
+					.children("tr:eq(1)")
+					.children("td:eq(0)")
+					.find("span")
+					.html(result.list[0].enterstock.storehouse.shName);
+			$("#enterStockDetail")
+				.children("tr:eq(1)")
+				.children("td:eq(1)")
+				.find("span")
+				.html(result.list[0].enterstock.enterstocktype.estName);
+			$("#enterStockDetail")
+				.children("tr:eq(1)")
+				.children("td:eq(2)")
+				.find("span")
+				.html(result.list[0].enterstock.upstreamNo);
+			$("#enterStockDetail")
+				.children("tr:eq(3)")
+				.children("td:eq(0)")
+				.find("span")
+				.html(result.list[0].enterstock.remark);
+			$("#enterStockDetail")
+				.children("tr:eq(2)")
+				.children("td:eq(0)")
+				.find("span")
+				.html(result.list[0].enterstock.reviewEmp.empLoginName);
+			/* 审核时间 */
+			var s=dateformat(result.list[0].enterstock.reviewDate);
+			$("#enterStockDetail")
+				.children("tr:eq(2)")
+				.children("td:eq(1)")
+				.find("span")
+				.html(s);
+			$("#enterStockDetail")
+				.children("tr:eq(2)")
+				.children("td:eq(2)")
+				.find("span")
+				.html(result.list[0].enterstock.reviewStatus.rsName);
+		}
+		
+		/* 每次点开详情之前清空 */
+		function empty(){
+			for(var i = 0 ; i < 3 ; i++){
+				for(var j = 0 ; j < 3 ; j++){
+					$("#enterStockDetail").children("tr:eq("+i+")").children("td:eq("+j+")")
+						.find("span").html("");
+				}
+			}
+			$("#enterStockDetail").children("tr:eq(3)").children("td:eq(0)")
+				.find("span").html("");
+		}
 	</script>
 </body>
 </html>
