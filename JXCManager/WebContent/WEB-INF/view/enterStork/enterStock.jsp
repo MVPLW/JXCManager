@@ -62,7 +62,6 @@ h3 {
 						class="icon-angle-right"></i></li>
 					<li><a href="form">入库订单管理</a></li>
 				</ul>
-
 				<div class="row-fluid">
 					<form action="goenterstock" method="post" class="form-horizontal"
 						id="enterMyForm">
@@ -85,6 +84,7 @@ h3 {
 										class="btn btn-warning" href="javascript:void(0)"
 										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a>
 									<a class="btn btn-danger" href="javascript:void(0)"
+										onclick="javascript:location.href='goenterstock';"
 										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 								</div>
 							</div>
@@ -121,12 +121,20 @@ h3 {
 												<td><fmt:formatDate value="${s.enterDate}"
 														pattern="yyyy-MM-dd" /></td>
 												<td>${s.enterstocktype.estName}</td>
-												<td>${s.reviewEmp.empLoginName }</td>
-												<td>${s.reviewStatus.rsName}</td>
+												<td>${s.reviewEmp.empLoginName}</td>
+												<td><c:if
+														test="${s.reviewStatus!=null && s.reviewStatus.rsId==2}">
+														<!-- 审核通过 -->
+														<span class="label label-success">${s.reviewStatus.rsName}</span>
+													</c:if> <c:if
+														test="${s.reviewStatus!=null && s.reviewStatus.rsId==3}">
+														<!-- 审核拒绝 -->
+														<span class="label label-important">${s.reviewStatus.rsName}</span>
+													</c:if></td>
 												<td><input type="hidden" value="${s.enterStockId}" />
-													<a id="detail" href="javascript:;">查看</a> <a id="update">
+													<a id="detail" href="javascript:;">查看</a> <a id="updateEnterStock">
 														编辑</a> <a id="commit"> 提交</a> <a id="cancelOrder">取消</a> <a
-													id="cancelOrder">入库</a> <a id="deptreview">审核</a></td>
+													id="cancelOrder">入库</a> <a id="review" href="javascript:;">审核</a></td>
 											</tr>
 										</c:forEach>
 										<c:if test="${fn:length(ess.list)==0}">
@@ -224,6 +232,42 @@ h3 {
 			</div>
 		</div>
 		<div class="modal-footer">
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+		</div>
+	</div>
+	<!-- 审核弹框 -->
+	<div class="modal hide fade" id="reviewModal" style="width: 800px;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">x</button>
+			<h2>部门审核</h2>
+		</div>
+		<div class="modal-body">
+			<div>
+				<table style="width: 100%; table-layout: fixed;">
+					<tbody>
+						<tr>
+							<th style="width: 120px;">部门审核是否通过</th>
+							<th>
+								<div class="controls">
+									<label class="radio"> <input type="radio"
+										name="reviewCheck" value="1" checked="checked" /> 是
+									</label> <label class="radio" style="position: relative; top: 3px;">
+										<input type="radio" name="reviewCheck" value="0" /> 否
+									</label>
+								</div>
+							</th>
+						</tr>
+						<tr>
+							<th>原因</th>
+							<th style="padding-right: 20px;"><textarea rows="4"
+									id="reviewReason" cols="30" style="width: 100%;"></textarea></th>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a href="javascript:;" class="btn btn-primary" id="reviewCommit">Save</a>
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
@@ -450,6 +494,27 @@ h3 {
 			$("#enterStockDetail").children("tr:eq(3)").children("td:eq(0)")
 				.find("span").html("");
 		}
+		/* 点击审核按钮 */
+		var singleNo;   //全局变量  保存点击的单据单号
+		$("#review").live("click",function(){
+			$("#reviewModal").modal("show");
+			singleNo=$(this).parent().find("input:hidden").val();
+		});
+		/* 点击保存按钮 */
+		$("#reviewCommit").live('click',function() { //点击保存
+			var s = $("input[name=reviewCheck]:checked").val(); //审核是否通过 0 表示不通过  1表示通过
+			var reason = $("#reviewReason").val(); //审核原因
+			if (reason == "" || reason == undefined) {
+				alert("请输入原因");
+				return;
+			}
+			location.href = "enterStockReview?singleNo=" + singleNo+ "&no=" + s + "&reason=" + reason;
+		});
+
+		$("#updateEnterStock").live('click',function(){
+			var s=$(this).parent().find("input:hidden").val();
+			location.href="goEnterStockUpdate?singleNo="+s;
+		});
 	</script>
 </body>
 </html>

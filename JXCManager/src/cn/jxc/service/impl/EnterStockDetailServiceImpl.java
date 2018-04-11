@@ -14,7 +14,7 @@ import cn.jxc.service.EnterStockDetailService;
 
 @Service
 public class EnterStockDetailServiceImpl implements EnterStockDetailService {
-	
+
 	@Autowired
 	private EnterStockDetailMapper enterStockDetailMapper;
 
@@ -27,8 +27,28 @@ public class EnterStockDetailServiceImpl implements EnterStockDetailService {
 	@Override
 	public PageInfo<EnterStockDetail> getEnterStockDetailBySingleNo(String singleNo, Integer pageNo, Integer pageSize) {
 		PageHelper.startPage(pageNo, pageSize);
-		List<EnterStockDetail> enterStockDetailsBySingleNo = enterStockDetailMapper.getEnterStockDetailsBySingleNo(singleNo);
+		List<EnterStockDetail> enterStockDetailsBySingleNo = enterStockDetailMapper
+				.getEnterStockDetailsBySingleNo(singleNo);
 		return new PageInfo<>(enterStockDetailsBySingleNo);
+	}
+
+	@Override
+	public int updateEnterStockDetailByProductAndSingleNo(String singleNo, List<EnterStockDetail> enterStockDetails) {
+		try {
+			int a = 0;
+			for (EnterStockDetail s : enterStockDetails) {
+				a = 0;
+				a = enterStockDetailMapper.updateEnterStockDetailByProductAndSingleNo(singleNo,
+						s.getProduct().getProductId(), s.getProductCount());
+				if (a == 0) {
+					return 0;
+				}
+			}
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 }

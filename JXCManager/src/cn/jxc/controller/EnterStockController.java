@@ -1,7 +1,10 @@
 package cn.jxc.controller;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -186,7 +189,8 @@ public class EnterStockController {
 	 */
 	@RequestMapping("/getEnterStockBySingleNo")
 	@ResponseBody
-	public String getEnterStockBySingleNo(String singleNo, @RequestParam(value = "pageNo", required = false) Integer pageNo) throws ParseException {
+	public String getEnterStockBySingleNo(String singleNo,
+			@RequestParam(value = "pageNo", required = false) Integer pageNo) throws ParseException {
 		EnterStock enterStock = enterStockService.getEnterStockBySuless(singleNo, null, null, null, 1, 1000).getList()
 				.get(0);
 		if (pageNo == null) {
@@ -196,6 +200,80 @@ public class EnterStockController {
 				.getEnterStockDetailBySingleNo(singleNo, pageNo, 3);
 		enterStockDetailBySingleNo.getList().get(0).setEnterstock(enterStock);
 		return JSON.toJSONString(enterStockDetailBySingleNo);
+	}
+
+	/**
+	 * 入库单审核
+	 * 
+	 * @param singleNo
+	 *            单号
+	 * @param no
+	 *            审核是否通过
+	 * @param reason
+	 *            审核原因
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/enterStockReview")
+	public String enterStockReview(String singleNo, Integer no, String reason, HttpServletRequest request) {
+		Employee employee = (Employee) request.getSession().getAttribute("loginEmp");
+		if (no == 1) { // 审核同意
+			no = 2;
+		} else if (no == 0) { // 审核不同意
+			no = 3;
+		}
+		int enterStockReview = enterStockService.enterStockReview(singleNo, employee.getEmpLoginName(), new Date(), no,
+				reason);
+		if (enterStockReview > 0) {
+			return "redirect:goenterstock";
+		} else
+			return "error";
+	}
+
+	/**
+	 * 跳转到入库单修改的页面
+	 * 
+	 * @param singleNo
+	 *            入库单号
+	 * @param model
+	 * @return
+	 * @throws ParseException
+	 */
+	@RequestMapping("/goEnterStockUpdate")
+	public String goEnterStockUpdate(String singleNo, Model model) throws ParseException {
+		// 根据单号查询入库单信息
+		EnterStock enterStockBySingleNo = enterStockService.getEnterStockBySuless(singleNo, null, null, null, 1, 1)
+				.getList().get(0);
+		// 根据入库单号查询入库详情
+		List<EnterStockDetail> enterStockDetails = enterStockDetailService
+				.getEnterStockDetailBySingleNo(singleNo, 1, 100000).getList();
+		List<Employee> employeeAll = employeeService.getEmployeeAll(); // 所有员工
+		List<StoreHouse> storeHouselist = storeHouseService.getStoreHouselist(); // 所有仓库
+		model.addAttribute("enterStock", enterStockBySingleNo);
+		model.addAttribute("enterStockDetails", enterStockDetails);
+		model.addAttribute("employeeAll", employeeAll);
+		model.addAttribute("storeHouseAll", storeHouselist);
+		return "enterStork/enterStockUpdate";
+	}
+
+	/**
+	 * 修改入库信息表
+	 * 
+	 * @param enterStock
+	 * @param enterStockProducts
+	 * @return
+	 */
+	@RequestMapping("/enterStockUpdate")
+	public String enterStockUpdate(EnterStock enterStock,
+			@RequestParam("enterStockProducts") String enterStockProducts) {
+		int enterStockUpdate = enterStockService.enterStockUpdate(enterStock);
+		List<EnterStockDetail> parseArray = JSONArray.parseArray(enterStockProducts, EnterStockDetail.class);
+		int a = enterStockDetailService.updateEnterStockDetailByProductAndSingleNo(enterStock.getEnterStockId(),
+				parseArray);
+		if (a > 0 && enterStockUpdate > 0)
+			return "redirect:goenterstock";
+		else
+			return "error";
 	}
 
 }

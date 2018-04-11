@@ -1,5 +1,7 @@
 package cn.jxc.service;
 
+import java.util.List;
+
 import com.github.pagehelper.PageInfo;
 
 import cn.jxc.pojo.EnterStockDetail;
@@ -27,5 +29,16 @@ public interface EnterStockDetailService {
 	 * @return
 	 */
 	PageInfo<EnterStockDetail> getEnterStockDetailBySingleNo(String singleNo, Integer pageNo, Integer pageSize);
+
+	/**
+	 * 修改入库的详情数量 根据单号
+	 * 
+	 * @param singleNo
+	 *            单号
+	 * @param enterStockDetails
+	 *            要修改的详情集合
+	 * @return
+	 */
+	int updateEnterStockDetailByProductAndSingleNo(String singleNo, List<EnterStockDetail> enterStockDetails);
 
 }

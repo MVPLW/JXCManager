@@ -51,7 +51,7 @@
 			<div id="content" class="span10">
 				<ul class="breadcrumb">
 					<li><i class="icon-home"></i>首页 <i class="icon-angle-right"></i></li>
-					<li><a href="form">入库单管理</a></li>
+					<li><a href="javascript:;">入库单管理</a></li>
 				</ul>
 				<div class="row-fluid sortable">
 					<div class="box span12">
@@ -63,7 +63,8 @@
 						</div>
 						<div style="clear: both;">&nbsp;</div>
 						<div class="box-content">
-							<form class="form-horizontal" action="enterStockInsert" method="post" id="enterStockForm">
+							<form class="form-horizontal" action="enterStockInsert"
+								method="post" id="enterStockForm">
 								<fieldset>
 									<table style="width: 80%; margin: 0px auto;">
 										<tr>
@@ -76,7 +77,8 @@
 											<td><div class="control-group">
 													<label class="control-label" for="storehouse.storeHouseId">仓&nbsp;&nbsp;库&nbsp;&nbsp;&nbsp;</label>
 													<div class="controls">
-														<select id="storehouse.storeHouseId" name="storehouse.storeHouseId" data-rel="chosen">
+														<select id="storehouse.storeHouseId"
+															name="storehouse.storeHouseId" data-rel="chosen">
 															<c:forEach items="${storeHouseAll }" var="s">
 																<option value="${s.storeHouseId}">${s.shName}</option>
 															</c:forEach>
@@ -95,7 +97,8 @@
 											<td><div class="control-group">
 													<label class="control-label" for="enterStockType">入库类型</label>
 													<div class="controls">
-														<select id="enterStockType" data-rel="chosen" name="enterstocktype.estId" >
+														<select id="enterStockType" data-rel="chosen"
+															name="enterstocktype.estId">
 															<c:forEach items="${estAll}" var="s">
 																<option value="${s.estId}">${s.estName}</option>
 															</c:forEach>
@@ -117,7 +120,8 @@
 											<td><div class="control-group">
 													<label class="control-label" for="employee.empLoginName">入库人&nbsp;&nbsp;</label>
 													<div class="controls">
-														<select id="employee.empLoginName" data-rel="chosen" name="employee.empLoginName" >
+														<select id="employee.empLoginName" data-rel="chosen"
+															name="employee.empLoginName">
 															<c:forEach items="${employeeAll }" var="s">
 																<option value="${s.empLoginName}">${s.empLoginName}</option>
 															</c:forEach>
@@ -130,11 +134,12 @@
 												<div class="control-group">
 													<label class="control-label" for="remark">备注</label>
 													<div class="controls">
-														<input type="text" class="span6 typeahead" id="remark" name="remark"
-															data-provide="typeahead" data-items="4"
+														<input type="text" class="span6 typeahead" id="remark"
+															name="remark" data-provide="typeahead" data-items="4"
 															placeholder="此处填写备注"
 															data-source='["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"]'>
-															<input type="hidden" id="enterStockProducts" name="enterStockProducts" />
+														<input type="hidden" id="enterStockProducts"
+															name="enterStockProducts" />
 													</div>
 												</div>
 											</td>
@@ -177,7 +182,8 @@
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<button type="submit" class="btn btn-primary">提交入库单</button>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<button class="btn" type="button" onclick="javascript:history.go(-1);">取消</button>
+										<button class="btn" type="button"
+											onclick="javascript:history.go(-1);">取消</button>
 									</div>
 								</fieldset>
 							</form>
@@ -287,13 +293,13 @@
 	<!-- end: JavaScript-->
 
 	<script type="text/javascript">
-		$(function(){
+		$(function() {
 			var date = new Date();
 			$("#enterDate").val(
 					parseInt(date.getMonth()) + 1 + "/" + date.getDate() + "/"
 							+ date.getFullYear());
 		});
-		
+
 		$("#enterStockType")
 				.live(
 						'change',
@@ -344,81 +350,99 @@
 		$("#upstreamNo").live('change', function() {
 			var val = $(this).val(); //获取选中的值
 			var type = $("#enterStockType").val();
-			getSingleNoDetail(val,type);
+			getSingleNoDetail(val, type);
 		});
 		/* 根据选中的订单号  拼接单子的详情 */
 		function getSingleNoDetail(singleNo, type) {
-			$
-					.ajax({
-						type : "POST",
-						url : "getSingleNoDetail",
-						data : "singleNo=" + singleNo + "&type=" + type,
-						dataType : "JSON",
-						success : function(result) {
-							var s = "";
-							if (type == "1") {                        //采购入库
-								for (var i = 0; i < result.length; i++) {
-									s += "<tr><td>"
-											+ result[i].product.productId
-											+ "</td><td>"
-											+ result[i].product.productName
-											+ "</td><td>"
-											+ result[i].price
-											+ "</td>"
-											+ "<td>"+result[i].productUnit.puName+"<input type=\"hidden\" value=\""+result[i].productUnit.productUnitId+"\"/></td>"
-											+ "<td>"+result[i].count+"</td>"
-											+ "<td><input type='text' style='width: 80%; margin: 0px auto; height: 80%;' value='0' onkeyup='nan(this)' onchange='nan(this)' /></td>"
-											+ "<td><!-- <a class='label label-important' id='removeproduct' >移除</a> --></td>"
-											+ "</tr>";
-								}
-							} else if (type == "2") {  //退货入库
-								for (var i = 0; i < result.length; i++) {
-									s += "<tr><td>"
-											+ result[i].product.productId
-											+ "</td><td>"
-											+ result[i].product.productName
-											+ "</td><td>"
-											+ result[i].price
-											+ "</td>"
-											+ "<td>"+result[i].productUnit.puName+"<input type=\"hidden\" value=\""+result[i].productUnit.productUnitId+"\"/></td>"
-											+ "<td>"+result[i].count+"</td>"
-											+ "<td><input type='text' style='width: 80%; margin: 0px auto; height: 80%;' value='0' onkeyup='nan(this)' onchange='nan(this)' /></td>"
-											+ "<td><!--<a class='label label-important' id='removeproduct' >移除</a> --></td>"
-											+ "</tr>";
-								}
-							} else if (type == "3") {  //调拨入库
-								for (var i = 0; i < result.length; i++) {
-									s += "<tr><td>"
-											+ result[i].product.productId
-											+ "</td><td>"
-											+ result[i].product.productName
-											+ "</td><td>0"
-											+ "</td>"
-											+ "<td>"+result[i].productUnit.puName+"<input type=\"hidden\" value=\""+result[i].productUnit.productUnitId+"\"/></td>" 
-											+ "<td>"+result[i].count+"</td>"
-											+ "<td><input type='text' style='width: 80%; margin: 0px auto; height: 80%;' value='0' onkeyup='nan(this)' onchange='nan(this)' /></td>"
-											+ "<td><!--<a class='label label-important' id='removeproduct' >移除</a> --></td>"
-											+ "</tr>";
-								}
-							}
-							$("#productTbody").html(s);
+			$.ajax({
+				type : "POST",
+				url : "getSingleNoDetail",
+				data : "singleNo=" + singleNo + "&type=" + type,
+				dataType : "JSON",
+				success : function(result) {
+					var s = "";
+					if (type == "1") { //采购入库
+						for (var i = 0; i < result.length; i++) {
+							s += "<tr><td>"
+									+ result[i].product.productId
+									+ "</td><td>"
+									+ result[i].product.productName
+									+ "</td><td>"
+									+ result[i].price
+									+ "</td>"
+									+ "<td>"
+									+ result[i].productUnit.puName
+									+ "<input type=\"hidden\" value=\""+result[i].productUnit.productUnitId+"\"/></td>"
+									+ "<td>"
+									+ result[i].count
+									+ "</td>"
+									+ "<td><input type='text' style='width: 80%; margin: 0px auto; height: 80%;' value='0' onkeyup='nan(this)' onchange='nan(this)' /></td>"
+									+ "<td><!-- <a class='label label-important' id='removeproduct' >移除</a> --></td>"
+									+ "</tr>";
 						}
-					});
+					} else if (type == "2") { //退货入库
+						for (var i = 0; i < result.length; i++) {
+							s += "<tr><td>"
+									+ result[i].product.productId
+									+ "</td><td>"
+									+ result[i].product.productName
+									+ "</td><td>"
+									+ result[i].price
+									+ "</td>"
+									+ "<td>"
+									+ result[i].productUnit.puName
+									+ "<input type=\"hidden\" value=\""+result[i].productUnit.productUnitId+"\"/></td>"
+									+ "<td>"
+									+ result[i].count
+									+ "</td>"
+									+ "<td><input type='text' style='width: 80%; margin: 0px auto; height: 80%;' value='0' onkeyup='nan(this)' onchange='nan(this)' /></td>"
+									+ "<td><!--<a class='label label-important' id='removeproduct' >移除</a> --></td>"
+									+ "</tr>";
+						}
+					} else if (type == "3") { //调拨入库
+						for (var i = 0; i < result.length; i++) {
+							s += "<tr><td>"
+									+ result[i].product.productId
+									+ "</td><td>"
+									+ result[i].product.productName
+									+ "</td><td>0"
+									+ "</td>"
+									+ "<td>"
+									+ result[i].productUnit.puName
+									+ "<input type=\"hidden\" value=\""+result[i].productUnit.productUnitId+"\"/></td>"
+									+ "<td>"
+									+ result[i].count
+									+ "</td>"
+									+ "<td><input type='text' style='width: 80%; margin: 0px auto; height: 80%;' value='0' onkeyup='nan(this)' onchange='nan(this)' /></td>"
+									+ "<td><!--<a class='label label-important' id='removeproduct' >移除</a> --></td>"
+									+ "</tr>";
+						}
+					}
+					$("#productTbody").html(s);
+				}
+			});
 		}
-
-		$("#enterStockForm").submit(function(){
+		
+		$("#enterStockForm").submit(function() {
 			var productTbody = $("#productTbody").find("tr");
 			var s = "[";
-			for(var i=0;i<productTbody.length;i++){
-				var tbodytr = $(productTbody[i]).children();                  //获取子元素
-				var proid = tbodytr.eq(0).html();                             // 产品编号
-				var prounit = parseInt(tbodytr.eq(3).find("input").val());    // 产品规格id
-				var pronum = parseInt(tbodytr.eq(5).find("input").val());     // 入库数量
+			for (var i = 0; i < productTbody.length; i++) {
+				var tbodytr = $(productTbody[i]).children(); //获取子元素
+				var proid = tbodytr.eq(0).html(); // 产品编号
+				var prounit = parseInt(tbodytr.eq(3).find(
+						"input").val()); // 产品规格id
+				var pronum = parseInt(tbodytr.eq(5).find(
+						"input").val()); // 实际入库数量
+				var shouldCount = parseInt(tbodytr.eq(4).html());
 				var proprice = parseFloat(tbodytr.eq(2).html()); // 产品价格
-				s += "{\"product\":{\"productId\":\"" + proid
-						+ "\"},\"productCount\":\"" + pronum
-						+ "\",\"productUnit\":{\"productUnitId\":\"" + prounit
-						+ "\"},\"productPrice\":\"" + proprice + "\"}";
+				s += "{\"product\":{\"productId\":\""
+						+ proid
+						+ "\"},\"productCount\":\""
+						+ pronum
+						+ "\",\"productUnit\":{\"productUnitId\":\""
+						+ prounit + "\"},\"productPrice\":\""
+						+ proprice + "\",\"shouldCount\":\""
+						+ shouldCount + "\"}";
 				if (i != productTbody.length - 1) { // 代表不是最后一个
 					s += ",";
 				}

@@ -7,27 +7,32 @@
 		`jxcdb`.`enterstockdetail` (`SP_id`,
 		`EnterStock_id`, `Product_id`,
 		`Product_count`, `Product_price`,
-		`ProductUnit_id`) VALUES (NULL,
+		`ProductUnit_id`,`ShouldCount`)
+		VALUES (NULL,
 		#{esd.enterstock.enterStockId}, #{esd.product.productId},
 		#{esd.productCount},
 		#{esd.productPrice},
-		#{esd.productUnit.productUnitId});
+		#{esd.productUnit.productUnitId},#{esd.shouldCount});
 	</insert>
 
 	<resultMap type="EnterStockDetail" id="enterStockDetailMap">
-		<id column="sp_id" property="spId"/>
-		<result column="product_count" property="productCount"/>
-		<result column="product_price" property="productPrice"/>
-		<association property="productUnit" resultMap="cn.jxc.mapper.ProductUnitMapper.productunitmap"></association>
-		<association property="product" resultMap="cn.jxc.mapper.ProductMapper.productResultMap"></association>
-		<association property="enterstock" javaType="EnterStock" column="enterStock_id">
-			<id property="enterStockId" column="enterStock_id"/>
+		<id column="sp_id" property="spId" />
+		<result column="product_count" property="productCount" />
+		<result column="product_price" property="productPrice" />
+		<result column="shouldcount" property="shouldCount" />
+		<association property="productUnit"
+			resultMap="cn.jxc.mapper.ProductUnitMapper.productunitmap"></association>
+		<association property="product"
+			resultMap="cn.jxc.mapper.ProductMapper.productResultMap"></association>
+		<association property="enterstock" javaType="EnterStock"
+			column="enterStock_id">
+			<id property="enterStockId" column="enterStock_id" />
 		</association>
 	</resultMap>
 
 	<select id="getEnterStockDetailsBySingleNo" resultMap="enterStockDetailMap">
 		select
-		esd.sp_id,esd.enterStock_id,esd.product_count,esd.product_price,
+		esd.sp_id,esd.enterStock_id,esd.product_count,esd.product_price,esd.shouldcount,
 		<include refid="cn.jxc.mapper.ProductMapper.product" />
 		,
 		<include refid="cn.jxc.mapper.ProductUnitMapper.productunitsql"></include>
@@ -40,5 +45,10 @@
 		esd.productUnit_id=u.productUnit_id
 		WHERE esd.enterStock_id=#{singleNo}
 	</select>
+
+	<update id="updateEnterStockDetailByProductAndSingleNo">
+		UPDATE enterstockdetail SET product_count=#{count} WHERE
+		enterstock_id=#{singleNo} AND product_id=#{productId}
+	</update>
 
 </mapper>

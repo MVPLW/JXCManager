@@ -23,4 +23,20 @@ public interface EnterStockDetailMapper {
 	 */
 	List<EnterStockDetail> getEnterStockDetailsBySingleNo(@Param("singleNo") String singleNo);
 
+	/**
+	 * 根据入库编号和产品编号修改入库数量
+	 * 
+	 * @param singleNo
+	 *            入库单号
+	 * @param productId
+	 *            产品编号
+	 * @param count
+	 *            产品数量
+	 * @return
+	 */
+	int updateEnterStockDetailByProductAndSingleNo(
+			@Param("singleNo") String singleNo,
+			@Param("productId") String productId, 
+			@Param("count")Integer count);
+
 }
