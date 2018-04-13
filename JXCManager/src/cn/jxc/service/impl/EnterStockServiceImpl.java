@@ -70,4 +70,17 @@ public class EnterStockServiceImpl implements EnterStockService {
 		return null;
 	}
 
+	@Override
+	public int enterStockDelete(String singleNo) {
+		try {
+			enterStockDetailService.deleteEnterStockDetailBySingleNo(singleNo);
+			enterStockMapper.enterStockDelete(singleNo);
+			return 1;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
 }

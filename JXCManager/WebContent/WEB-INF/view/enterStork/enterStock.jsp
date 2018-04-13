@@ -82,8 +82,9 @@ h3 {
 									<a class="btn btn-primary" href="goenterstockadd"
 										data-command="Add"><i class="icon-plus"></i>&nbsp;添加</a> <a
 										class="btn btn-warning" href="javascript:void(0)"
-										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a>
-									<a class="btn btn-danger" href="javascript:void(0)"
+										onclick="deleteEnterStock()" data-command="Delete"><i
+										class="icon-remove"></i>&nbsp;删除</a> <a class="btn btn-danger"
+										href="javascript:void(0)"
 										onclick="javascript:location.href='goenterstock';"
 										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 								</div>
@@ -132,9 +133,12 @@ h3 {
 														<span class="label label-important">${s.reviewStatus.rsName}</span>
 													</c:if></td>
 												<td><input type="hidden" value="${s.enterStockId}" />
-													<a id="detail" href="javascript:;">查看</a> <a id="updateEnterStock">
-														编辑</a> <a id="commit"> 提交</a> <a id="cancelOrder">取消</a> <a
-													id="cancelOrder">入库</a> <a id="review" href="javascript:;">审核</a></td>
+													<a id="detail" href="javascript:;">查看</a>
+													<c:if test="${s.reviewStatus.rsId!=2}">
+														<a id="updateEnterStock"> 编辑</a> 
+														<a id="review" href="javascript:;">审核</a>
+													</c:if> 
+												</td>
 											</tr>
 										</c:forEach>
 										<c:if test="${fn:length(ess.list)==0}">
@@ -217,7 +221,8 @@ h3 {
 							<th>产品名称</th>
 							<th>产品编号</th>
 							<th>规格</th>
-							<th>数量</th>
+							<th>应入库</th>
+							<th>实际入库</th>
 							<th>单价</th>
 						</tr>
 					</thead>
@@ -422,7 +427,7 @@ h3 {
 				s += "<tr><td>" + result.list[i].product.productName
 						+ "</td><td>" + result.list[i].product.productId
 						+ "</td><td>" + result.list[i].productUnit.puName
-						+ "</td><td>" + result.list[i].productCount + "</td>"
+						+ "</td><td>"+result.list[i].shouldCount+"</td><td>" + result.list[i].productCount + "</td>"
 						+ "<td>" + result.list[i].productPrice + "</td>" + "</tr>";
 			}
 			$("#enterStockProductDetails").html(s);
@@ -515,6 +520,40 @@ h3 {
 			var s=$(this).parent().find("input:hidden").val();
 			location.href="goEnterStockUpdate?singleNo="+s;
 		});
+		/* 删除入库单 */
+		function deleteEnterStock(){
+			var s = $("#productBody input[name='productCheck']:checked");
+			if (s.length == 0) {
+				alert("请选择订单");
+				return;
+			}
+			var aa=confirm("确认删除入库单吗 ? 此操作不可撤销");
+			if(aa==true){
+				$.ajaxSettings.async = false;
+				var enterStocks = "-";
+				var flag = false;
+				$(s).each(function() { //循环所有选中的框
+					var a = $(this).val();
+					/* $.get("judgmen", {
+						singleNo : $(this).val()
+					}, function(result) {
+						if (result == "0") {
+							alert("处于采购流程中的单据不可以删除");
+							flag = true;
+							return;
+						} else {
+							purchases += a + "-";
+						}
+					}); */
+					enterStocks += a + "-";
+				});
+				//alert(enterStocks);
+				/* if (flag == false) {
+					location.href = "deletePurchases?singleNos=" + purchases;
+				} */
+				location.href = "deleteEnterStocks?enterStocks=" + enterStocks;
+			}
+		}
 	</script>
 </body>
 </html>

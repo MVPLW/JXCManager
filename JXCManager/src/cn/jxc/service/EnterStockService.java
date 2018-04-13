@@ -67,9 +67,19 @@ public interface EnterStockService {
 	/**
 	 * 根据订单号查询入库订单
 	 * 
-	 * @param singleNo   入库单号
+	 * @param singleNo
+	 *            入库单号
 	 * @return
 	 */
 	EnterStock getEnterStockBySingleNo(String singleNo);
+
+	/**
+	 * 根据单号删除入库单
+	 * 
+	 * @param singleNo
+	 *            单号
+	 * @return
+	 */
+	int enterStockDelete(String singleNo);
 
 }

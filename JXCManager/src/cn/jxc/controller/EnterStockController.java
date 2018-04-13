@@ -171,7 +171,7 @@ public class EnterStockController {
 		} else if ("2".equals(type)) { // 退货入库
 			return JSON.toJSONString(backSalesDetailService.getBackSalesDetailBySingleNo(singleNo));
 		} else if ("3".equals(type)) { // 调拨入库
-			return JSON.toJSONString(requisitionDetailService.requisitionDetailById(singleNo, 1, 10000));
+			return JSON.toJSONString(requisitionDetailService.requisitionDetailById(singleNo, 1, 10000).getList());
 		} else {
 			return "";
 		}
@@ -274,6 +274,26 @@ public class EnterStockController {
 			return "redirect:goenterstock";
 		else
 			return "error";
+	}
+
+	/**
+	 * 删除单据
+	 * 
+	 * @param enterStocks
+	 *            所有单据
+	 * @return
+	 */
+	@RequestMapping("/deleteEnterStocks")
+	public String deleteEnterStocks(@RequestParam("enterStocks") String enterStocks) {
+		try {
+			String[] split = enterStocks.split("-");
+			for (String singleNo : split) {
+				enterStockService.enterStockDelete(singleNo);
+			}
+			return "redirect:goenterstock";
+		} catch (Exception e) {
+			return "error";
+		}
 	}
 
 }

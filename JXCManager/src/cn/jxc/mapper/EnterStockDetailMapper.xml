@@ -50,5 +50,9 @@
 		UPDATE enterstockdetail SET product_count=#{count} WHERE
 		enterstock_id=#{singleNo} AND product_id=#{productId}
 	</update>
+	
+	<delete id="deleteEnterStockDetailBySingleNo" parameterType="string">
+		DELETE FROM enterstockdetail WHERE enterstock_id=#{singleNo}
+	</delete>
 
 </mapper>

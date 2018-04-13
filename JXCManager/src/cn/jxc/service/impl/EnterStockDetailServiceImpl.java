@@ -51,4 +51,10 @@ public class EnterStockDetailServiceImpl implements EnterStockDetailService {
 		}
 	}
 
+	@Override
+	public int deleteEnterStockDetailBySingleNo(String singleNo) {
+		// TODO Auto-generated method stub
+		return enterStockDetailMapper.deleteEnterStockDetailBySingleNo(singleNo);
+	}
+
 }

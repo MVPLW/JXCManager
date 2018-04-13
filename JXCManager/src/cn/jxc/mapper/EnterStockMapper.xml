@@ -106,5 +106,9 @@
 		`Remark`=#{es.remark} WHERE
 		(`EnterStock_id`=#{es.enterStockId});
 	</update>
+	
+	<delete id="enterStockDelete" parameterType="string">
+		DELETE FROM enterstock WHERE enterstock_id=#{singleNo}
+	</delete>
 
 </mapper>

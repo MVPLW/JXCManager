@@ -41,4 +41,13 @@ public interface EnterStockDetailService {
 	 */
 	int updateEnterStockDetailByProductAndSingleNo(String singleNo, List<EnterStockDetail> enterStockDetails);
 
+	/**
+	 * 根据入库单号删除所有入库明细
+	 * 
+	 * @param singleNo
+	 *            入库单号
+	 * @return
+	 */
+	int deleteEnterStockDetailBySingleNo(String singleNo);
+
 }

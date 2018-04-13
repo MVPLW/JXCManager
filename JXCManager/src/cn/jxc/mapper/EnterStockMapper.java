@@ -59,4 +59,12 @@ public interface EnterStockMapper {
 	 */
 	int enterStockUpdate(@Param("es") EnterStock enterStock);
 
+	/**
+	 * 根据入库单号删除一条入库记录
+	 * 
+	 * @param singleNo
+	 * @return
+	 */
+	int enterStockDelete(@Param("singleNo") String singleNo);
+
 }
