@@ -22,7 +22,7 @@
 	
 	<sql id="employeeMap">
 		e.`EmpLoginName` AS eemploginname,e.`EmpLoginPwd` AS
-		eemploginpwd,e.`EmpName` AS ename,e.`RoleId` AS eroleid,e.`DeptId` AS
+		eemploginpwd,e.`EmpName` AS ename,e.`DeptId` AS
 		edeptid,e.`JoinDate` AS ejoindate,e.`Gender`AS egender,e.`Birthday` AS
 		ebirthday,e.`Address` AS eaddress,e.`Telephone` AS ephone,e.`Email` AS
 		eemail

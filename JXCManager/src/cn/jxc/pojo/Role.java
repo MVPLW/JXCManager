@@ -1,38 +1,30 @@
 package cn.jxc.pojo;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 角色表
+ * 角色   包含采购员 仓管员  销售员等等...
  */
 public class Role implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private int roleId;
 	private String roleName;
 	private String description;
-	private Set<RoleAuth> roleAuths = new HashSet<RoleAuth>(0);
-	private Set<Employee> employees = new HashSet<Employee>(0);
+	
+	private List<RoleAuth> roleAuths = new ArrayList<RoleAuth>();
+	private List<EmployeeRole> employeeRoles = new ArrayList<EmployeeRole>();
 
 	public Role() {
+		super();
 	}
 
 	public Role(int roleId, String roleName) {
+		super();
 		this.roleId = roleId;
 		this.roleName = roleName;
-	}
-
-	public Role(int roleId, String roleName, String description, Set<RoleAuth> roleAuths, Set<Employee> employees) {
-		this.roleId = roleId;
-		this.roleName = roleName;
-		this.description = description;
-		this.roleAuths = roleAuths;
-		this.employees = employees;
 	}
 
 	public int getRoleId() {
@@ -59,20 +51,20 @@ public class Role implements java.io.Serializable {
 		this.description = description;
 	}
 
-	public Set<RoleAuth> getRoleAuths() {
+	public List<RoleAuth> getRoleAuths() {
 		return this.roleAuths;
 	}
 
-	public void setRoleAuths(Set<RoleAuth> roleAuths) {
+	public void setRoleAuths(List<RoleAuth> roleAuths) {
 		this.roleAuths = roleAuths;
 	}
 
-	public Set<Employee> getEmployees() {
-		return this.employees;
+	public List<EmployeeRole> getEmployees() {
+		return this.employeeRoles;
 	}
 
-	public void setEmployees(Set<Employee> employees) {
-		this.employees = employees;
+	public void setEmployees(List<EmployeeRole> employees) {
+		this.employeeRoles = employees;
 	}
 
 }
