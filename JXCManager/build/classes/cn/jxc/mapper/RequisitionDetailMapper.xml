@@ -32,9 +32,12 @@
 	<delete id="delrequisitionByid">
 		DELETE FROM requisitiondetail WHERE RE_id=#{reid}
 	</delete>
+<<<<<<< HEAD
 	<delete id="RequisitionDetailDelete">		
 		DELETE
 		FROM `requisitiondetail`
 		WHERE `Requisition_id` = #{id}
 	</delete>
+=======
+>>>>>>> 93b5af71556f8c829bac440c38befd31941af454
 </mapper>

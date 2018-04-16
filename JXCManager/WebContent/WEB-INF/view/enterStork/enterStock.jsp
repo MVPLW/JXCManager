@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,9 +62,9 @@ h3 {
 						class="icon-angle-right"></i></li>
 					<li><a href="form">入库订单管理</a></li>
 				</ul>
-
 				<div class="row-fluid">
-					<form action="goenterstock" method="post" class="form-horizontal" id="enterMyForm">
+					<form action="goenterstock" method="post" class="form-horizontal"
+						id="enterMyForm">
 						<div class="control-group">
 							<div data-condition="search">
 								入库单号:<input type="text" name="singleNo" class="input-medium"
@@ -76,14 +76,16 @@ h3 {
 									name="start" placeholder="开始日期" /> <input type="text"
 									class="input-small datepicker" readonly="readonly"
 									<c:if test="${end!=null}">value="${end }"</c:if> id="end"
-									name="end" placeholder="结束日期" /> <input type="submit" id="searchblueey"
-									value="搜索" class="btn btn-success" />
+									name="end" placeholder="结束日期" /> <input type="submit"
+									id="searchblueey" value="搜索" class="btn btn-success" />
 								<div style="float: right;">
 									<a class="btn btn-primary" href="goenterstockadd"
 										data-command="Add"><i class="icon-plus"></i>&nbsp;添加</a> <a
 										class="btn btn-warning" href="javascript:void(0)"
-										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a>
-									<a class="btn btn-danger" href="javascript:void(0)"
+										onclick="deleteEnterStock()" data-command="Delete"><i
+										class="icon-remove"></i>&nbsp;删除</a> <a class="btn btn-danger"
+										href="javascript:void(0)"
+										onclick="javascript:location.href='goenterstock';"
 										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 								</div>
 							</div>
@@ -120,16 +122,29 @@ h3 {
 												<td><fmt:formatDate value="${s.enterDate}"
 														pattern="yyyy-MM-dd" /></td>
 												<td>${s.enterstocktype.estName}</td>
-												<td>${s.reviewEmp.empLoginName }</td>
-												<td>${s.reviewStatus.rsName}</td>
+												<td>${s.reviewEmp.empLoginName}</td>
+												<td><c:if
+														test="${s.reviewStatus!=null && s.reviewStatus.rsId==2}">
+														<!-- 审核通过 -->
+														<span class="label label-success">${s.reviewStatus.rsName}</span>
+													</c:if> <c:if
+														test="${s.reviewStatus!=null && s.reviewStatus.rsId==3}">
+														<!-- 审核拒绝 -->
+														<span class="label label-important">${s.reviewStatus.rsName}</span>
+													</c:if></td>
 												<td><input type="hidden" value="${s.enterStockId}" />
-													<a id="detail">查看</a> <a id="update"> 编辑</a> <a id="commit">
-														提交</a> <a id="cancelOrder">取消</a> <a id="cancelOrder">入库</a> <a
-													id="deptreview">审核</a></td>
+													<a id="detail" href="javascript:;">查看</a>
+													<c:if test="${s.reviewStatus.rsId!=2}">
+														<a id="updateEnterStock"> 编辑</a> 
+														<a id="review" href="javascript:;">审核</a>
+													</c:if> 
+												</td>
 											</tr>
 										</c:forEach>
 										<c:if test="${fn:length(ess.list)==0}">
-											<tr><th colspan="8">对不起  没有查询到数据</th></tr>
+											<tr>
+												<th colspan="8">对不起 没有查询到数据</th>
+											</tr>
 										</c:if>
 									</tbody>
 								</table>
@@ -168,30 +183,25 @@ h3 {
 	<div class="modal hide fade" id="myModal" style="width: 800px;">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">x</button>
-			<h2>采购订单明细</h2>
+			<h2>入库单明细</h2>
 		</div>
 		<div class="modal-body">
 			<!-- 采购订单中所有内容 -->
 			<div>
 				<table style="width: 100%; table-layout: fixed;">
-					<tbody id="purchaseDetail">
+					<tbody id="enterStockDetail">
 						<tr style="height: 30px;">
-							<td><h3>订单编号:</h3> <span></span></td>
+							<td><h3>入库单号:</h3> <span></span></td>
 							<td><h3>申请人:</h3>&nbsp;<span></span></td>
 							<td><h3>申请时间:</h3> <span></span></td>
 						</tr>
 						<tr style="height: 30px;">
-							<td><h3>供应商编号:</h3> <span></span></td>
-							<td><h3>联系人:</h3>&nbsp;<span></span></td>
-							<td><h3>电话:</h3>&nbsp;&nbsp;<span></span></td>
+							<td><h3>仓库:</h3> <span></span></td>
+							<td><h3>入库类型:</h3>&nbsp;<span></span></td>
+							<td><h3>上游单号:</h3>&nbsp;&nbsp;<span></span></td>
 						</tr>
 						<tr style="height: 30px;">
 							<td><h3>部门审核人:</h3> <span></span></td>
-							<td><h3>审核时间:</h3> <span></span></td>
-							<td><h3>审核状态:</h3> <span></span></td>
-						</tr>
-						<tr style="height: 30px;">
-							<td><h3>财务审核:</h3> <span></span></td>
 							<td><h3>审核时间:</h3> <span></span></td>
 							<td><h3>审核状态:</h3> <span></span></td>
 						</tr>
@@ -211,21 +221,58 @@ h3 {
 							<th>产品名称</th>
 							<th>产品编号</th>
 							<th>规格</th>
-							<th>数量</th>
+							<th>应入库</th>
+							<th>实际入库</th>
 							<th>单价</th>
 						</tr>
 					</thead>
-					<tbody id="purchaseRequestDetail">
+					<tbody id="enterStockProductDetails">
 					</tbody>
 				</table>
 				<div class="pagination pagination-centered">
-					<ul id="purchaseRequestDetailPage">
+					<ul id="enterStockDetailPage">
 
 					</ul>
 				</div>
 			</div>
 		</div>
 		<div class="modal-footer">
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+		</div>
+	</div>
+	<!-- 审核弹框 -->
+	<div class="modal hide fade" id="reviewModal" style="width: 800px;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">x</button>
+			<h2>部门审核</h2>
+		</div>
+		<div class="modal-body">
+			<div>
+				<table style="width: 100%; table-layout: fixed;">
+					<tbody>
+						<tr>
+							<th style="width: 120px;">部门审核是否通过</th>
+							<th>
+								<div class="controls">
+									<label class="radio"> <input type="radio"
+										name="reviewCheck" value="1" checked="checked" /> 是
+									</label> <label class="radio" style="position: relative; top: 3px;">
+										<input type="radio" name="reviewCheck" value="0" /> 否
+									</label>
+								</div>
+							</th>
+						</tr>
+						<tr>
+							<th>原因</th>
+							<th style="padding-right: 20px;"><textarea rows="4"
+									id="reviewReason" cols="30" style="width: 100%;"></textarea></th>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a href="javascript:;" class="btn btn-primary" id="reviewCommit">Save</a>
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
@@ -266,7 +313,7 @@ h3 {
 	<!-- end: JavaScript-->
 	<script type="text/javascript">
 		$(function() {
-
+			
 		});
 		/* 分页跳转页面 */
 		function goenterstock(type){
@@ -293,7 +340,220 @@ h3 {
 		$("#productBody a").live('mouseout', function() {
 			$(this).css("color", "#646464");
 		});
-		//$("#productBody").find("a").mouseover
+		//查看详细信息
+		$("#detail").live('click',function() {
+			empty();
+			/* 每次点击详情之前  清空详情 */
+			$("#enterStockProductDetails").html(" ");
+			$("#enterStockDetailPage").html(" "); //每次点击之前 目录清空
+			$("#myModal").modal("show");
+			var singleNo = $(this).parent().find("input:hidden").val();
+			$.ajax({
+				type:"POST",
+				url:"getEnterStockBySingleNo",
+				data:"singleNo="+singleNo,
+				dataType:"JSON",
+				success:function(result){
+					enterStockDetailAss(result);
+					disDetailPageNum(result);
+					assignmentForEnterStock(result);
+				}
+			});
+		});
+		/* 显示所有页码 */
+		function disDetailPageNum(result) {
+			var pageNo = result.pageNum;
+			var pageTotal = result.pages;
+			//页码数
+			var detailPages = "<li><a href='javascript:goDetailPage(-1,"
+					+ pageNo + "," + pageTotal + ")'>Prev</a></li>";
+			for (var i = 1; i <= result.pages; i++) {
+				if (i == result.pageNum) {
+					detailPages += "<li class='active'><a href='javascript:goDetailPage("
+							+ i
+							+ ","
+							+ pageNo
+							+ ","
+							+ pageTotal
+							+ ")'>"
+							+ i
+							+ "</a></li>"
+				} else {
+					detailPages += "<li><a href='javascript:goDetailPage(" + i
+							+ "," + pageNo + "," + pageTotal + ")'>" + i
+							+ "</a></li>";
+				}
+			}
+			detailPages += "<li><a href='javascript:goDetailPage(-2," + pageNo
+					+ "," + pageTotal + ")'>Next</a></li>";
+			$("#enterStockDetailPage").html(detailPages);
+		}
+
+		//分页查询明细  ajax实现
+		function goDetailPage(type, pageNum, pageTotal) {
+			if (type == -1) { //上一页
+				if (pageNum == 1) {
+					return;
+				}
+				pageNum -= 1;
+			} else if (type == -2) { //下一页
+				if (pageNum == pageTotal) {
+					return;
+				}
+				pageNum += 1;
+			} else {
+				pageNum = type;
+			}
+			var singleNo = $("#enterStockDetail").children("tr:eq(0)").children(
+					"td:eq(0)").find("span").html();
+			$.ajax({
+				type : "POST",
+				url : "getEnterStockBySingleNo",
+				data : "singleNo=" + singleNo + "&pageNo=" + pageNum,
+				dataType : "JSON",
+				success : function(result) {
+					//为表格详情赋值
+					enterStockDetailAss(result);
+					//显示页码目录
+					disDetailPageNum(result);
+				}
+			});
+		}
+		
+		/* 为入库的详情商品赋值 */
+		function enterStockDetailAss(result) {
+			var s = "";
+			for (var i = 0; i < result.list.length; i++) {
+				s += "<tr><td>" + result.list[i].product.productName
+						+ "</td><td>" + result.list[i].product.productId
+						+ "</td><td>" + result.list[i].productUnit.puName
+						+ "</td><td>"+result.list[i].shouldCount+"</td><td>" + result.list[i].productCount + "</td>"
+						+ "<td>" + result.list[i].productPrice + "</td>" + "</tr>";
+			}
+			$("#enterStockProductDetails").html(s);
+		}
+		/* 为入库基本信息的弹框赋值  */
+		function assignmentForEnterStock(result){
+			$("#enterStockDetail")
+				.children("tr:eq(0)")
+				.children("td:eq(0)")
+				.find("span")
+				.html(result.list[0].enterstock.enterStockId);
+			$("#enterStockDetail")
+				.children("tr:eq(0)")
+				.children("td:eq(1)")
+				.find("span")
+				.html(result.list[0].enterstock.employee.empLoginName);
+			var requestTime = dateformat(result.list[0].enterstock.enterDate);
+			$("#enterStockDetail").children(
+					"tr:eq(0)").children(
+					"td:eq(2)").find("span")
+					.html(requestTime);
+			$("#enterStockDetail")
+					.children("tr:eq(1)")
+					.children("td:eq(0)")
+					.find("span")
+					.html(result.list[0].enterstock.storehouse.shName);
+			$("#enterStockDetail")
+				.children("tr:eq(1)")
+				.children("td:eq(1)")
+				.find("span")
+				.html(result.list[0].enterstock.enterstocktype.estName);
+			$("#enterStockDetail")
+				.children("tr:eq(1)")
+				.children("td:eq(2)")
+				.find("span")
+				.html(result.list[0].enterstock.upstreamNo);
+			$("#enterStockDetail")
+				.children("tr:eq(3)")
+				.children("td:eq(0)")
+				.find("span")
+				.html(result.list[0].enterstock.remark);
+			$("#enterStockDetail")
+				.children("tr:eq(2)")
+				.children("td:eq(0)")
+				.find("span")
+				.html(result.list[0].enterstock.reviewEmp.empLoginName);
+			/* 审核时间 */
+			var s=dateformat(result.list[0].enterstock.reviewDate);
+			$("#enterStockDetail")
+				.children("tr:eq(2)")
+				.children("td:eq(1)")
+				.find("span")
+				.html(s);
+			$("#enterStockDetail")
+				.children("tr:eq(2)")
+				.children("td:eq(2)")
+				.find("span")
+				.html(result.list[0].enterstock.reviewStatus.rsName);
+		}
+		
+		/* 每次点开详情之前清空 */
+		function empty(){
+			for(var i = 0 ; i < 3 ; i++){
+				for(var j = 0 ; j < 3 ; j++){
+					$("#enterStockDetail").children("tr:eq("+i+")").children("td:eq("+j+")")
+						.find("span").html("");
+				}
+			}
+			$("#enterStockDetail").children("tr:eq(3)").children("td:eq(0)")
+				.find("span").html("");
+		}
+		/* 点击审核按钮 */
+		var singleNo;   //全局变量  保存点击的单据单号
+		$("#review").live("click",function(){
+			$("#reviewModal").modal("show");
+			singleNo=$(this).parent().find("input:hidden").val();
+		});
+		/* 点击保存按钮 */
+		$("#reviewCommit").live('click',function() { //点击保存
+			var s = $("input[name=reviewCheck]:checked").val(); //审核是否通过 0 表示不通过  1表示通过
+			var reason = $("#reviewReason").val(); //审核原因
+			if (reason == "" || reason == undefined) {
+				alert("请输入原因");
+				return;
+			}
+			location.href = "enterStockReview?singleNo=" + singleNo+ "&no=" + s + "&reason=" + reason;
+		});
+
+		$("#updateEnterStock").live('click',function(){
+			var s=$(this).parent().find("input:hidden").val();
+			location.href="goEnterStockUpdate?singleNo="+s;
+		});
+		/* 删除入库单 */
+		function deleteEnterStock(){
+			var s = $("#productBody input[name='productCheck']:checked");
+			if (s.length == 0) {
+				alert("请选择订单");
+				return;
+			}
+			var aa=confirm("确认删除入库单吗 ? 此操作不可撤销");
+			if(aa==true){
+				$.ajaxSettings.async = false;
+				var enterStocks = "-";
+				var flag = false;
+				$(s).each(function() { //循环所有选中的框
+					var a = $(this).val();
+					/* $.get("judgmen", {
+						singleNo : $(this).val()
+					}, function(result) {
+						if (result == "0") {
+							alert("处于采购流程中的单据不可以删除");
+							flag = true;
+							return;
+						} else {
+							purchases += a + "-";
+						}
+					}); */
+					enterStocks += a + "-";
+				});
+				//alert(enterStocks);
+				/* if (flag == false) {
+					location.href = "deletePurchases?singleNos=" + purchases;
+				} */
+				location.href = "deleteEnterStocks?enterStocks=" + enterStocks;
+			}
+		}
 	</script>
 </body>
 </html>

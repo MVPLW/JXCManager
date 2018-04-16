@@ -15,16 +15,19 @@
 		<association property="employee"
 			resultMap="cn.jxc.mapper.EmployeeMapper.employeeResultMap">
 		</association>
-		<association property="enterstocktype" column="EST_id" javaType="EnterStockType">
+		<association property="enterstocktype" column="EST_id"
+			javaType="EnterStockType">
 			<id column="EST_id" property="estId" />
 			<result column="EST_name" property="estName" />
 		</association>
-		<association property="reviewEmp" column="ReviewEmp" javaType="Employee">
+		<association property="reviewEmp" column="ReviewEmp"
+			javaType="Employee">
 			<id column="ReviewEmp" property="empLoginName" />
 		</association>
-		<association property="reviewStatus" column="RS_id" javaType="ReviewStatus">
-			<id column="RS_id" property="rsId"/>
-			<result column="RS_name" property="rsName"/>
+		<association property="reviewStatus" column="RS_id"
+			javaType="ReviewStatus">
+			<id column="RS_id" property="rsId" />
+			<result column="RS_name" property="rsName" />
 		</association>
 	</resultMap>
 
@@ -36,10 +39,12 @@
 		<include refid="cn.jxc.mapper.EmployeeMapper.employeeMap" />
 		,est.EST_id,est.EST_name,rs.RS_name,rs.RS_id FROM
 		enterstock es
-		LEFT JOIN storehouse s
+		LEFT
+		JOIN storehouse s
 		ON
 		es.StoreHouse_id=s.StoreHouse_id
-		LEFT JOIN employee e
+		LEFT JOIN employee
+		e
 		ON
 		es.Employee_id=e.EmpLoginName
 		LEFT JOIN enterstocktype est
@@ -59,10 +64,12 @@
 				AND s.SH_Name LIKE CONCAT('%',#{shName},'%')
 			</if>
 			<if test="start!=null">
-				AND es.EnterDate <![CDATA[>]]> #{start}
+				AND es.EnterDate <![CDATA[>]]>
+				#{start}
 			</if>
 			<if test="end!=null">
-				AND es.EnterDate <![CDATA[<]]> #{end}
+				AND es.EnterDate <![CDATA[<]]>
+				#{end}
 			</if>
 		</where>
 		ORDER BY es.enterdate DESC
@@ -89,17 +96,19 @@
 		`ReviewReason`=#{reason}
 		WHERE (`EnterStock_id`=#{singleNo});
 	</update>
-	
+
 	<update id="enterStockUpdate" parameterType="EnterStock">
 		UPDATE
 		`jxcdb`.`enterstock` SET
 		`StoreHouse_id`=#{es.storehouse.storeHouseId},
 		`Employee_id`=#{es.employee.empLoginName},
 		`EnterDate`=#{es.enterDate},
-		`EnterStockType_id`=#{es.enterstocktype.estId},
-		`UpstreamNo`=#{es.upstreamNo},
-		`Remark`='hahah' WHERE
+		`Remark`=#{es.remark} WHERE
 		(`EnterStock_id`=#{es.enterStockId});
 	</update>
 	
+	<delete id="enterStockDelete" parameterType="string">
+		DELETE FROM enterstock WHERE enterstock_id=#{singleNo}
+	</delete>
+
 </mapper>

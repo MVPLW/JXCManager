@@ -14,15 +14,16 @@ public class EnterStockDetail implements java.io.Serializable {
 	private EnterStock enterstock;
 	private Product product;
 	private int productCount;
-	private long productPrice;
+	private double productPrice;
 	private ProductUnit productUnit;
+	private int shouldCount;
 
 	public EnterStockDetail() {
 		super();
 	}
 
-	public EnterStockDetail(int spId, EnterStock enterstock, Product product, int productCount, long productPrice,
-			ProductUnit productUnit) {
+	public EnterStockDetail(int spId, EnterStock enterstock, Product product, int productCount, double productPrice,
+			ProductUnit productUnit, int shouldCount) {
 		super();
 		this.spId = spId;
 		this.enterstock = enterstock;
@@ -30,9 +31,8 @@ public class EnterStockDetail implements java.io.Serializable {
 		this.productCount = productCount;
 		this.productPrice = productPrice;
 		this.productUnit = productUnit;
+		this.shouldCount = shouldCount;
 	}
-
-
 
 	public int getSpId() {
 		return this.spId;
@@ -66,11 +66,11 @@ public class EnterStockDetail implements java.io.Serializable {
 		this.productCount = productCount;
 	}
 
-	public long getProductPrice() {
+	public double getProductPrice() {
 		return this.productPrice;
 	}
 
-	public void setProductPrice(long productPrice) {
+	public void setProductPrice(double productPrice) {
 		this.productPrice = productPrice;
 	}
 
@@ -80,6 +80,14 @@ public class EnterStockDetail implements java.io.Serializable {
 
 	public void setProductUnit(ProductUnit productUnit) {
 		this.productUnit = productUnit;
+	}
+
+	public int getShouldCount() {
+		return shouldCount;
+	}
+
+	public void setShouldCount(int shouldCount) {
+		this.shouldCount = shouldCount;
 	}
 	
 }

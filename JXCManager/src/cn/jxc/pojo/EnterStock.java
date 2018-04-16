@@ -1,9 +1,8 @@
 package cn.jxc.pojo;
-// Generated 2018-3-14 20:32:32 by Hibernate Tools 5.2.8.Final
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Èë¿âµ¥ 
@@ -27,7 +26,7 @@ public class EnterStock implements java.io.Serializable {
 	private String reviewReason;
 	private String remark;
 	
-	private Set<EnterStockDetail> enterstockdetails = new HashSet<EnterStockDetail>(0);
+	private List<EnterStockDetail> enterstockdetails = new ArrayList<EnterStockDetail>(0);
 
 	public EnterStock() {
 		super();
@@ -52,7 +51,7 @@ public class EnterStock implements java.io.Serializable {
 
 	public EnterStock(String enterStockId, Employee employee, EnterStockType enterstocktype, StoreHouse storehouse,
 			Date enterDate, String upstreamNo, Employee reviewEmp, Date reviewDate, ReviewStatus reviewStatus,
-			String reviewReason, String remark, Set<EnterStockDetail> enterstockdetails) {
+			String reviewReason, String remark, List<EnterStockDetail> enterstockdetails) {
 		super();
 		this.enterStockId = enterStockId;
 		this.employee = employee;
@@ -116,11 +115,11 @@ public class EnterStock implements java.io.Serializable {
 		this.upstreamNo = upstreamNo;
 	}
 
-	public Set<EnterStockDetail> getEnterstockdetails() {
+	public List<EnterStockDetail> getEnterstockdetails() {
 		return this.enterstockdetails;
 	}
 
-	public void setEnterstockdetails(Set<EnterStockDetail> enterstockdetails) {
+	public void setEnterstockdetails(List<EnterStockDetail> enterstockdetails) {
 		this.enterstockdetails = enterstockdetails;
 	}
 
