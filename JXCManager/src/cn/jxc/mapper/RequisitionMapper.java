@@ -20,4 +20,8 @@ public interface RequisitionMapper {
 	Requisition requisitionByid(String requisitionId);
 	//调拨订单新增
 	int Requisitionadd(@Param("rs")Requisition requisition);
+	//调拨修改
+	int RequisitionUpdete(@Param("rs")Requisition requisition);
+	//根据id删除
+	int RequisitionDelete(@Param("id")String requisitionid);
 }

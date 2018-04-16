@@ -491,17 +491,14 @@
 		//表单提交  封装好json字符串带到后台
 		$("#myform").submit(
 				function() {
-					var productTbody = $("#productTbody").find(
-							"tr[id!=message]"); //已经有的产品
+					var productTbody = $("#productTbody").find("tr[id!=message]"); //已经有的产品
 					var s = "[";
 					for (var i = 0; i < productTbody.length; i++) { //循环已选择的产品列表
+						
 						var tbodytr = $(productTbody[i]).children();
 						var proid = tbodytr.eq(0).html(); //产品编号
 						var pronum = parseInt(tbodytr.eq(3).html()); //产品数量
-						var prounit = parseInt(tbodytr.eq(2).find("input")
-								.val()); //产品规格id
-						/* var proprice = parseInt(tbodytr.eq(2).find("input")
-								.val()); //产品价格 */
+						var prounit = parseInt(tbodytr.eq(2).find("input").val()); //产品规格id
 						s += "{\"product\":{\"productId\":\"" + proid
 								+ "\"},\"count\":\"" + pronum
 								+ "\",\"productUnit\":{\"productUnitId\":\""
@@ -511,7 +508,6 @@
 						}
 					}
 					s += "]";
-							alert(s);
 					$("#products").val(s); //为产品隐藏域赋值
 					return true;
 				});

@@ -35,12 +35,14 @@
 			resultMap="cn.jxc.mapper.ReviewStatusMapper.ReviewStatusMap">
 		</association>
 		<!-- 出库仓库 -->
-		<association property="storehouseByOutboundStoreHouse"	column="OutboundStoreHouse" javaType="StoreHouse">
-			<id column="OutboundStoreHouse" property="shName"/>
+		<association property="storehouseByOutboundStoreHouse" javaType="StoreHouse">
+			<id column="OutboundStoreHouseid" property="storeHouseId"/>
+			<result column="OutboundStoreHouse" property="shName"/>
 		</association>
 		<!-- 入库仓库 -->
-		<association property="storehouseByStorageStoreHouse" javaType="StoreHouse" column="StorageStoreHouse">
-			<id column="StorageStoreHouse" property="shName"/>
+		<association property="storehouseByStorageStoreHouse" javaType="StoreHouse">
+			<id column="StorageStoreHouseid" property="storeHouseId"/>
+			<result column="StorageStoreHouse" property="shName"/>
 		</association>
 
 	</resultMap>
@@ -49,7 +51,8 @@
 		emp1.EmpLoginName AS requestEmp,emp2.EmpLoginName AS reviewEmp,
 		emp3.EmpLoginName AS OutboundEmp,emp4.EmpLoginName AS StoreHouseEmp,
 		r.RS_name,r.RS_id,
-		sto1.SH_Name AS OutboundStoreHouse,sto2.SH_Name AS StorageStoreHouse
+		sto1.SH_Name AS OutboundStoreHouse,sto1.StoreHouse_id AS OutboundStoreHouseid,
+		sto2.SH_Name AS StorageStoreHouse,sto2.StoreHouse_id AS StorageStoreHouseid
 		FROM Requisition rs 
 		LEFT JOIN ReviewStatus r ON rs.reviewstatus=r.RS_id
 		LEFT JOIN `employee` emp1 ON emp1.EmpLoginName=rs.RequestEmp
@@ -66,9 +69,11 @@
 				and r.RS_id=#{rsid}
 			</if>
 		</where>
-		<![CDATA[
-		ORDER BY rs.Requisition_id+0 DESC 
-		]]>
+		ORDER BY rs.`RequestTime` DESC
+		<!-- <![CDATA[
+		ORDER BY rs.Requisition_id+0 DESC
+		
+		]]> -->
 		<!-- limit #{from},#{pageSize} -->
 	</select>
 	<select id="requisitionByid" resultMap="Requisitionlist">
@@ -76,7 +81,8 @@
 		emp1.EmpLoginName AS requestEmp,emp2.EmpLoginName AS reviewEmp,
 		emp3.EmpLoginName AS OutboundEmp,emp4.EmpLoginName AS StoreHouseEmp,
 		r.RS_name,r.RS_id,
-		sto1.StoreHouse_id AS OutboundStoreHouse,sto2.StoreHouse_id AS StorageStoreHouse
+		sto1.SH_Name AS OutboundStoreHouse,sto1.StoreHouse_id AS OutboundStoreHouseid,
+		sto2.SH_Name AS StorageStoreHouse,sto2.StoreHouse_id AS StorageStoreHouseid
 		FROM Requisition rs 
 		LEFT JOIN ReviewStatus r ON rs.reviewstatus=r.RS_id
 		LEFT JOIN `employee` emp1 ON emp1.EmpLoginName=rs.RequestEmp
@@ -94,5 +100,16 @@
 		#{rs.requestTime},1,#{rs.storehouseByOutboundStoreHouse.storeHouseId},
 		#{rs.storehouseByStorageStoreHouse.storeHouseId});
 	</insert>
-	
+	<update id="RequisitionUpdete">
+		UPDATE `requisition` SET `RequestEmp` = #{rs.employeeByRequestEmp.empLoginName},
+		`RequestTime` = #{rs.requestTime},
+		`OutboundStoreHouse` = #{rs.storehouseByOutboundStoreHouse.storeHouseId},
+		`StorageStoreHouse` = #{rs.storehouseByStorageStoreHouse.storeHouseId}
+		WHERE `Requisition_id` = #{rs.requisitionId}
+	</update>
+	<delete id="RequisitionDelete">
+		DELETE
+		FROM `requisition`
+		WHERE `Requisition_id` = #{id}
+	</delete>
 </mapper>

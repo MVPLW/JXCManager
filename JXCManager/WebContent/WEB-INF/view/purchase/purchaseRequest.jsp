@@ -394,8 +394,7 @@ h3 {
 							//获取选中的订单号
 							var singleNo = $(this).parent()
 									.find("input:hidden").val();
-							$
-									.ajax({
+							$.ajax({
 										type : "POST",
 										url : "getPurchaseRequestBySingleNo",
 										data : "singleNo=" + singleNo,
@@ -412,7 +411,7 @@ h3 {
 													.children("td:eq(0)")
 													.find("span")
 													.html(
-															result.list[0].purchaserequest.purchaseRequestId);
+															result.list[0].requisition.requisitionId);
 											$("#purchaseDetail")
 													.children("tr:eq(0)")
 													.children("td:eq(1)")

@@ -80,7 +80,7 @@ h3 {
 								<div style="float: right;">
 									<a class="btn btn-primary" href="gorequisitionadd"
 										data-command="Add"><i class="icon-plus"></i>&nbsp;新增调拨</a> <a
-										class="btn btn-warning" href="javascript:void(0)"
+										class="btn btn-warning" href="javascript:void(0)" onclick="deleteRequisition()"
 										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a>
 									<a class="btn btn-danger" href="gorequisition"
 										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
@@ -103,11 +103,11 @@ h3 {
 								 -->
 								<thead>
 									<tr>
-										<th><input type="checkbox"></th>
+										<th><input type="checkbox" id="productCheckAll" /></th>
 										<th>调拨单号</th>
 										<th>制单人</th>
 										<!-- 申请人 -->
-										<th>制单时间</th>
+										<th>制单	时间</th>
 										<!-- 申请时间 -->
 										<th>审核人</th>
 										<th>审核时间</th>
@@ -117,10 +117,11 @@ h3 {
 										<th>操作</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="productBody">
 									<c:forEach var="res" items="${reslist.list}">
 										<tr>
-											<th><input type="checkbox"></th>
+											<th><input type="checkbox" name="productCheck"
+													value="${res.requisitionId}" /></th>
 											<!--  -->
 											<td>${res.requisitionId }</td>
 											<!-- 调拨单号 -->
@@ -139,15 +140,10 @@ h3 {
 											<!-- 审核状态 -->
 											<td>${res.storehouseByOutboundStoreHouse.shName }</td>
 											<td>${res.storehouseByStorageStoreHouse.shName }</td>
-											<td class="center"><a class="btn btn-info btn-setting"
-												href="requisitionId?requisitionId=${res.requisitionId }">查看
-											</a><a class="btn btn-info btn-success"
-												href="gorequisitionupdate?requisitionId=${res.requisitionId }">
-													修改
-											</a><a class="btn btn-info btn-success"
-												href="gorequisitionupdate?requisitionId=${res.requisitionId }">审核</a>
-												<a class="btn btn-info btn-success"
-												href="gorequisitionupdate?requisitionId=${res.requisitionId }">删除</a>
+											<td><input type="hidden" value="${res.requisitionId}" />
+											<a id="detail" href="javascript:">查看</a>
+											<a href="gorequisitionupdate?requisitionId=${res.requisitionId }">修改</a>
+											<a href="#">审核</a>
 											</td>
 										</tr>
 									</c:forEach>
@@ -192,40 +188,34 @@ h3 {
 		<div class="modal-body">
 			<!-- 采购订单中所有内容 -->
 			<div>
-				<table style="width: 100%;">
-					<tr style="height: 30px;">
-						<td>
-							<h3>调拨单号:</h3>${requisition.requisitionId }
-						</td>
-						<td>
-							<h3>制单人:</h3>${requisition.employeeByRequestEmp.empLoginName }
-						</td>
-						<td><h3>制单时间:</h3><fmt:formatDate
-							value="${requisition.requestTime }" pattern="yyyy-MM-dd" /></td>
-					</tr>
-					<tr style="height: 30px;">
-						<td><h3>审核人:</h3>${requisition.employeeByReviewEmp.empLoginName }</td>
-						<td><h3>审核时间:</h3><fmt:formatDate value="${requisition.reviewTime }"
-								pattern="yyyy-MM-dd" /></td>
-						<td><h3>审核状态:</h3>${requisition.reviewstatus.rsName }</td>
-					</tr>
-					<tr style="height: 30px;">
-						<td><h3>调出仓库:</h3>${requisition.storehouseByOutboundStoreHouse.storeHouseId }</td>
-						<td><h3>出库时间:</h3><fmt:formatDate
-								value="${requisition.outboundStoreHouseTime }" pattern="yyyy-MM-dd" /></td>
-						<td><h3>出库经办人:</h3>${requisition.employeeByOutboundEmp.empLoginName }</td>
-					</tr>
-					<tr style="height: 30px;">
-						<td><h3>调入仓库:</h3>${requisition.storehouseByStorageStoreHouse.storeHouseId }</td>
-						<td><h3>入库时间:</h3><fmt:formatDate
-								value="${requisition.storageStoreHouseTime }" pattern="yyyy-MM-dd" /></td>
-						<td><h3>入库经办人:</h3>${requisition.employeeByStorageStoreHouseEmp.empLoginName }</td>
-					</tr>
+				<table style="width: 100%; table-layout: fixed;">
+					<tbody id="requisitionDetail">
+						<tr style="height: 30px;">
+							<td><h3>调拨编号:</h3> <span></span></td>
+							<td><h3>申请人:</h3>&nbsp;<span></span></td>
+							<td><h3>申请时间:</h3> <span></span></td>
+						</tr>
+						<tr style="height: 30px;">
+							<td><h3>审核状态:</h3> <span></span></td>
+							<td><h3>出库仓库</h3>&nbsp;<span></span></td>
+							<td><h3>入库仓库:</h3>&nbsp;&nbsp;<span></span></td>
+						</tr>
+						<tr style="height: 30px;">
+							<td><h3>审核人:</h3> <span></span></td>
+							<td><h3>出库人:</h3> <span></span></td>
+							<td><h3>入库人:</h3> <span></span></td>
+						</tr>
+						<tr style="height: 30px;">
+							<td><h3>审核时间:</h3> <span></span></td>
+							<td><h3>出库时间:</h3> <span></span></td>
+							<td><h3>入库时间:</h3> <span></span></td>
+						</tr>
+					</tbody>
 				</table>
 			</div>
 			<div style="clear: both;">&nbsp;</div>
 			<div class="box-content">
-				<table class="table table-bordered">
+				<table class="table table-bordered" style="table-layout: fixed;">
 					<thead>
 						<tr>
 							<th>产品名称</th>
@@ -234,35 +224,14 @@ h3 {
 							<th>数量</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
-							<td>Dennis Ji</td>
-							<td class="center">2012/01/01</td>
-							<td class="center">Member</td>
-							<td class="center">Active</td>
-						</tr>
-						<tr>
-							<td>Dennis Ji</td>
-							<td>2012/01/01</td>
-							<td class="center">Member</td>
-							<td class="center">Active</td>
-						</tr>
+					<tbody id="purchaseRequestDetail">
 					</tbody>
 				</table>
 				<div class="pagination pagination-centered">
-					<ul id="productPageButton">
-						<li><a href="javascript:goproductpage('pre');">上一页</a> <input
-							type="hidden" name="pageNo" value="${reslist.pageNum}" />
-						</li>
-						<li class="active"><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="javascript:goproductpage('next');">下一页</a></li>
+					<ul id="requisitionDetailPage">
 					</ul>
 				</div>
 			</div>
-
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn btn-primary" data-dismiss="modal">关闭</a>
@@ -303,6 +272,7 @@ h3 {
 
 	<script src="static/js/bootstrap-transition.js"></script>
 	<script src="static/js/bootstrap-modal.js"></script>
+	<script src="static/own/purchase.js"></script>
 	<!-- end: JavaScript-->
 	<script type="text/javascript">
 		//产品信息分页实现  
@@ -324,36 +294,258 @@ h3 {
 			}
 			location.href="gorequisition?pageNo="+pageNum;
 		}
-		/* 
-		$.ajax({
-			type : "POST",
-			url :  "getProductByPage",
-			data : "pageNum=" + pageNum,
-			dataType : "JSON",
-			success : function(result) {
-				var s = "";
-				for ( var i in result) {
-					s += "<tr height='20px;'>"
-							+ "<td><input type='checkbox' /></td>"
-							+ "<td>"
-							+ result[i].productName
-							+ "</td>"
-							+ "<td>"
-							+ result[i].productId
-							+ "</td>"
-							+ "<td>"
-							+ result[i].producttype.productTypeName
-							+ "</td>"
-							+ "<td>"
-							+ result[i].productunit.puName 
-							+ "<input type='hidden' value='"+result[i].productunit.productUnitId+"' />"
-							+ "</td>"
-							+ "<td><input type='number' min='0' value='0' style='width: 80%; margin: 0px auto; height: 80%;' /></td>"
-							+ "</tr>";
+		
+		
+		
+		$("#detail").live('click',function() {
+			empty();
+			$("#myModal").modal("show");
+			//获取选中的订单号
+			var singleNo = $(this).parent().find("input:hidden").val();
+			alert("调拨单号："+singleNo);
+			$.ajax({
+				type : "POST",
+				url : "getRequisitionBySingleNo",
+				data : "singleNo=" + singleNo,
+				dataType : "JSON",
+				success : function(result) {
+					//采购详情表格赋值
+					puchaseDetailAss(result);
+					//显示所有页码
+					disPageNum(result);
+					//alert(result.list[0].purchaserequest.remark);
+					//为调拨订单各种信息赋值
+					/* var requisition1 = result.list[0].requisition.requisitionId;
+					var requisition2 = result.list[0].requisition.employeeByRequestEmp.empLoginName;
+					var requisition3 = dateformat(result.list[0].requisition.requestTime);
+					
+					var requisition4 = result.list[0].requisition.employeeByReviewEmp.empLoginName;
+					var requisition5 = dateformat(result.list[0].requisition.reviewTime);
+					var requisition6 = result.list[0].requisition.employeeByOutboundEmp.rsName;
+					
+					var requisition7 = result.list[0].requisition.storehouseByOutboundStoreHouse.shName;
+					var requisition8 = dateformat(result.list[0].requisition.outboundStoreHouseTime);
+					var requisition9 = result.list[0].requisition.storehouseByOutboundStoreHouse.empLoginName;
+					
+					var requisition10 = result.list[0].requisition.storehouseByStorageStoreHouse.shName;
+					var requisition11 = dateformat(result.list[0].requisition.storageStoreHouseTime);
+					var requisition12 = result.list[0].requisition.employeeByStorageStoreHouseEmp.empLoginName; */
+					//1
+					$("#requisitionDetail")
+							.children("tr:eq(0)")
+							.children("td:eq(0)")
+							.find("span")
+							.html(result.list[0].requisition.requisitionId);
+					$("#requisitionDetail")
+							.children("tr:eq(0)")
+							.children("td:eq(1)")
+							.find("span")
+							.html(result.list[0].requisition.employeeByRequestEmp.empLoginName);
+					$("#requisitionDetail").children(
+							"tr:eq(0)").children(
+							"td:eq(2)").find("span")
+							.html(dateformat(result.list[0].requisition.requestTime));
+					
+					//2
+					$("#requisitionDetail")
+							.children("tr:eq(1)")
+							.children("td:eq(0)")
+							.find("span")
+							.html(result.list[0].requisition.reviewstatus.rsName);
+					$("#requisitionDetail")
+							.children("tr:eq(1)")
+							.children("td:eq(1)")
+							.find("span")
+							.html(result.list[0].requisition.storehouseByOutboundStoreHouse.shName);
+					$("#requisitionDetail")
+							.children("tr:eq(1)")
+							.children("td:eq(2)")
+							.find("span")
+							.html(result.list[0].requisition.storehouseByStorageStoreHouse.shName);
+					
+					
+					//3
+					var employeeByReviewEmp = result.list[0].requisition.employeeByReviewEmp.empLoginName;
+					if(employeeByReviewEmp==null){
+						employeeByReviewEmp="暂未填写";
+					}
+					$("#requisitionDetail")
+							.children("tr:eq(2)")
+							.children("td:eq(0)")
+							.find("span")
+							.html(employeeByReviewEmp);
+					var deptreviewTime = dateformat(result.list[0].requisition.outboundStoreHouseTime);
+					$("#requisitionDetail").children(
+							"tr:eq(2)").children(
+							"td:eq(1)").find("span")
+							.html(result.list[0].requisition.employeeByOutboundEmp.empLoginName);
+					$("#requisitionDetail")
+							.children("tr:eq(2)")
+							.children("td:eq(2)")
+							.find("span")
+							.html(result.list[0].requisition.employeeByStorageStoreHouseEmp.empLoginName);
+					
+					
+					
+					//4
+					
+					$("#requisitionDetail")
+							.children("tr:eq(3)")
+							.children("td:eq(0)")
+							.find("span")
+							.html(dateformat(result.list[0].requisition.reviewTime));
+					var finTime = dateformat(result.list[0].requisition.storageStoreHouseTime);
+					$("#requisitionDetail").children(
+							"tr:eq(3)").children(
+							"td:eq(1)").find("span")
+							.html(dateformat(result.list[0].requisition.outboundStoreHouseTime));
+					$("#requisitionDetail")
+							.children("tr:eq(3)")
+							.children("td:eq(2)")
+							.find("span")
+							.html(dateformat(result.list[0].requisition.storageStoreHouseTime));
 				}
-				$("#productBody").html(s);
+			});
+		});
+		function empty() {
+			$("#requisitionDetail").children("tr:eq(0)").children("td:eq(0)")
+					.find("span").html("");
+			$("#requisitionDetail").children("tr:eq(0)").children("td:eq(1)")
+					.find("span").html("");
+			$("#requisitionDetail").children("tr:eq(0)").children("td:eq(2)")
+					.find("span").html("");
+			$("#requisitionDetail").children("tr:eq(1)").children("td:eq(0)")
+					.find("span").html("");
+			$("#requisitionDetail").children("tr:eq(1)").children("td:eq(1)")
+					.find("span").html("");
+			$("#requisitionDetail").children("tr:eq(1)").children("td:eq(2)")
+					.find("span").html("");
+			$("#requisitionDetail").children("tr:eq(2)").children("td:eq(0)")
+					.find("span").html("");
+			$("#requisitionDetail").children("tr:eq(2)").children("td:eq(1)")
+					.find("span").html("");
+			$("#requisitionDetail").children("tr:eq(2)").children("td:eq(2)")
+					.find("span").html("");
+			$("#requisitionDetail").children("tr:eq(3)").children("td:eq(0)")
+					.find("span").html("");
+			$("#requisitionDetail").children("tr:eq(3)").children("td:eq(1)")
+					.find("span").html("");
+			$("#requisitionDetail").children("tr:eq(3)").children("td:eq(2)")
+					.find("span").html("");
+		}
+		function puchaseDetailAss(result) {
+			var s = "";
+			for (var i = 0; i < result.list.length; i++) {
+				s += "<tr>" + "<td>" + result.list[i].product.productName
+						+ "</td>" + "<td>" + result.list[i].product.productId
+						+ "</td>" + "<td>" + result.list[i].productUnit.puName
+						+ "</td>" + "<td>" + result.list[i].count + "</td>"
+						+ "</tr>";
 			}
-		});*/
+			$("#purchaseRequestDetail").html(s);
+		}
+		//分页查询明细  ajax实现
+		function goDetailPage(type, pageNum, pageTotal) {
+			if (type == -1) { //上一页
+				if (pageNum == 1) {
+					return;
+				}
+				pageNum -= 1;
+			} else if (type == -2) { //下一页
+				if (pageNum == pageTotal) {
+					return;
+				}
+				pageNum += 1;
+			} else {
+				pageNum = type;
+			}
+			var singleNo = $("#requisitionDetail").children("tr:eq(0)").children(
+					"td:eq(0)").find("span").html();
+			$.ajax({
+				type : "POST",
+				url : "getRequisitionBySingleNo",
+				data : "singleNo=" + singleNo + "&pageNo=" + pageNum,
+				dataType : "JSON",
+				success : function(result) {
+					//为表格详情赋值
+					puchaseDetailAss(result);
+					//显示页码目录
+					disPageNum(result);
+				}
+			});
+		}
+		/* 删除采购订单订单 */
+		function deleteRequisition() {
+			/* if(!confirm("确定要删除吗？")){
+				return ;
+			} */
+			var s = $("#productBody input[name='productCheck']:checked");
+			if (s.length == 0) {
+				alert("请选择订单");
+				return;
+			}
+			$.ajaxSettings.async = false;
+			var purchases = "-";
+			
+			var flag = false;
+			$(s).each(function() { //循环所有选中的框
+				var a = $(this).val();
+				alert(a);
+				 $.get("judgmens", {
+					singleNo : a
+				},
+				function(result) {
+					if (result == "0") {
+						alert("处于审核通过的单据不可以删除");
+						flag = true;
+						return;
+					} else {
+						alert(purchases);
+						purchases += a + "-";
+					}
+				}); 
+			});
+			if (flag == false) {
+				alert("赋值后的参数"+purchases);
+				location.href = "deleteRequisition?requisitionid=" + purchases;
+			}
+		}
+		//显示所有页码
+		function disPageNum(result) {
+			var pageNo = result.pageNum;
+			var pageTotal = result.pages;
+			//页码数
+			var detailPages = "<li><a href='javascript:goDetailPage(-1,"
+					+ pageNo + "," + pageTotal + ")'>Prev</a></li>";
+			for (var i = 1; i <= result.pages; i++) {
+				if (i == result.pageNum) {
+					detailPages += "<li class='active'><a href='javascript:goDetailPage("
+							+ i
+							+ ","
+							+ pageNo
+							+ ","
+							+ pageTotal
+							+ ")'>"
+							+ i
+							+ "</a></li>"
+				} else {
+					detailPages += "<li><a href='javascript:goDetailPage(" + i
+							+ "," + pageNo + "," + pageTotal + ")'>" + i
+							+ "</a></li>";
+				}
+			}
+			detailPages += "<li><a href='javascript:goDetailPage(-2," + pageNo
+					+ "," + pageTotal + ")'>Next</a></li>";
+			$("#requisitionDetailPage").html(detailPages);
+		}
+	</script>
+	<script type="text/javascript">
+		$(function() {
+			var msg = '${msg}';
+			if (msg == 'a') {
+				$("#success").click();
+			}
+		});
 	</script>
 </body>
 </html>
