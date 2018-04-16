@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxc.mapper.RequisitionDetailMapper">
+	
+	<resultMap type="RequisitionDetail" id="RequisitionDetailMap">
+		<id column="RE_id" property="reId" />
+		<result column="Count" property="count" />
+		<association property="requisition" javaType="Requisition"
+			resultMap="cn.jxc.mapper.RequisitionMapper.Requisitionlist">
+		</association>
+		<association property="product" javaType="Product"
+			resultMap="cn.jxc.mapper.ProductMapper.productResultMap">
+		</association>
+		<association property="productUnit" javaType="ProductUnit" >
+			<id property="productUnitId" column="ProductUnit_id"/>
+			<result column="PU_name" property="puName"/>
+		</association>
+	</resultMap>
+	<insert id="addRequisitionDetail">
+		INSERT INTO `requisitiondetail`(`Requisition_id`,`Product_id`,`Count`,`ProductUnitId`)
+		VALUES (#{rsd.requisition.requisitionId},#{rsd.product.productId},#{rsd.count},#{rsd.productUnit.productUnitId})
+	</insert>
+	<select id="requisitionDetailById" resultMap="RequisitionDetailMap">
+		SELECT rsd.count,rsd.`RE_id`,<include refid="cn.jxc.mapper.ProductMapper.product" />,pu.`PU_name`
+		FROM `requisitiondetail` rsd
+		LEFT JOIN `requisition` rs ON rsd.`Requisition_id`=rs.`Requisition_id`
+		LEFT JOIN `product` p ON p.`Product_id`=rsd.`Product_id`
+		LEFT JOIN `productunit` pu ON pu.`ProductUnit_id`=rsd.`ProductUnitId`
+		WHERE rsd.`Requisition_id`=#{rsid}	
+	</select>
+	<delete id="delrequisitionByid">
+		DELETE FROM requisitiondetail WHERE RE_id=#{reid}
+	</delete>
+	<delete id="RequisitionDetailDelete">		
+		DELETE
+		FROM `requisitiondetail`
+		WHERE `Requisition_id` = #{id}
+	</delete>
+</mapper>

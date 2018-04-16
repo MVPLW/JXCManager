@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxc.mapper.SalesOrderMapper">
+	<resultMap type="SalesOrder" id="SaleMapper">
+		<id property="soId" column="Sid" />
+		<result property="salesTime" column="Stime" />
+		<result property="salesPrice" column="Sprice" />
+		<result property="reviewDate" column="Sdate" />
+		<association property="customer" javaType="Customer">
+			<id property="customerId" column="Cid" />
+			<result property="cusName" column="Cname" />
+			<result property="cusAddress" column="Caddress" />
+			<result property="cusPhone" column="Cphone" />
+			<result property="postalCode" column="CpostalCode" />
+			<result property="cusContact" column="Ccontact" />
+		</association>
+		<association property="employeeByEmployeeId" javaType="Employee"
+			resultMap="cn.jxc.mapper.EmployeeMapper.employeeResultMap">
+		</association>
+		<association property="employeeByReviewEmpId" javaType="Employee"
+			resultMap="cn.jxc.mapper.EmployeeMapper.employeeResultMap">
+		</association>
+		<association property="reviewstatus" javaType="ReviewStatus">
+			<id property="rsId" column="RSid" />
+			<result property="rsName" column="RSname" />
+		</association>
+	</resultMap>
+	<select id="getSale">
+		SELECT so.SO_id,emp1.EmpLoginName AS
+		Employee_id,cus.Customer_id,so.Sales_time,so.Sales_price,
+		emp2.EmploginName AS ReviewEmp_id,so.ReviewDate,r.RS_id
+		FROM salesorder so
+		LEFT JOIN employee emp1 ON emp1.EmpLoginName=so.Employee_id
+		LEFT JOIN customer cus ON cus.Customer_id=so.Customer_id
+		LEFT JOIN employee emp2 ON emp2.EmpLoginName=so.ReviewEmp_id
+		LEFT JOIN Reviewstatus r ON so.ReviewStatus=r.RS_id
+		<where>
+			<if test="soId !=null and soId !=''">
+				and so.SO_id like concat ('%',#{soId},'%')
+			</if>
+			<if test="empLoginName !=null and empLoginName !=''">
+				and emp1.EmpLoginName like concat
+				('%',#{empLoginName},'%')
+			</if>
+			<if test="rsid != null">
+				and r.RS_id=#{rsid}
+			</if>
+		</where>
+	</select>
+</mapper>

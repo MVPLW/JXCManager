@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxc.mapper.BackSalesDetailMapper">
+
+	<resultMap type="BackSalesDetail" id="backsalesdetailMap">
+		<id column="bsad_id" property="bsadId"/>
+		<result column="price" property="price"/>
+		<result column="count" property="count"/>
+		<association property="bs" resultMap="cn.jxc.mapper.BackSalesMapper.backSalesMap" />
+		<association property="product" resultMap="cn.jxc.mapper.ProductMapper.productResultMap" />
+		<association property="productUnit" resultMap="cn.jxc.mapper.ProductUnitMapper.productunitmap" />
+	</resultMap>
+	
+	<select id="getBackSalesDetailBySingleNo" parameterType="string" resultMap="backsalesdetailMap">
+		select
+		<include refid="cn.jxc.mapper.ProductMapper.product" />
+		,
+		<include refid="cn.jxc.mapper.ProductUnitMapper.productunitsql" />
+		,
+		<include refid="cn.jxc.mapper.BackSalesMapper.backsalessql" />
+		,bsd.bsad_id,bsd.price,bsd.count
+		from backsalesdetail AS bsd
+		LEFT JOIN product p
+		ON bsd.product_id=p.product_id
+		LEFT JOIN productunit u
+		on
+		bsd.productunitid=u.productunit_id
+		LEFT JOIN backsales b
+		ON
+		bsd.bs=b.bsa_id
+		where b.bsa_id=#{singleNo}
+	</select>
+
+</mapper>

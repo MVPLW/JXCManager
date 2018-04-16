@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- 读取配置文件 -->
+	<context:property-placeholder location="classpath:database.properties" />
+	
+	<!-- 配置数据源 -->
+	<bean scope="singleton" destroy-method="close"
+		class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
+		<property value="${driver}" name="driverClassName" />
+		<property value="${url}" name="url" />
+		<property value="root" name="username" />
+		<property value="ok" name="password" />
+		<property value="${initialSize}" name="initialSize" />
+		<property value="${maxActive}" name="maxActive" />
+		<property value="${maxIdle}" name="maxIdle" />
+		<property value="${minIdle}" name="minIdle" />
+		<property value="${maxWait}" name="maxWait" />
+		<!-- <property value="${removeAbandonedTimeout}" name="removeAbandonedTimeout" />
+		<property value="${removeAbandoned}" name="removeAbandoned" /> -->
+		<!-- sql 心跳 -->
+		<property value="true" name="testWhileIdle" />
+		<property value="false" name="testOnBorrow" />
+		<property value="false" name="testOnReturn" />
+		<property value="select 1" name="validationQuery" />
+		<property value="60000" name="timeBetweenEvictionRunsMillis" />
+		<property value="${maxActive}" name="numTestsPerEvictionRun" />
+	</bean>
+	
+	<!-- 配置mybitas SqlSessionFactoryBean -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+		<property name="dataSource" ref="dataSource" /> 
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="typeAliasesPackage" value="cn.jxc.pojo" />
+	</bean>
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.jxc.mapper"/>
+	</bean>
+	
+	<!-- 事务管理 -->
+	<bean
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		id="transactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	
+	
+	
+	
+</beans>

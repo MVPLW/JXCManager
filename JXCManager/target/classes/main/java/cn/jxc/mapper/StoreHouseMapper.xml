@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxc.mapper.StoreHouseMapper">
+	<resultMap type="StoreHouse" id="StoreHouseMap">
+		<id property="storeHouseId" column="StoreHouse_id" />
+		<result property="shAddress" column="SH_address" />
+		<result property="shPhone" column="SH_phone" />
+		<result property="createDate" column="CreateDate" />
+		<result property="shName" column="SH_Name" />
+		<association property="employee"
+			resultMap="cn.jxc.mapper.EmployeeMapper.employeeResultMap">
+		</association>
+	</resultMap>
+
+	<sql id="storehouses">
+		s.StoreHouse_id,s.SH_address,s.SH_phone,s.Employee_id,s.CreateDate,s.SH_Name
+	</sql>
+
+	<select id="getStoreHouselist" resultMap="StoreHouseMap">
+		SELECT
+		<include refid="storehouses" />
+		,
+		<include refid="cn.jxc.mapper.EmployeeMapper.employeeMap" />
+		FROM storehouse s
+		LEFT JOIN employee e
+		ON s.Employee_id=e.EmpLoginName
+	</select>
+
+</mapper>
