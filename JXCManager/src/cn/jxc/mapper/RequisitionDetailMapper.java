@@ -16,7 +16,8 @@ public interface RequisitionDetailMapper {
 	
 	//按条件查询调拨明细表
 	List<RequisitionDetail> requisitionDetailById(String rsid);
-	
-	//根据详情表的id删除数据
+	//根据调拨详情表id删除
 	int delrequisitionByid(int reid);
+	//根据调拨表的id删除数据
+	int RequisitionDetailDelete(@Param("id")String requisitionid);
 }

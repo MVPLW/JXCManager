@@ -1,5 +1,6 @@
 package cn.jxc.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 
 import cn.jxc.pojo.Employee;
 import cn.jxc.pojo.Product;
+import cn.jxc.pojo.PurchaseRequest;
 import cn.jxc.pojo.PurchaseRequestDetail;
 import cn.jxc.pojo.Requisition;
 import cn.jxc.pojo.RequisitionDetail;
@@ -154,5 +158,82 @@ public class RequisitionController {
 			return "1";
 		} else
 			return "0";
+	}	
+	
+	//修改提交
+	@RequestMapping("requisitionUpdate")
+	public String requisitionUpdate(Requisition requisition, Model model, String products) {
+		try {
+			// 修改基本信息
+			List<RequisitionDetail> parseArray = JSONObject.parseArray(products, RequisitionDetail.class);
+			requisition.setRequisitiondetails(parseArray);// 为产品详情赋值
+			int requisitioncount = requisitionmapperservice.RequisitionUpdate(requisition);
+			System.out.println(requisition.getRequisitionId());
+			if (requisitioncount > 0) {
+				return "redirect:gorequisition";
+			} else {
+				return "error";
+			} 
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return "error";
+		}
 	}
+	
+	/**
+	 * 通过ajax实现 根据单号查询一个采购订单所有信息
+	 * 
+	 * @param singleNo
+	 * @return
+	 */
+	@RequestMapping("getRequisitionBySingleNo")
+	@ResponseBody
+	public String getPurchaseRequestBySingleNo(@RequestParam("singleNo") String singleNo,
+			@RequestParam(value = "pageNo", required = false) Integer pageNo) {
+		if (null == pageNo) {
+			pageNo = 1;
+		}
+		Requisition requisition = requisitionmapperservice.requisitionByid(singleNo);
+		PageInfo<RequisitionDetail> pageinfos = requisitiondetailservice.requisitionDetailById(singleNo, pageNo, 3);
+		//System.out.println(requisition.getReviewTime());
+		pageinfos.getList().get(0).setRequisition(requisition);
+		String jsonString = JSON.toJSONString(pageinfos);
+		return jsonString;
+	}
+	/**
+	 * 删除调拨订单
+	 * 
+	 * */
+	@RequestMapping("deleteRequisition")
+	public String deleteRequisition(String requisitionid) {
+		try {
+			String[] single = requisitionid.split("-");
+			for (int i = 1; i < single.length; i++) {
+				requisitionmapperservice.RequisitionDelete(single[i]);
+				System.out.println("id是"+single[i]);
+			}
+			return "redirect:gorequisition";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+	}
+	
+	@RequestMapping("judgmens")
+	@ResponseBody
+	public String judgmen(String singleNo) {
+		Requisition requisitionByid=requisitionmapperservice.getRequisitionById(singleNo);
+		int no = requisitionByid.getReviewstatus().getRsId();
+		String num = "";
+		System.out.println(no+"\t"+requisitionByid.getReviewstatus().getRsName());
+		if (no == 1 || no == 3 ) { // 当订单状态处于状态才可以删除
+			num = "1";
+			return num;
+		} else {
+			num = "0";
+			return num; // 不可以删除
+		}
+		}
+	
 }

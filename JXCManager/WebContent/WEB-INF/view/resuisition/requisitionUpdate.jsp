@@ -62,7 +62,7 @@
 						</div>
 						<div style="clear: both;">&nbsp;</div>
 						<div class="box-content">
-							<form class="form-horizontal" action="productRequestUpdate"
+							<form class="form-horizontal" action="requisitionUpdate"
 								method="post" id="updateform">
 								<fieldset>
 									<table style="width: 80%; margin: 0px auto;">
@@ -70,22 +70,25 @@
 											<td><div class="control-group">
 													<label class="control-label">调拨单号&nbsp;&nbsp;</label>
 													<div class="controls">
-														<input value="${requisition.requisitionId }" name="" disabled="disabled">
+														<input value="${requisition.requisitionId }"
+															name="requisitionId" id="requisitionId" disabled="disabled" />
+														<input type="hidden" name="requisitionId" value="${requisition.requisitionId }" />
 													</div>
 												</div></td>
 											<td><div class="control-group">
-													<label class="control-label" for="employeeByRequestEmpId.empLoginName">制单人&nbsp;&nbsp;</label>
+													<label class="control-label"
+														for="employeeByRequestEmpId.empLoginName">制单人&nbsp;&nbsp;</label>
 													<div class="controls">
 														<select id="employeeByRequestEmp.empLoginName"
-														name="employeeByRequestEmp.empLoginName"
+															name="employeeByRequestEmp.empLoginName"
 															data-rel="chosen">
-														<c:forEach items="${employees}" var="s">
-															<option value="${s.empLoginName}"
-															<c:if test="${s.empLoginName==requisition.employeeByRequestEmp.empLoginName }">selected="selected"</c:if>>${s.empLoginName}</option>
-														</c:forEach>
+															<c:forEach items="${employees}" var="s">
+																<option value="${s.empLoginName}"
+																	<c:if test="${s.empLoginName==requisition.employeeByRequestEmp.empLoginName }">selected="selected"</c:if>>${s.empLoginName}</option>
+															</c:forEach>
 														</select>
 													</div>
-											</div></td>
+												</div></td>
 										</tr>
 										<tr>
 											<td><div class="control-group">
@@ -100,15 +103,15 @@
 													<label class="control-label" for="supplier.supplierId">调出仓库&nbsp;&nbsp;</label>
 													<div class="controls">
 														<select id="supplier.supplierId"
-															name="storehouseByOutboundStoreHouse.storeHouseId" data-rel="chosen">
+															name="storehouseByOutboundStoreHouse.storeHouseId"
+															data-rel="chosen">
 															<c:forEach items="${storehouse}" var="s">
 																<option value="${s.storeHouseId }"
-																<c:if test="${s.storeHouseId==requisition.storehouseByOutboundStoreHouse.shName }">selected="selected"</c:if>>${s.shName}</option>
+																	<c:if test="${s.storeHouseId==requisition.storehouseByOutboundStoreHouse.shName }">selected="selected"</c:if>>${s.shName}</option>
 															</c:forEach>
 														</select>
 													</div>
-												</div>
-											</td>
+												</div></td>
 										</tr>
 										<tr>
 											<td>
@@ -116,10 +119,11 @@
 													<label class="control-label" for="supplier.supplierId">调入仓库&nbsp;&nbsp;</label>
 													<div class="controls">
 														<select id=""
-															name="storehouseByStorageStoreHouse.storeHouseId" data-rel="chosen">
+															name="storehouseByStorageStoreHouse.storeHouseId"
+															data-rel="chosen">
 															<c:forEach items="${storehouse}" var="s">
 																<option value="${s.storeHouseId }"
-																<c:if test="${s.storeHouseId==requisition.storehouseByStorageStoreHouse.shName}">selected="selected"</c:if>>${s.shName}</option>
+																	<c:if test="${s.storeHouseId==requisition.storehouseByStorageStoreHouse.shName}">selected="selected"</c:if>>${s.shName}</option>
 															</c:forEach>
 														</select>
 													</div>
@@ -146,7 +150,9 @@
 													<tr>
 														<td>${r.product.productId}</td>
 														<td>${r.product.productName}</td>
-														<td>${r.productUnit.puName}<%-- ${s.productUnit.puName}  --%> <input type="hidden" value="${s.productUnit.productUnitId}"/></td>
+														<td>${r.productUnit.puName}<%-- ${s.productUnit.puName}  --%>
+															<input type="hidden"
+															value="${r.productUnit.productUnitId}" /></td>
 														<td>${r.count}</td>
 														<td><a class='label label-important'
 															href="javascript:;" id='removeproductDetail'
@@ -156,7 +162,7 @@
 											</tbody>
 										</table>
 										<!-- <div class="pagination pagination-centered"> -->
-											<%-- <ul id="muluUl">
+										<%-- <ul id="muluUl">
 												<li><a href="javascript:;"
 													onclick="goProductPageByRID('pre')">Prev</a></li>
 												<c:forEach begin="1" end="${purchaseDetails.pages}" var="s">
@@ -172,12 +178,13 @@
 									</div>
 									<div class="form-actions">
 										<input type="hidden" name="purchaseRequestId"
-											value="${purchase.purchaseRequestId}" />
-										<input type="hidden" name="products" id="products" />
+											value="${purchase.purchaseRequestId}" /> <input
+											type="hidden" name="products" id="products" />
 										<button class="btn btn-info btn-setting" id="addPro"
 											onclick="javascript:void(0);">添加产品信息</button>
 										<button type="submit" class="btn btn-primary">保存信息</button>
-										<button class="btn" type="button" onclick="javascript:history.go(-1);">取消</button>
+										<button class="btn" type="button"
+											onclick="javascript:history.go(-1);">取消</button>
 										<div style="display: none;">
 											<button class="btn btn-primary noty" id="error"
 												data-noty-options='{"text":"修改失败","layout":"center","type":"error"}'>
@@ -249,8 +256,8 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn btn-primary" id="requisitionproductChose">选择</a> <a
-				href="#" class="btn" data-dismiss="modal">关闭</a>
+			<a href="#" class="btn btn-primary" id="requisitionproductChose">选择</a>
+			<a href="#" class="btn" data-dismiss="modal">关闭</a>
 		</div>
 	</div>
 
@@ -294,6 +301,9 @@
 			whetherPro();
 			$("#employeeByRequestEmpId.empLoginName").attr("readonly",
 					"readonly"); //设置下拉列表为只读
+			var date=new Date();
+			$("#requestTime").val(parseInt(date.getMonth()) + 1 + "/" + date.getDate() + "/"
+									+ date.getFullYear());
 			/* var date = '${purchase.requestTime}';
 			$("#requestTime").val(
 					parseInt(date.getMonth()) + 1 + "/" + date.getDate() + "/"
@@ -326,31 +336,26 @@
 			}
 		}
 
-		//点击选择框  把选中的商品添加到数据库中  使用ajax实现
-		/* $("#productChose").live('click',function(){
-			
-		}); */
-		
 		/* 表单提交事件 */
 		$("#updateform").submit(function(){
 			var productTbody = $("#productTbody").find("tr[id!=message]"); // 已经有的产品
 			var s = "[";
 			for (var i = 0; i < productTbody.length; i++) { // 循环已选择的产品列表
+				
 				var tbodytr = $(productTbody[i]).children();
-				var proid = tbodytr.eq(0).html(); // 产品编号
+				var proid = tbodytr.eq(0).html();                // 产品编号
 				var pronum = parseInt(tbodytr.eq(3).html()); // 产品数量
 				var prounit = parseInt(tbodytr.eq(2).find("input").val()); // 产品规格id
-				//var proprice = parseFloat(tbodytr.eq(2).find("input").val()); // 产品价格
 				s += "{\"product\":{\"productId\":\"" + proid
 						+ "\"},\"count\":\"" + pronum
-						+ "\",\"productUnit\":{\"productUnitId\":\"" + prounit
-						+ "\"}}";
+						+ "\",\"productUnit\":{\"productUnitId\":\""
+						+ prounit + "\"}}";
 				if (i != productTbody.length - 1) { // 代表不是最后一个
 					s += ",";
 				}
 			}
 			s += "]";
-			alert("asadadadasdadsaadadsadsa");
+			
 			$("#products").val(s); // 为产品隐藏域赋值
 			return true;
 		});

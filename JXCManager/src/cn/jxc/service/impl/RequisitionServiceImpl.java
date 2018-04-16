@@ -56,8 +56,28 @@ public class RequisitionServiceImpl implements RequisitionService{
 	//调拨修改
 	@Override
 	public int RequisitionUpdate(Requisition requisition) {
-		// TODO 自动生成的方法存根
-		return 0;
+		
+		return resMapper.RequisitionUpdete(requisition);
+	}
+	//调拨删除
+	@Override
+	public int RequisitionDelete(String requisitionid) {
+		try {
+		resMapper.RequisitionDelete(requisitionid);
+		resdMapper.RequisitionDetailDelete(requisitionid);
+		return 1;
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Override
+	public Requisition getRequisitionById(String requisitionId) {
+		List<Requisition> requisitionByid = resMapper.getRequisition(requisitionId, null);
+		
+		return requisitionByid.get(0);
 	}
 
 }
