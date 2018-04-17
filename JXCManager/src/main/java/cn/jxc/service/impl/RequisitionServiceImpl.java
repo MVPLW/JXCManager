@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.github.pagehelper.*;
 
 import cn.jxc.mapper.RequisitionDetailMapper;
@@ -36,7 +38,9 @@ public class RequisitionServiceImpl implements RequisitionService{
 		PageInfo<Requisition> pageInfos=new PageInfo<Requisition>(requisition);
 		return pageInfos;
 	}
+	
 	//调拨新增
+	@Transactional
 	@Override
 	public int Requisitionadd(Requisition requisition) {
 		try {
@@ -54,12 +58,14 @@ public class RequisitionServiceImpl implements RequisitionService{
 		}
 	}
 	//调拨修改
+	@Transactional
 	@Override
 	public int RequisitionUpdate(Requisition requisition) {
 		
 		return resMapper.RequisitionUpdete(requisition);
 	}
 	//调拨删除
+	@Transactional
 	@Override
 	public int RequisitionDelete(String requisitionid) {
 		try {

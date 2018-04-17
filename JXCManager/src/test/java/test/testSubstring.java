@@ -1,8 +1,9 @@
-package cn.jxc.test;
+package test;
 
 import org.junit.Test;
 
 public class testSubstring {
+
 	
 	@Test
 	public void a() {
@@ -16,4 +17,5 @@ public class testSubstring {
 		System.out.println(count);
 	}
 	
+
 }

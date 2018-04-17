@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,13 +19,16 @@ import cn.jxc.util.OrderGenerator;
 
 @Service
 public class PurchaseRequestServiceImpl implements PurchaseRequestService {
+	
+	
 
 	@Autowired
 	private PurchaseRequestMapper purchaseRequestMapper;
 
 	@Autowired
 	private PurchaseRequestDetailService purchaseRequestDetailService;
-
+	
+	@Transactional
 	@Override
 	public int addPurchaseRequest(PurchaseRequest purchaseRequest) {
 		try {
@@ -62,6 +66,7 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService {
 		return purchaseRequestByBlurry.get(0);
 	}
 
+	@Transactional
 	@Override
 	public int updatePurchaseRequest(PurchaseRequest purchaseRequest) {
 		try {
@@ -84,12 +89,14 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService {
 		}
 	}
 
+	@Transactional
 	@Override
 	public int updatePurchaseOrderStatus(String singleNo, Integer status) {
 
 		return purchaseRequestMapper.updatePurchaseOrderStatus(singleNo, status);
 	}
 
+	@Transactional
 	@Override
 	public int updateDeptReivewStatus(String singleNo, String reviewEmp, Date date, Integer status, String reason) {
 		if (status == 1) { // Í¨¹ý
@@ -101,6 +108,7 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService {
 		return purchaseRequestMapper.updateDeptReivewStatus(singleNo, reviewEmp, date, status, reason);
 	}
 
+	@Transactional
 	@Override
 	public int updateFinancialReivewStatus(String singleNo, String reviewEmp, Date date, Integer status,
 			String reason) {
@@ -114,6 +122,7 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService {
 		return purchaseRequestMapper.updateFinancialReivewStatus(singleNo, reviewEmp, date, status, reason);
 	}
 
+	@Transactional
 	@Override
 	public int deletePurchaseRequest(String singleNo) {
 		try {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -26,7 +27,9 @@ public class RequisitionDetailServiceImpl implements RequisitionDetailService{
 		PageInfo<RequisitionDetail> pageInfo = new PageInfo<RequisitionDetail>(requisitionbyid);
 		return pageInfo;
 	}
+	
 	//根据详情表的id删除数据
+	@Transactional
 	@Override
 	public int delrequisitionByid(int reid) {
 		

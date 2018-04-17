@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -34,7 +35,7 @@ public class EnterStockServiceImpl implements EnterStockService {
 				DateConverter.convertStringyyyy(start), DateConverter.convertStringyyyy(end));
 		return new PageInfo<EnterStock>(enterStocks);
 	}
-
+	@Transactional
 	@Override
 	public int enterStockAdd(EnterStock enterStock) {
 		try {
@@ -51,13 +52,13 @@ public class EnterStockServiceImpl implements EnterStockService {
 			return 0;
 		}
 	}
-
+	@Transactional
 	@Override
 	public int enterStockReview(String singleNo, String emp, Date date, Integer reviewStatus, String reason) {
 		// TODO Auto-generated method stub
 		return enterStockMapper.enterStockReview(singleNo, emp, date, reviewStatus, reason);
 	}
-
+	@Transactional
 	@Override
 	public int enterStockUpdate(EnterStock enterStock) {
 		// TODO Auto-generated method stub
@@ -69,7 +70,7 @@ public class EnterStockServiceImpl implements EnterStockService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	@Transactional
 	@Override
 	public int enterStockDelete(String singleNo) {
 		try {

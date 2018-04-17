@@ -411,7 +411,7 @@ h3 {
 													.children("td:eq(0)")
 													.find("span")
 													.html(
-															result.list[0].requisition.requisitionId);
+															result.list[0].purchaserequest.purchaseRequestId);
 											$("#purchaseDetail")
 													.children("tr:eq(0)")
 													.children("td:eq(1)")

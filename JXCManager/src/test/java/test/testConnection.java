@@ -1,11 +1,15 @@
-package cn.jxc.test;
+package test;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.junit.Test;
 
-
 public class testConnection {
+
 	
 	@Test
 	public void abc() {
@@ -35,7 +39,7 @@ public class testConnection {
 			ResultSet rs = statement.executeQuery(sql);
 			
 			String name = null;
-			String id = null;
+			//String id = null;
 			while(rs.next()){
 				//获取stuname这列数据
 				name = rs.getString("EmpLoginName");
@@ -58,4 +62,5 @@ public class testConnection {
 			System.out.println("数据库数据成功获取！！");
 		}
 	}
+
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,6 +19,7 @@ public class EnterStockDetailServiceImpl implements EnterStockDetailService {
 	@Autowired
 	private EnterStockDetailMapper enterStockDetailMapper;
 
+	@Transactional
 	@Override
 	public int enterStockDetailAdd(EnterStockDetail enterStockDetail) {
 		// TODO Auto-generated method stub
@@ -32,6 +34,7 @@ public class EnterStockDetailServiceImpl implements EnterStockDetailService {
 		return new PageInfo<>(enterStockDetailsBySingleNo);
 	}
 
+	@Transactional
 	@Override
 	public int updateEnterStockDetailByProductAndSingleNo(String singleNo, List<EnterStockDetail> enterStockDetails) {
 		try {
@@ -50,7 +53,7 @@ public class EnterStockDetailServiceImpl implements EnterStockDetailService {
 			return 0;
 		}
 	}
-
+	@Transactional
 	@Override
 	public int deleteEnterStockDetailBySingleNo(String singleNo) {
 		// TODO Auto-generated method stub

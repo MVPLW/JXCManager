@@ -82,5 +82,7 @@
     	<!-- 文件最大为20M -->
     	<property name="maxUploadSize" value="20000000"></property>
     </bean>
-
+    
+	<import resource="classpath:spring-mybatis.xml"/>
+	
 </beans>

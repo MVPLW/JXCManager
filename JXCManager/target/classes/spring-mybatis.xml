@@ -54,6 +54,7 @@
 		<property name="basePackage" value="cn.jxc.mapper"/>
 	</bean>
 	
+	<tx:annotation-driven/>
 	<!-- 事务管理 -->
 	<bean
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
@@ -61,8 +62,6 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
-	
-	
-	
+	<import resource="classpath:spring-redis.xml"/>
 	
 </beans>
