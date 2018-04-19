@@ -1,8 +1,6 @@
 package cn.jxc.service;
 
 
-import org.apache.ibatis.annotations.Param;
-
 import com.github.pagehelper.PageInfo;
 
 import cn.jxc.pojo.Requisition;

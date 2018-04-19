@@ -1,9 +1,8 @@
 package cn.jxc.pojo;
-// Generated 2018-3-14 20:32:32 by Hibernate Tools 5.2.8.Final
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * 产品数据表
@@ -22,12 +21,12 @@ public class Product implements java.io.Serializable {
 	private String productName;
 	private Date createDate;
 	
-	private Set salesorderdetails = new HashSet(0);
-	private Set enterstockdetails = new HashSet(0);
-	private Set stockpiles = new HashSet(0);
-	private Set leavestockdetails = new HashSet(0);
-	private Set purchaserequestdetails = new HashSet(0);
-	private Set requisitiondetails = new HashSet(0);
+	private List<SalesOrderDetail> salesorderdetails = new ArrayList<SalesOrderDetail>();
+	private List<EnterStockDetail> enterstockdetails = new ArrayList<>();
+	private List<StockPile> stockpiles = new ArrayList<>();
+	private List<LeaveStockDetail> leavestockdetails = new ArrayList<>();
+	private List<PurchaseRequestDetail> purchaserequestdetails = new ArrayList<>();
+	private List<RequisitionDetail> requisitiondetails = new ArrayList<>();
 
 	public Product() {
 		
@@ -44,8 +43,8 @@ public class Product implements java.io.Serializable {
 	}
 
 	public Product(String productId, ProductType producttype, ProductUnit productunit, String productName, 
-			Employee employeeId, Date createDate, Set salesorderdetails, Set enterstockdetails, Set stockpiles,
-			Set leavestockdetails, Set purchaserequestdetails, Set requisitiondetails) {
+			Employee employeeId, Date createDate, List<SalesOrderDetail> salesorderdetails, List<EnterStockDetail> enterstockdetails, List<StockPile> stockpiles,
+			List<LeaveStockDetail> leavestockdetails, List<PurchaseRequestDetail> purchaserequestdetails, List<RequisitionDetail> requisitiondetails) {
 		this.productId = productId;
 		this.producttype = producttype;
 		this.productunit = productunit;
@@ -108,51 +107,51 @@ public class Product implements java.io.Serializable {
 		this.createDate = createDate;
 	}
 
-	public Set getSalesorderdetails() {
+	public List<SalesOrderDetail> getSalesorderdetails() {
 		return this.salesorderdetails;
 	}
 
-	public void setSalesorderdetails(Set salesorderdetails) {
+	public void setSalesorderdetails(List<SalesOrderDetail> salesorderdetails) {
 		this.salesorderdetails = salesorderdetails;
 	}
 
-	public Set getEnterstockdetails() {
+	public List<EnterStockDetail> getEnterstockdetails() {
 		return this.enterstockdetails;
 	}
 
-	public void setEnterstockdetails(Set enterstockdetails) {
+	public void setEnterstockdetails(List<EnterStockDetail> enterstockdetails) {
 		this.enterstockdetails = enterstockdetails;
 	}
 
-	public Set getStockpiles() {
+	public List<StockPile> getStockpiles() {
 		return this.stockpiles;
 	}
 
-	public void setStockpiles(Set stockpiles) {
+	public void setStockpiles(List<StockPile> stockpiles) {
 		this.stockpiles = stockpiles;
 	}
 
-	public Set getLeavestockdetails() {
+	public List<LeaveStockDetail> getLeavestockdetails() {
 		return this.leavestockdetails;
 	}
 
-	public void setLeavestockdetails(Set leavestockdetails) {
+	public void setLeavestockdetails(List<LeaveStockDetail> leavestockdetails) {
 		this.leavestockdetails = leavestockdetails;
 	}
 
-	public Set getPurchaserequestdetails() {
+	public List<PurchaseRequestDetail> getPurchaserequestdetails() {
 		return this.purchaserequestdetails;
 	}
 
-	public void setPurchaserequestdetails(Set purchaserequestdetails) {
+	public void setPurchaserequestdetails(List<PurchaseRequestDetail> purchaserequestdetails) {
 		this.purchaserequestdetails = purchaserequestdetails;
 	}
 
-	public Set getRequisitiondetails() {
+	public List<RequisitionDetail> getRequisitiondetails() {
 		return this.requisitiondetails;
 	}
 
-	public void setRequisitiondetails(Set requisitiondetails) {
+	public void setRequisitiondetails(List<RequisitionDetail> requisitiondetails) {
 		this.requisitiondetails = requisitiondetails;
 	}
 

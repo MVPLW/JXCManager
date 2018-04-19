@@ -4,31 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 角色   包含采购员 仓管员  销售员等等...
+ * 角色 包含采购员 仓管员 销售员等等...
  */
 public class Role implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private int roleId;
 	private String roleName;
 	private String description;
+	private String roleCode;
+
+	private List<RolePermission> rolePermissions = new ArrayList<RolePermission>();
 	
-	private List<RoleAuth> roleAuths = new ArrayList<RoleAuth>();
 	private List<EmployeeRole> employeeRoles = new ArrayList<EmployeeRole>();
 
 	public Role() {
 		super();
 	}
 
-	public Role(int roleId, String roleName) {
+	public Role(int roleId, String roleName, String description, String roleCode) {
 		super();
 		this.roleId = roleId;
 		this.roleName = roleName;
+		this.description = description;
+		this.roleCode = roleCode;
 	}
 
 	public int getRoleId() {
-		return this.roleId;
+		return roleId;
 	}
 
 	public void setRoleId(int roleId) {
@@ -36,7 +40,7 @@ public class Role implements java.io.Serializable {
 	}
 
 	public String getRoleName() {
-		return this.roleName;
+		return roleName;
 	}
 
 	public void setRoleName(String roleName) {
@@ -44,27 +48,35 @@ public class Role implements java.io.Serializable {
 	}
 
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public List<RoleAuth> getRoleAuths() {
-		return this.roleAuths;
+	public String getRoleCode() {
+		return roleCode;
 	}
 
-	public void setRoleAuths(List<RoleAuth> roleAuths) {
-		this.roleAuths = roleAuths;
+	public void setRoleCode(String roleCode) {
+		this.roleCode = roleCode;
 	}
 
-	public List<EmployeeRole> getEmployees() {
-		return this.employeeRoles;
+	public List<RolePermission> getRolePermissions() {
+		return rolePermissions;
 	}
 
-	public void setEmployees(List<EmployeeRole> employees) {
-		this.employeeRoles = employees;
+	public void setRolePermissions(List<RolePermission> rolePermissions) {
+		this.rolePermissions = rolePermissions;
+	}
+
+	public List<EmployeeRole> getEmployeeRoles() {
+		return employeeRoles;
+	}
+
+	public void setEmployeeRoles(List<EmployeeRole> employeeRoles) {
+		this.employeeRoles = employeeRoles;
 	}
 
 }

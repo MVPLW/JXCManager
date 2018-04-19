@@ -1,8 +1,8 @@
 package cn.jxc.pojo;
 // Generated 2018-3-14 20:32:32 by Hibernate Tools 5.2.8.Final
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ÉóºË×´Ì¬   Î´ÉóºË  ÉóºËÍ¨¹ý  ÉóºËÃ»Í¨¹ý
@@ -17,13 +17,13 @@ public class ReviewStatus implements java.io.Serializable {
 	private int rsId;
 	private String rsName;
 	
-	private Set<?> purchaserequestsForPrepaymentReviewStatus = new HashSet(0);
-	private Set<?> purchasepaymentslipsForFreviewStatus = new HashSet(0);
-	private Set<?> purchaserequestsForDeptReviewStatus = new HashSet(0);
-	private Set<SalesOrder> salesorders = new HashSet<SalesOrder>(0);
-	private Set<?> purchaserequestsForFinancialAuditStatus = new HashSet(0);
-	private Set<?> purchasepaymentslipsForLreviewStatus = new HashSet(0);
-	private Set<Requisition> requisitions = new HashSet<Requisition>(0);
+	private List<?> purchaserequestsForPrepaymentReviewStatus = new ArrayList<>();
+	private List<?> purchasepaymentslipsForFreviewStatus = new ArrayList<>();
+	private List<?> purchaserequestsForDeptReviewStatus = new ArrayList<>();
+	private List<SalesOrder> salesorders = new ArrayList<SalesOrder>();
+	private List<?> purchaserequestsForFinancialAuditStatus = new ArrayList<>();
+	private List<?> purchasepaymentslipsForLreviewStatus = new ArrayList<>();
+	private List<Requisition> requisitions = new ArrayList<Requisition>(0);
 
 	public ReviewStatus() {
 	}
@@ -33,9 +33,9 @@ public class ReviewStatus implements java.io.Serializable {
 		this.rsName = rsName;
 	}
 
-	public ReviewStatus(int rsId, String rsName, Set purchaserequestsForPrepaymentReviewStatus,
-			Set purchasepaymentslipsForFreviewStatus, Set purchaserequestsForDeptReviewStatus, Set salesorders,
-			Set purchaserequestsForFinancialAuditStatus, Set purchasepaymentslipsForLreviewStatus, Set requisitions) {
+	public ReviewStatus(int rsId, String rsName, List<?> purchaserequestsForPrepaymentReviewStatus,
+			List<?> purchasepaymentslipsForFreviewStatus, List<?> purchaserequestsForDeptReviewStatus, List<SalesOrder> salesorders,
+			List<?> purchaserequestsForFinancialAuditStatus, List<?> purchasepaymentslipsForLreviewStatus, List<Requisition> requisitions) {
 		this.rsId = rsId;
 		this.rsName = rsName;
 		this.purchaserequestsForPrepaymentReviewStatus = purchaserequestsForPrepaymentReviewStatus;
@@ -63,59 +63,59 @@ public class ReviewStatus implements java.io.Serializable {
 		this.rsName = rsName;
 	}
 
-	public Set getPurchaserequestsForPrepaymentReviewStatus() {
+	public List<?> getPurchaserequestsForPrepaymentReviewStatus() {
 		return this.purchaserequestsForPrepaymentReviewStatus;
 	}
 
-	public void setPurchaserequestsForPrepaymentReviewStatus(Set purchaserequestsForPrepaymentReviewStatus) {
+	public void setPurchaserequestsForPrepaymentReviewStatus(List<?> purchaserequestsForPrepaymentReviewStatus) {
 		this.purchaserequestsForPrepaymentReviewStatus = purchaserequestsForPrepaymentReviewStatus;
 	}
 
-	public Set getPurchasepaymentslipsForFreviewStatus() {
+	public List<?> getPurchasepaymentslipsForFreviewStatus() {
 		return this.purchasepaymentslipsForFreviewStatus;
 	}
 
-	public void setPurchasepaymentslipsForFreviewStatus(Set purchasepaymentslipsForFreviewStatus) {
+	public void setPurchasepaymentslipsForFreviewStatus(List<?> purchasepaymentslipsForFreviewStatus) {
 		this.purchasepaymentslipsForFreviewStatus = purchasepaymentslipsForFreviewStatus;
 	}
 
-	public Set getPurchaserequestsForDeptReviewStatus() {
+	public List<?> getPurchaserequestsForDeptReviewStatus() {
 		return this.purchaserequestsForDeptReviewStatus;
 	}
 
-	public void setPurchaserequestsForDeptReviewStatus(Set purchaserequestsForDeptReviewStatus) {
+	public void setPurchaserequestsForDeptReviewStatus(List<?> purchaserequestsForDeptReviewStatus) {
 		this.purchaserequestsForDeptReviewStatus = purchaserequestsForDeptReviewStatus;
 	}
 
-	public Set getSalesorders() {
+	public List<SalesOrder> getSalesorders() {
 		return this.salesorders;
 	}
 
-	public void setSalesorders(Set salesorders) {
+	public void setSalesorders(List<SalesOrder> salesorders) {
 		this.salesorders = salesorders;
 	}
 
-	public Set getPurchaserequestsForFinancialAuditStatus() {
+	public List<?> getPurchaserequestsForFinancialAuditStatus() {
 		return this.purchaserequestsForFinancialAuditStatus;
 	}
 
-	public void setPurchaserequestsForFinancialAuditStatus(Set purchaserequestsForFinancialAuditStatus) {
+	public void setPurchaserequestsForFinancialAuditStatus(List<?> purchaserequestsForFinancialAuditStatus) {
 		this.purchaserequestsForFinancialAuditStatus = purchaserequestsForFinancialAuditStatus;
 	}
 
-	public Set getPurchasepaymentslipsForLreviewStatus() {
+	public List<?> getPurchasepaymentslipsForLreviewStatus() {
 		return this.purchasepaymentslipsForLreviewStatus;
 	}
 
-	public void setPurchasepaymentslipsForLreviewStatus(Set purchasepaymentslipsForLreviewStatus) {
+	public void setPurchasepaymentslipsForLreviewStatus(List<?> purchasepaymentslipsForLreviewStatus) {
 		this.purchasepaymentslipsForLreviewStatus = purchasepaymentslipsForLreviewStatus;
 	}
 
-	public Set getRequisitions() {
+	public List<Requisition> getRequisitions() {
 		return this.requisitions;
 	}
 
-	public void setRequisitions(Set requisitions) {
+	public void setRequisitions(List<Requisition> requisitions) {
 		this.requisitions = requisitions;
 	}
 

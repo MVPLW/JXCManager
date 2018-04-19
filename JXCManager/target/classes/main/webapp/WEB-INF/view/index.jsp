@@ -101,8 +101,8 @@
 	<script type="text/javascript">
 		$(function() {
 			$("#menu li").click(function() {
-				$(this).siblings('li').removeClass('active'); // 删除其他兄弟元素的样式
-				$(this).addClass('active'); //给当前元素加上样式
+				$(this).siblings('li').removeClass('active'); // 删除其他兄弟元素的样式 
+				//$(this).addClass('active'); //给当前元素加上样式
 			});
 		});
 	</script>

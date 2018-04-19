@@ -10,64 +10,64 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 	<!-- 引入redis配置文件 -->
-	<!-- <bean id="propertyPlaceholderConfigurer"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:redis.properties</value>
-			</list>
-		</property>
-	</bean> -->
+	<!-- <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
+		<property name="locations"> <list> <value>classpath:redis.properties</value> 
+		</list> </property> </bean> -->
 
 	<!-- jedis连接池配置 -->
 	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<property name="maxIdle" value="100" />
-		<property name="maxWaitMillis" value="1000"/>
-        <property name="testOnBorrow" value="true"/>
+		<property name="maxWaitMillis" value="1000" />
+		<property name="testOnBorrow" value="true" />
 	</bean>
 	<!-- redis连接工厂 -->
-    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-        <property name="poolConfig" ref="poolConfig"/>
-        <property name="port" value="6379"/>
-        <property name="hostName" value="127.0.0.1"/>
-        <property name="password" value="wade"/>
-        <property name="timeout" value="100000"></property>
-    </bean>
-    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
-        <property name="connectionFactory" ref="connectionFactory"/>
-        <property name="keySerializer">
-            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
-        </property>
-        <property name="valueSerializer">
-            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>
-        </property>
-    </bean>
-    <!-- 缓存拦截器配置 -->
-    <bean id="methodCacheInterceptor" class="cn.jxc.interceptor.MethodCacheInterceptor">
-        <property name="redisUtil" ref="redisUtil"/>
-        <property name="defaultCacheExpireTime" value="3600"/>
-        <!-- 禁用缓存的类名列表 -->
-        <property name="targetNamesList">
-            <list>
-                <value></value>
-            </list>
-        </property>
-        <!-- 禁用缓存的方法名列表 -->
-        <property name="methodNamesList">
-            <list>
-                <value></value>
-            </list>
-        </property>
-    </bean>
-    <bean id="redisUtil" class="cn.jxc.util.RedisUtil">
-        <property name="redisTemplate" ref="redisTemplate"/>
-    </bean>
-    <!--配置切面拦截方法 -->
-    <aop:config proxy-target-class="true">
-        <aop:pointcut id="controllerMethodPointcut" expression="
-        execution(* cn.jxc.service.impl.*.get*(..))"/>
-        <aop:advisor advice-ref="methodCacheInterceptor" pointcut-ref="controllerMethodPointcut"/>
-    </aop:config>
-    
-	
+	<bean id="connectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="poolConfig" ref="poolConfig" />
+		<property name="port" value="6379" />
+		<property name="hostName" value="127.0.0.1" />
+		<property name="password" value="wade" />
+		<property name="timeout" value="100000"></property>
+	</bean>
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="keySerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+		<property name="valueSerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+		</property>
+	</bean>
+	<!-- 缓存拦截器配置 -->
+	<bean id="methodCacheInterceptor" class="cn.jxc.interceptor.MethodCacheInterceptor">
+		<property name="redisUtil" ref="redisUtil" />
+		<property name="defaultCacheExpireTime" value="3600" />
+		<!-- 禁用缓存的类名列表 -->
+		<property name="targetNamesList">
+			<list>
+				<value></value>
+			</list>
+		</property>
+		<!-- 禁用缓存的方法名列表 -->
+		<property name="methodNamesList">
+			<list>
+				<value></value>
+			</list>
+		</property>
+	</bean>
+	<bean id="redisUtil" class="cn.jxc.util.RedisUtil">
+		<property name="redisTemplate" ref="redisTemplate" />
+	</bean>
+	<!--配置切面拦截方法 -->
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="controllerMethodPointcut"
+			expression="
+        execution(* cn.jxc.service.impl.*.get*(..))" />
+		<aop:advisor advice-ref="methodCacheInterceptor"
+			pointcut-ref="controllerMethodPointcut" />
+	</aop:config>
+
+
 </beans>

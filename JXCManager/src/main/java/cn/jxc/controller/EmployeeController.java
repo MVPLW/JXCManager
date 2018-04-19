@@ -10,7 +10,7 @@ import cn.jxc.pojo.Employee;
 import cn.jxc.service.EmployeeService;
 
 @Controller
-public class LoginController {
+public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
@@ -28,5 +28,21 @@ public class LoginController {
 		} else {
 			return"login";
 		}
+	}
+	
+	/**
+	 * ÍË³öµÇÂ¼
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "login";
+	}
+	
+	@RequestMapping("/goemployeeAll")
+	public String goemployee() {
+		return "employee/employee";
 	}
 }

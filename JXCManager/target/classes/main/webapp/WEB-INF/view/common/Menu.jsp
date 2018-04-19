@@ -17,17 +17,21 @@
 			<li><a href="goenterstock" target="page-Content"> <i
 					class="icon-eye-open"></i> <span class="hidden-tablet">入库管理</span>
 			</a></li>
-			<li><a href="ui.jsp" target="page-Content"> <i
+			<li><a href="javascript:;" target="page-Content"> <i
 					class="icon-dashboard"></i> <span class="hidden-tablet">仓库管理</span>
 			</a></li>
-			<li>
-				<a class="dropmenu" href="#"><i class="icon-folder-close-alt"></i><span class="hidden-tablet"> Dropdown</span><span class="label label-important"> 3 </span></a>
+			<li><a class="dropmenu" href="javascript:;"><i
+					class="icon-folder-close-alt"></i><span class="hidden-tablet">
+						系统设置</span><span class="label label-important"> 5 </span></a>
 				<ul>
-					<li><a class="submenu" href="#"><i class="icon-file-alt"></i><span class="hidden-tablet"> Sub Menu 1</span></a></li>
-					<li><a class="submenu" href="#"><i class="icon-file-alt"></i><span class="hidden-tablet"> Sub Menu 2</span></a></li>
-					<li><a class="submenu" href="#"><i class="icon-file-alt"></i><span class="hidden-tablet"> Sub Menu 3</span></a></li>
-				</ul>	
-			</li>
+				<li><a class="submenu" href="goemployee" target="page-Content"><i
+							class="icon-file-alt"></i><span class="hidden-tablet"> 员工管理</span></a></li>
+					<li><a class="submenu" href="goRole" target="page-Content"><i
+							class="icon-file-alt"></i><span class="hidden-tablet"> 角色管理</span></a></li>
+					<li><a class="submenu" href="gopermission" target="page-Content"><i
+							class="icon-file-alt"></i><span class="hidden-tablet"> 资源管理</span></a></li>
+					
+				</ul></li>
 			<li><a href="gorequisition" target="page-Content"><i
 					class="icon-edit"></i><span class="hidden-tablet"> 调拨管理 </span></a></li>
 			<li><a href="gosales" target="page-Content"><i
@@ -40,8 +44,7 @@
 					class="icon-align-justify"></i><span class="hidden-tablet">
 						出库</span></a></li>
 			<li><a href="calendar.html" target="page-Content"><i
-					class="icon-calendar"></i><span class="hidden-tablet">
-						产品管理</span></a></li>
+					class="icon-calendar"></i><span class="hidden-tablet"> 产品管理</span></a></li>
 			<li><a href="file-manager.html" target="page-Content"><i
 					class="icon-folder-open"></i><span class="hidden-tablet">
 						客户管理</span></a></li>

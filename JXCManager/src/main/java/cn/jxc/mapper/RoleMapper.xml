@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxc.mapper.RoleMapper">
+	
+	<resultMap type="Role" id="roleMap">
+		<id column="roleId" property="roleId"/>
+		<result column="rolename" property="roleName"/>
+		<result column="description" property="description"/>
+		<result column="rolecode" property="roleCode"/>
+	</resultMap>
+	
+	<sql id="roleSql">r.roleId,r.rolename,r.description,r.rolecode</sql>
+	
+	<select id="getRoleAll" resultMap="roleMap">
+		select <include refid="roleSql"></include> from role r
+	</select>
+	
+	<insert id="addRole" parameterType="Role">
+		INSERT INTO `jxcdb`.`role` (`RoleId`, `RoleName`, `Description`, `RoleCode`) 
+		VALUES (NULL, #{r.roleName}, #{r.description}, #{r.roleCode});
+	</insert>
+	
+</mapper>

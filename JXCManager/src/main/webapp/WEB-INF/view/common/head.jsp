@@ -10,7 +10,7 @@
 				data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse"> <span
 				class="icon-bar"></span> <span class="icon-bar"></span> <span
 				class="icon-bar"></span>
-			</a> <a class="brand" href="index.html"><span>JANUX</span></a>
+			</a> <a class="brand" href="index.html"><span>JXCM</span></a>
 
 			<!-- start: Header Menu -->
 			<div class="nav-no-collapse header-nav">
@@ -152,7 +152,7 @@
 					<!-- start: User Dropdown -->
 					<li class="dropdown"><a class="btn dropdown-toggle"
 						data-toggle="dropdown" href="#"> <i
-							class="halflings-icon white user"></i> Dennis Ji <span
+							class="halflings-icon white user"></i>${loginEmp.empLoginName}<span
 							class="caret"></span>
 					</a>
 						<ul class="dropdown-menu">
@@ -160,7 +160,7 @@
 									Settings</span></li>
 							<li><a href="#"><i class="halflings-icon user"></i>
 									Profile</a></li>
-							<li><a href="login.html"><i class="halflings-icon off"></i>
+							<li><a href="javascript:;" onclick="javascript:location.href='logout';"><i class="halflings-icon off"></i>
 									Logout</a></li>
 						</ul></li>
 					<!-- end: User Dropdown -->

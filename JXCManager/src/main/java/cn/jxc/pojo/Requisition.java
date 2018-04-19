@@ -1,11 +1,8 @@
 package cn.jxc.pojo;
-// Generated 2018-3-14 20:32:32 by Hibernate Tools 5.2.8.Final
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * µ÷²¦µ¥¾Ý

@@ -1,6 +1,5 @@
 package cn.jxc.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,6 @@ import com.github.pagehelper.PageInfo;
 
 import cn.jxc.pojo.Employee;
 import cn.jxc.pojo.Product;
-import cn.jxc.pojo.PurchaseRequest;
-import cn.jxc.pojo.PurchaseRequestDetail;
 import cn.jxc.pojo.Requisition;
 import cn.jxc.pojo.RequisitionDetail;
 import cn.jxc.pojo.ReviewStatus;

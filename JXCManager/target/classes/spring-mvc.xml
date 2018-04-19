@@ -84,5 +84,6 @@
     </bean>
     
 	<import resource="classpath:spring-mybatis.xml"/>
+	<import resource="classpath:spring-shiro.xml"/>
 	
 </beans>

@@ -10,7 +10,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import cn.jxc.mapper.RequisitionDetailMapper;
-import cn.jxc.pojo.PurchaseRequestDetail;
 import cn.jxc.pojo.RequisitionDetail;
 import cn.jxc.service.RequisitionDetailService;
 @Service

@@ -51,8 +51,8 @@ public class PurchaseRequestController {
 		if (pageNo == null) {
 			pageNo = 1;
 		}
-		PageInfo<PurchaseRequest> purchaseRequestByBlurry = purchaseRequestService.getPurchaseRequestByBlurry(pageNo,
-				5,empNo, singleNo, suppName);
+		PageInfo<PurchaseRequest> purchaseRequestByBlurry = purchaseRequestService.getPurchaseRequestByBlurry(pageNo, 5,
+				empNo, singleNo, suppName);
 		model.addAttribute("prbb", purchaseRequestByBlurry);
 		model.addAttribute("empNo", empNo); // 查询条件保存
 		model.addAttribute("singleNo", singleNo);
@@ -251,6 +251,18 @@ public class PurchaseRequestController {
 		}
 	}
 
+	/**
+	 * 财务审核采购单
+	 * 
+	 * @param singleNo
+	 *            采购单号
+	 * @param no
+	 *            是否同意
+	 * @param reason
+	 *            原因
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("finalReview")
 	public String finalReview(String singleNo, Integer no, String reason, HttpServletRequest request) {
 		Employee employee = (Employee) request.getSession().getAttribute("loginEmp");
@@ -273,15 +285,16 @@ public class PurchaseRequestController {
 	public String judgmen(String singleNo) {
 		PurchaseRequest purchaseRequestBySingleNo = purchaseRequestService.getPurchaseRequestBySingleNo(singleNo);
 		int no = purchaseRequestBySingleNo.getOrderStatus().getNo();
-		System.out.println(no+"\t"+purchaseRequestBySingleNo.getOrderStatus().getOrderType());
+		System.out.println(no + "\t" + purchaseRequestBySingleNo.getOrderStatus().getOrderType());
 		if (no == 2 || no == 5 || no == 7) { // 当订单状态处于取消 拒绝 全部入库的状态才可以删除
 			return "1";
 		} else
 			return "0"; // 不可以删除
 	}
-	
+
 	/**
 	 * 删除所选订单
+	 * 
 	 * @return
 	 */
 	@RequestMapping("deletePurchases")
