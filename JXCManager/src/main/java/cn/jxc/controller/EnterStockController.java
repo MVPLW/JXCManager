@@ -110,11 +110,11 @@ public class EnterStockController {
 	@RequestMapping("/goenterstockadd")
 	public String goenterstockadd(Model model) {
 		List<EnterStockType> enterStockTypeAll = enterStockType.getEnterStockTypeAll();
-		List<Employee> employeeAll = employeeService.getEmployeeAll();
+		PageInfo<Employee> employeeAll = employeeService.getEmployeeAll(1,10000);
 		List<StoreHouse> storeHouselist = storeHouseService.getStoreHouselist();
 		PageInfo<Product> productAll = productService.getProductAll(1);
 		model.addAttribute("estAll", enterStockTypeAll);
-		model.addAttribute("employeeAll", employeeAll);
+		model.addAttribute("employeeAll", employeeAll.getList());
 		model.addAttribute("storeHouseAll", storeHouselist);
 		model.addAttribute("productAll", productAll);
 		return "enterStork/enterStockAdd";
@@ -247,11 +247,11 @@ public class EnterStockController {
 		// 根据入库单号查询入库详情
 		List<EnterStockDetail> enterStockDetails = enterStockDetailService
 				.getEnterStockDetailBySingleNo(singleNo, 1, 100000).getList();
-		List<Employee> employeeAll = employeeService.getEmployeeAll(); // 所有员工
+		PageInfo<Employee> employeeAll = employeeService.getEmployeeAll(1,100000); // 所有员工
 		List<StoreHouse> storeHouselist = storeHouseService.getStoreHouselist(); // 所有仓库
 		model.addAttribute("enterStock", enterStockBySingleNo);
 		model.addAttribute("enterStockDetails", enterStockDetails);
-		model.addAttribute("employeeAll", employeeAll);
+		model.addAttribute("employeeAll", employeeAll.getList());
 		model.addAttribute("storeHouseAll", storeHouselist);
 		return "enterStork/enterStockUpdate";
 	}

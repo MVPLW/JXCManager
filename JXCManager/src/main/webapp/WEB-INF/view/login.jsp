@@ -51,9 +51,7 @@ body {
 		<div class="row-fluid">
 			<div class="row-fluid">
 				<div class="login-box">
-					<div class="icons">
-						
-					</div>
+					<div class="icons"></div>
 					<h2>登录账号</h2>
 					<form class="form-horizontal" action="login" method="post">
 						<fieldset>
@@ -78,16 +76,9 @@ body {
 					</form>
 					<hr>
 				</div>
-				<!--/span-->
 			</div>
-			<!--/row-->
-
-
 		</div>
-		<!--/.fluid-container-->
-
 	</div>
-	<!--/fluid-row-->
 	<div class="common-modal modal fade" id="common-Modal1" tabindex="-1"
 		role="dialog" aria-hidden="true">
 		<div class="modal-content">

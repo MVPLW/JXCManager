@@ -69,11 +69,11 @@ public class PurchaseRequestController {
 	 */
 	@RequestMapping("/goPurchaseRequest")
 	public String goPurchaseRequest(Model model) {
-		List<Employee> employees = employeeService.getEmployeeAll();
+		PageInfo<Employee> employees = employeeService.getEmployeeAll(1,10000);
 		List<Supplier> suppliers = supplierService.getSupplierAll();
 		PageInfo<Product> productAll = productService.getProductAll(1); // 分页查询 刚开始进入查询第一页的数据
 
-		model.addAttribute("employees", employees);
+		model.addAttribute("employees", employees.getList());
 		model.addAttribute("suppliers", suppliers);
 		model.addAttribute("productAll", productAll);
 
@@ -152,12 +152,12 @@ public class PurchaseRequestController {
 		PurchaseRequest purchase = purchaseRequestService.getPurchaseRequestBySingleNo(singleNo);
 		PageInfo<PurchaseRequestDetail> purchaseRequestDetails = purchaseRequestDetailService
 				.getPurchaseRequestDetail(singleNo, 1, 1000);
-		List<Employee> employeeAll = employeeService.getEmployeeAll();
+		PageInfo<Employee> employeeAll = employeeService.getEmployeeAll(1,10000);
 		List<Supplier> supplierAll = supplierService.getSupplierAll();
 		PageInfo<Product> productAll = productService.getProductAll(productPageNo);
 		model.addAttribute("purchase", purchase);
 		model.addAttribute("purchaseDetails", purchaseRequestDetails);
-		model.addAttribute("employeeAll", employeeAll);
+		model.addAttribute("employeeAll", employeeAll.getList());
 		model.addAttribute("supplierAll", supplierAll);
 		model.addAttribute("productAll", productAll);
 		return "purchase/purchaseUpdate";

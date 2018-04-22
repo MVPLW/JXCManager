@@ -8,7 +8,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import cn.jxc.util.RedisUtil;
 
 public class MethodCacheInterceptor implements MethodInterceptor {
-	
+
 	private RedisUtil redisUtil;
 	private List<String> targetNamesList; // 禁用缓存的类名列表
 	private List<String> methodNamesList; // 禁用缓存的方法列表
@@ -19,8 +19,9 @@ public class MethodCacheInterceptor implements MethodInterceptor {
 		Object value = null;
 		String targetName = invocation.getThis().getClass().getName();
 		String methodName = invocation.getMethod().getName();
+		// 判断是否加入缓存
 		if (!isAddCache(targetName, methodName)) {
-//			 跳过缓存返回结果
+			// 跳过缓存返回结果
 			return invocation.proceed();
 		}
 		Object[] arguments = invocation.getArguments();

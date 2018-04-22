@@ -66,13 +66,12 @@ h3 {
 					<div class="control-group">
 						<div data-condition="search">
 							<div style="float: right;">
-								<a class="btn btn-primary" href="#" data-command="Add"><i
-									class="icon-plus"></i>&nbsp;添加</a> <a class="btn btn-warning"
-									href="javascript:void(0)" onclick="deleteEnterStock()"
+								<a class="btn btn-primary" href="javascript:;" id="roleAdd"
+									data-command="Add"><i class="icon-plus"></i>&nbsp;添加</a> <a
+									class="btn btn-warning" href="javascript:;"
 									data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a> <a
-									class="btn btn-danger" href="javascript:void(0)"
-									onclick="javascript:location.href='#';" data-command="Refresh"><i
-									class="icon-refresh"></i>&nbsp;刷新</a>
+									class="btn btn-danger" href="javascript:;"
+									data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 							</div>
 						</div>
 					</div>
@@ -98,7 +97,7 @@ h3 {
 										<th>操作</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="productBody">
 									<c:forEach items="${roleAll.list}" var="s">
 										<tr>
 											<th><input type="checkbox" name="productCheck"
@@ -109,7 +108,9 @@ h3 {
 											<td>${s.roleCode}</td>
 											<td>权限</td>
 											<td><input type="hidden" value="${s.roleId}" /> <a
-												id="detail" href="javascript:;">查看</a></td>
+												id="detail" href="javascript:;">查看</a>
+												<a href="javascript:;" onclick="update(${s.roleId})" >修改</a>	
+											</td>
 										</tr>
 									</c:forEach>
 									<c:if test="${fn:length(roleAll.list)==0}">
@@ -150,40 +151,101 @@ h3 {
 		</div>
 	</div>
 
-	<!-- 审核弹框 -->
-	<div class="modal hide fade" id="permission" style="width: 800px;">
+	<!-- 添加角色 -->
+	<div class="modal hide fade" id="roleAddModel" style="width: 800px;">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">x</button>
-			<h2>部门审核</h2>
+			<h2>添加角色</h2>
 		</div>
 		<div class="modal-body">
 			<div>
-				<table style="width: 100%; table-layout: fixed;">
-					<tbody>
-						<tr>
-							<th style="width: 120px;">部门审核是否通过</th>
-							<th>
-								<div class="controls">
-									<label class="radio"> <input type="radio"
-										name="reviewCheck" value="1" checked="checked" /> 是
-									</label> <label class="radio" style="position: relative; top: 3px;">
-										<input type="radio" name="reviewCheck" value="0" /> 否
-									</label>
-								</div>
-							</th>
-						</tr>
-						<tr>
-							<th>原因</th>
-							<th style="padding-right: 20px;"><textarea rows="4"
-									id="reviewReason" cols="30" style="width: 100%;"></textarea></th>
-						</tr>
-					</tbody>
-				</table>
+				<form method="post" action="goRoleAdd" id="roleForm">
+					<table style="width: 100%; table-layout: fixed;">
+						<tbody>
+							<tr>
+								<td align="center"><div class="control-group">
+										<label class="control-label" for="roleName">角色名称</label>
+									</div></td>
+								<td><div class="controls">
+										<input class="input-xlarge focused" id="roleName"
+											name="roleName" type="text" placeholder="此处填写角色名" />
+									</div></td>
+							</tr>
+							<tr>
+								<td align="center"><div class="control-group">
+										<label class="control-label" for="roleCode">角色代码</label>
+									</div></td>
+								<td><div class="controls">
+										<input class="input-xlarge focused" id="roleCode"
+											name="roleCode" type="text" placeholder="此处填写角色代码" />
+									</div></td>
+							</tr>
+							<tr>
+								<td align="center"><div class="control-group">
+										<label class="control-label" for="description">角色描述</label>
+									</div></td>
+								<td><div class="controls">
+										<input class="input-xlarge focused" id="description"
+											name="description" type="text" placeholder="此处填写对于角色的描述" />
+									</div></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a href="javascript:;" class="btn btn-primary" id="reviewCommit">Save</a>
-			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+			<a href="javascript:;" class="btn btn-primary" id="roleAddCommit">Save</a>
+			<a href="javascript:;" class="btn btn-primary" data-dismiss="modal">Close</a>
+		</div>
+	</div>
+	<!-- 修改角色 -->
+	<div class="modal hide fade" id="roleUpdateModel" style="width: 800px;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">x</button>
+			<h2>角色修改</h2>
+		</div>
+		<div class="modal-body">
+			<div>
+				<form method="post" action="roleUpdateForm" id="roleUpdateForm">
+					<table style="width: 100%; table-layout: fixed;">
+						<tbody>
+							<tr>
+								<td align="center"><div class="control-group">
+										<label class="control-label" for="roleUpdateName">角色名称</label>
+										<input type="hidden" name="roleId" id="roleId" />
+									</div></td>
+								<td><div class="controls">
+										<input class="input-xlarge focused" id="roleUpdateName"
+											name="roleUpdateName" type="text" placeholder="此处填写角色名" />
+									</div></td>
+							</tr>
+							<tr>
+								<td align="center"><div class="control-group">
+										<label class="control-label" for="roleUpdateCode">角色代码</label>
+									</div></td>
+								<td><div class="controls">
+										<input class="input-xlarge focused" id="roleUpdateCode"
+											name="roleUpdateCode" type="text" placeholder="此处填写角色代码" />
+									</div></td>
+							</tr>
+							<tr>
+								<td align="center"><div class="control-group">
+										<label class="control-label" for="updateDescription">角色描述</label>
+									</div></td>
+								<td><div class="controls">
+										<input class="input-xlarge focused" id="updateDescription"
+											name="updateDescription" type="text" placeholder="此处填写对于角色的描述" />
+									</div></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a href="javascript:;" class="btn btn-primary" id="roleUpdateCommit">Update</a>
+			<a href="javascript:;" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
 
@@ -220,12 +282,13 @@ h3 {
 	<script src="static/js/custom.js"></script>
 
 	<script src="static/own/purchase.js"></script>
+
 	<!-- end: JavaScript-->
 	<script type="text/javascript">
 		function gorolepage(type){
 			var pageNum = parseInt($("input[name=pageNo]").val()); //获取当前的页码
 			var pagePageTotal = parseInt('${roleAll.pages}'); //总页数
-			if (pageNum == 1 && type == 'pre') {
+			if (pageNum == 1 && type == 'prev') {
 				return;
 			}
 			if (pageNum == pagePageTotal && type == 'next') {
@@ -240,6 +303,63 @@ h3 {
 			}
 			location.href = "goRole?pageNo=" + pageNum;
 		}
+		/* 点击修改按钮触发事件 */
+		function update(roleId){
+			$("#roleId").val(roleId);
+			/* 清空三个输入框 */
+			$("#roleUpdateName").val("");
+			$("#roleUpdateCode").val("");
+			$("#updateDescription").val("");
+			/* 使用ajax 给表单赋值 */
+			$("#roleUpdateModel").modal("show");
+			$.ajax({
+				type:"POST",
+				url:"findRoleById",
+				data:"roleId="+roleId,
+				dataType:"JSON",
+				success:function(result){
+					$("#roleUpdateName").val(result.roleName);
+					$("#roleUpdateCode").val(result.roleCode);
+					$("#updateDescription").val(result.description);
+				}
+			});
+		}
+		$(function(){
+			/* 弹出添加角色弹框 */
+			$("#roleAdd").click(function(){
+				$("#roleAddModel").modal("show");
+			});
+			/* 添加角色 */
+			$("#roleAddCommit").click(function(){
+				var roleName=$("#roleName").val();
+				var roleCode=$("#roleCode").val();
+				if(roleName=='' || roleName==undefined ){
+					alert("请填写角色名称");
+					return;
+				}
+				if(roleCode=='' || roleCode==undefined ){
+					alert("请填写角色代码");
+					return;
+				}
+				$("#roleForm").submit();/* 提交表单 */
+			});
+			
+			/* 提交修改 */
+			$("#roleUpdateCommit").click(function(){
+				var roleId=$("#roleId").val();  //角色id
+				var roleName=$("#roleUpdateName").val();
+				if(roleName=="" || roleName==undefined){
+					alert("请填写角色名称");
+					return;				
+				}
+				var roleCode=$("#roleUpdateCode").val();
+				if(roleCode=="" || roleCode==undefined){
+					alert("请填写角色代码");
+					return;				
+				}
+				$("#roleUpdateForm").submit();  //表单提交
+			});
+		});
 	</script>
 </body>
 </html>

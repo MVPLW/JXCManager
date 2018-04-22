@@ -14,4 +14,6 @@ public interface RoleService {
 	
 	int delRole(Integer roleId);
 	
+	Role findRoleById(Integer roleId);
+	
 }

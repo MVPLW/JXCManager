@@ -92,12 +92,12 @@ public class RequisitionController {
 	@RequestMapping("/gorequisitionadd")
 	public String gorequisitionadd(Model model) {
 		//员工信息
-		List<Employee> employees = employeeservice.getEmployeeAll();
+		PageInfo<Employee> employees = employeeservice.getEmployeeAll(1,10000);
 		//仓库信息
 		List<StoreHouse> storehouse = storehouseservice.getStoreHouselist();
 		//产品信息
 		PageInfo<Product> productAll = productService.getProductAll(1); 
-		model.addAttribute("employees", employees);
+		model.addAttribute("employees", employees.getList());
 		model.addAttribute("storehouse", storehouse);
 		model.addAttribute("productAll", productAll);
 		return "resuisition/requisitionAdd";
@@ -130,14 +130,14 @@ public class RequisitionController {
 		PageInfo<RequisitionDetail> requisitionDetail = requisitiondetailservice
 				.requisitionDetailById(requisitionId, 1, 1000);
 		//员工信息
-		List<Employee> employees = employeeservice.getEmployeeAll();
+		PageInfo<Employee> employees = employeeservice.getEmployeeAll(1,10000);
 		//仓库信息
 		List<StoreHouse> storehouse = storehouseservice.getStoreHouselist();
 		//产品信息
 		PageInfo<Product> productAll = productService.getProductAll(1); 
 		model.addAttribute("requisition",requisition);
 		model.addAttribute("requisitionDetail",requisitionDetail);
-		model.addAttribute("employees",employees);
+		model.addAttribute("employees",employees.getList());
 		model.addAttribute("storehouse",storehouse);
 		model.addAttribute("productAll",productAll);
 		return "resuisition/requisitionUpdate";

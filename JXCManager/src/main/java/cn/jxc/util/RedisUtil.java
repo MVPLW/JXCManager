@@ -19,6 +19,7 @@ public class RedisUtil {
 	public void remove(final String... keys) {
 		for (String key : keys) {
 			redisTemplate.delete(key);
+			//remove(key);
 		}
 	}
 

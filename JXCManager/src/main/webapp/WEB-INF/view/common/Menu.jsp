@@ -24,7 +24,7 @@
 					class="icon-folder-close-alt"></i><span class="hidden-tablet">
 						系统设置</span><span class="label label-important"> 5 </span></a>
 				<ul>
-				<li><a class="submenu" href="goemployee" target="page-Content"><i
+				<li><a class="submenu" href="goemployeeAll" target="page-Content"><i
 							class="icon-file-alt"></i><span class="hidden-tablet"> 员工管理</span></a></li>
 					<li><a class="submenu" href="goRole" target="page-Content"><i
 							class="icon-file-alt"></i><span class="hidden-tablet"> 角色管理</span></a></li>

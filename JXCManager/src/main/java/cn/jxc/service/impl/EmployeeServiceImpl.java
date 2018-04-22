@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import cn.jxc.mapper.EmployeeMapper;
 import cn.jxc.pojo.Employee;
 import cn.jxc.service.EmployeeService;
@@ -21,8 +24,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<Employee> getEmployeeAll() {
-		return employeeMapper.getEmployeeAll();
+	public PageInfo<Employee> getEmployeeAll(Integer pageNum,Integer pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		List<Employee> employeeAll = employeeMapper.getEmployeeAll();
+		return new PageInfo<>(employeeAll);
 	}
 	
 }

@@ -28,19 +28,25 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public int addRole(Role role) {
 		// TODO Auto-generated method stub
-		return 0;
+		return roleMapper.addRole(role);
 	}
 
 	@Override
 	public int updateRole(Role role) {
 		// TODO Auto-generated method stub
-		return 0;
+		return roleMapper.updateRole(role);
 	}
 
 	@Override
 	public int delRole(Integer roleId) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Role findRoleById(Integer roleId) {
+		// TODO Auto-generated method stub
+		return roleMapper.findRoleById(roleId);
 	}
 
 }
