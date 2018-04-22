@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,9 +66,19 @@ body {
 								<span class="add-on"><i class="halflings-icon lock"></i></span>
 								<input class="input-large span10" name="password" id="password"
 									type="password" placeholder="type password" />
+							<c:set var="baseurl" value="${pageContext.request.contextPath}/"></c:set>
 							</div>
+							<%-- <div class="input-prepend" title="code">
+								<span class="add-on"> <i class="halflings-icon lock"></i> </span>
+								<input id="randomcode" name="randomcode" size="8" /> <img
+								id="randomcode_img" src="${baseurl}WEB-INF/view/code.jsp" alt=""
+								width="56" height="20" align='absMiddle' /> <a
+								href=javascript:randomcode_refresh()>刷新</a>
+							</div> --%>
 							<div class="clearfix"></div>
-
+							<label class="remember" for="remember"><input
+								type="checkbox" id="rememberMe" name="rememberMe" />记住我</label>
+							<p class="bg-warning">${message}</p>
 							<div class="button-login">
 								<button type="submit" class="btn btn-primary">Login</button>
 							</div>

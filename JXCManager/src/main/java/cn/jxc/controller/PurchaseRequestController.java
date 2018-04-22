@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +44,7 @@ public class PurchaseRequestController {
 	@Autowired
 	private PurchaseRequestDetailService purchaseRequestDetailService;
 
+	@RequiresPermissions("purchase:list")
 	@RequestMapping("/gopurchase")
 	public String gopurchase(@RequestParam(value = "pageNo", required = false) Integer pageNo,
 			@RequestParam(value = "empNo", required = false) String empNo,
@@ -67,6 +69,7 @@ public class PurchaseRequestController {
 	 * @param model
 	 * @return
 	 */
+	@RequiresPermissions("purchase:add")
 	@RequestMapping("/goPurchaseRequest")
 	public String goPurchaseRequest(Model model) {
 		PageInfo<Employee> employees = employeeService.getEmployeeAll(1,10000);
@@ -143,6 +146,7 @@ public class PurchaseRequestController {
 	 * @param model
 	 * @return
 	 */
+	@RequiresPermissions("purchase:update")
 	@RequestMapping("/goPurchaseUpdate")
 	public String goPurchaseUpdate(String singleNo, Model model, Integer productPageNo) {
 		if (null == productPageNo) {
@@ -203,6 +207,7 @@ public class PurchaseRequestController {
 	 * @param id
 	 * @return
 	 */
+	@RequiresPermissions("purchase:delete")
 	@RequestMapping("delPurchaseDetailById")
 	@ResponseBody
 	public String delPurchaseDetailById(int id) {
@@ -239,6 +244,7 @@ public class PurchaseRequestController {
 	 *            ‘≠“Ú
 	 * @return
 	 */
+	@RequiresPermissions("purchase:deptreview")
 	@RequestMapping("deptReview")
 	public String deptReview(String singleNo, Integer no, String reason, HttpServletRequest request) {
 		Employee employee = (Employee) request.getSession().getAttribute("loginEmp");
@@ -263,6 +269,7 @@ public class PurchaseRequestController {
 	 * @param request
 	 * @return
 	 */
+	@RequiresPermissions("purchase:finalreview")
 	@RequestMapping("finalReview")
 	public String finalReview(String singleNo, Integer no, String reason, HttpServletRequest request) {
 		Employee employee = (Employee) request.getSession().getAttribute("loginEmp");

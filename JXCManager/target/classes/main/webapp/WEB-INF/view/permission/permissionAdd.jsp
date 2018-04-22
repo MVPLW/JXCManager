@@ -4,10 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>错误</title>
+<title>Insert title here</title>
 </head>
 <body>
-	<h1>今天周二今天周二今天周二今天周二今天周二今天周二今天周二</h1>
-	${message}
+
 </body>
 </html>

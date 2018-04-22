@@ -60,19 +60,19 @@ h3 {
 				<ul class="breadcrumb">
 					<li><i class="icon-home"></i> <a href="javascript:;">首页</a> <i
 						class="icon-angle-right"></i></li>
-					<li><a href="javascript:;">角色管理</a></li>
+					<li><a href="javascript:;">资源管理</a></li>
 				</ul>
 				<div class="row-fluid">
 					<div class="control-group">
 						<div data-condition="search">
 							<div style="float: right;">
-								<a class="btn btn-primary" href="#" data-command="Add"><i
+								<a class="btn btn-primary" href="javascript:;"
+									onclick="addPermission()" data-command="Add"><i
 									class="icon-plus"></i>&nbsp;添加</a> <a class="btn btn-warning"
-									href="javascript:void(0)" onclick="deleteEnterStock()"
-									data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a> <a
-									class="btn btn-danger" href="javascript:void(0)"
-									onclick="javascript:location.href='#';" data-command="Refresh"><i
-									class="icon-refresh"></i>&nbsp;刷新</a>
+									href="javascript:;" onclick="" data-command="Delete"><i
+									class="icon-remove"></i>&nbsp;删除</a> <a class="btn btn-danger"
+									href="javascript:;" onclick="javascript:;"
+									data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 							</div>
 						</div>
 					</div>
@@ -80,7 +80,7 @@ h3 {
 					<div class="box">
 						<div class="box-header" data-original-title>
 							<h2>
-								<i class="halflings-icon white user"></i><span class="break"></span>角色管理
+								<i class="halflings-icon white user"></i><span class="break"></span>所有资源
 							</h2>
 						</div>
 						<div style="clear: both;">&nbsp;</div>
@@ -91,28 +91,28 @@ h3 {
 									<tr>
 										<th><input type="checkbox" id="productCheckAll" /></th>
 										<th>编号</th>
-										<th>名称</th>
-										<th>描述</th>
-										<th>角色代码</th>
-										<th>权限</th>
+										<th>资源描述</th>
+										<th>URL</th>
+										<th>是否导航栏</th>
+										<th>资源代码</th>
 										<th>操作</th>
 									</tr>
 								</thead>
-								<tbody>
-									<c:forEach items="${roleAll.list}" var="s">
+								<tbody id="productBody">
+									<c:forEach items="${permissionAll.list}" var="s">
 										<tr>
 											<th><input type="checkbox" name="productCheck"
-												value="${s.roleId}" /></th>
-											<td>${s.roleId}</td>
-											<td>${s.roleName}</td>
-											<td>${s.description}</td>
-											<td>${s.roleCode}</td>
-											<td>权限</td>
-											<td><input type="hidden" value="${s.roleId}" /> <a
+												value="${s.permissionId}" /></th>
+											<td>${s.permissionId}</td>
+											<td>${s.permissionDesc}</td>
+											<td>${s.permissionUrl}</td>
+											<td>${s.isNavi}</td>
+											<td>${s.permissionCode }</td>
+											<td><input type="hidden" value="${s.permissionId}" /> <a
 												id="detail" href="javascript:;">查看</a></td>
 										</tr>
 									</c:forEach>
-									<c:if test="${fn:length(roleAll.list)==0}">
+									<c:if test="${fn:length(permissionAll.list)==0}">
 										<tr>
 											<th colspan="8">对不起 没有查询到数据</th>
 										</tr>
@@ -122,26 +122,28 @@ h3 {
 						</div>
 						<div class="pagination pagination-centered">
 							<ul>
-								<li><a href="javascript:;" onclick="gorolepage(1)">First</a></li>
-								<li><a href="javascript:;" onclick="gorolepage('prev')">Prev</a></li>
-								<c:if test="${roleAll.pageNum-2>1}">
+								<li><a href="javascript:;" onclick="goemployeepage(1)">First</a></li>
+								<li><a href="javascript:;" onclick="goemployeepage('prev')">Prev</a></li>
+								<c:if test="${permissionAll.pageNum-2>1}">
 									<li><a>...</a></li>
 								</c:if>
-								<c:forEach begin="1" end="${roleAll.pages}" var="s">
-									<c:if test="${s>=roleAll.pageNum-2 && s<=roleAll.pageNum+2 }">
-										<li <c:if test="${s==roleAll.pageNum}">class="active"</c:if>>
-											<a href="javascript:;" onclick="gorolepage(${s})">${s}</a>
+								<c:forEach begin="1" end="${permissionAll.pages}" var="s">
+									<c:if
+										test="${s>=permissionAll.pageNum-2 && s<=permissionAll.pageNum+2 }">
+										<li
+											<c:if test="${s==permissionAll.pageNum}">class="active"</c:if>>
+											<a href="javascript:;" onclick="goemployeepage(${s})">${s}</a>
 										</li>
 									</c:if>
 								</c:forEach>
-								<c:if test="${roleAll.pageNum+2<roleAll.pages}">
+								<c:if test="${permissionAll.pageNum+2<permissionAll.pages}">
 									<li><a>...</a></li>
 								</c:if>
-								<li><a href="javascript:;" onclick="gorolepage('next')">Next</a>
+								<li><a href="javascript:;" onclick="goemployeepage('next')">Next</a>
 									<!-- 隐藏域 存放当前页码 --> <input type="hidden" name="pageNo"
-									value="${roleAll.pageNum}" /></li>
+									value="${permissionAll.pageNum}" /></li>
 								<li><a href="javascript:;"
-									onclick="gorolepage(${roleAll.pages})">Last</a></li>
+									onclick="goemployeepage(${permissionAll.pages})">Last</a></li>
 							</ul>
 						</div>
 					</div>
@@ -222,10 +224,10 @@ h3 {
 	<script src="static/own/purchase.js"></script>
 	<!-- end: JavaScript-->
 	<script type="text/javascript">
-		function gorolepage(type){
+		function goemployeepage(type){
 			var pageNum = parseInt($("input[name=pageNo]").val()); //获取当前的页码
-			var pagePageTotal = parseInt('${roleAll.pages}'); //总页数
-			if (pageNum == 1 && type == 'pre') {
+			var pagePageTotal = parseInt('${permissionAll.pages}'); //总页数
+			if (pageNum == 1 && type == 'prev') {
 				return;
 			}
 			if (pageNum == pagePageTotal && type == 'next') {
@@ -238,8 +240,16 @@ h3 {
 			} else {
 				pageNum = parseInt(type);
 			}
-			location.href = "goRole?pageNo=" + pageNum;
+			location.href = "gopermission?pageNo=" + pageNum;
 		}
+		/* 点击添加事件 */
+		function addPermission(){
+			location.href="goaddPermission";
+		}
+		
+		$(function(){
+			
+		});
 	</script>
 </body>
 </html>

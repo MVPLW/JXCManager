@@ -6,7 +6,6 @@
 	<resultMap type="Employee" id="employeeResultMap">
 		<id column="eemploginname" property="empLoginName" />
 		<!-- <association property="dept" javaType="Dept" column="edeptid">
-
 		</association>
 		<association property="role" javaType="Role" column="eroleid">
 		</association> -->
@@ -35,6 +34,11 @@
 	
 	<select id="getEmployeeAll" resultMap="employeeResultMap" >
 		select <include refid="employeeMap" /> from employee e
+	</select>
+	
+	<select id="findEmployeeByLoginName" resultMap="employeeResultMap">
+		select <include refid="employeeMap" /> from employee e
+		where e.`EmpLoginName`=#{name}
 	</select>
 
 </mapper>

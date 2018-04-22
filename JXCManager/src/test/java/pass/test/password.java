@@ -1,5 +1,9 @@
 package pass.test;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -7,16 +11,19 @@ import org.junit.Test;
 
 public class password {
 
-	//@Test
-	public void a() {
+	@Test
+	public void a() throws NoSuchAlgorithmException {
 		String str = "123";
 		String a = new Md5Hash(str).toString();
-		String jm = JM(a);
 		System.out.println(a);
-		System.out.println(jm);
+		
+		MessageDigest mm=MessageDigest.getInstance("MD5");
+		mm.update("123".getBytes());
+		String string = new BigInteger(1,mm.digest()).toString(16);
+		System.out.println(string);
 	}
 	
-	@Test
+	//@Test
 	public void b() {
 		String algorithmName = "md5";  
 		String username = "liu";

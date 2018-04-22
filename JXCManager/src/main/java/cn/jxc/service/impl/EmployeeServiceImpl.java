@@ -29,5 +29,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<Employee> employeeAll = employeeMapper.getEmployeeAll();
 		return new PageInfo<>(employeeAll);
 	}
+
+	@Override
+	public Employee findEmployeeByLoginName(String name) {
+		// TODO Auto-generated method stub
+		return employeeMapper.findEmployeeByLoginName(name);
+	}
 	
 }
