@@ -14,9 +14,12 @@
 		http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	<!-- 导入相应的配置文件 -->
+	<import resource="classpath:spring-mybatis.xml" />
+	<import resource="classpath:spring-shiro.xml" />
 
+	<!-- 扫描service controller包 注解实例化 -->
 	<context:component-scan base-package="cn.jxc.service" />
-
 	<context:component-scan base-package="cn.jxc.controller" />
 
 	<!-- 之前：加载驱动 现在： 处理请求返回json字符串的中文乱码问题 -->
@@ -70,6 +73,13 @@
 		</property>
 	</bean>
 
+	<!-- 启用Spring Shiro注解 -->
+	<aop:config proxy-target-class="true"></aop:config>
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
 	<!-- 自定义异常 -->
 	<bean class="cn.jxc.exception.CustomHandleException"></bean>
 
@@ -89,7 +99,5 @@
 		<property name="maxUploadSize" value="20000000"></property>
 	</bean>
 
-	<import resource="classpath:spring-mybatis.xml" />
-	<import resource="classpath:spring-shiro.xml" />
 
 </beans>

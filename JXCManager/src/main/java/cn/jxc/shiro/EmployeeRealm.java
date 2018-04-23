@@ -27,11 +27,6 @@ public class EmployeeRealm extends AuthorizingRealm {
 	@Autowired
 	private PermissionService permissionService;
 
-	@Override
-	public void setName(String name) {
-		// TODO Auto-generated method stub
-		super.setName("employeeRealm");
-	}
 
 	/**
 	 * 用于授权的方法
@@ -40,6 +35,7 @@ public class EmployeeRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 		// 从principals获取主身份信息
 		// 将getPrimaryPrincipal方法返回值转为真实身份类型(在上边的goGetAuthenticationInfo认证通过填充到SimpleAuthenticationInfo)
+		System.out.println("==============进入授权的方法========================");
 		Employee emp = (Employee) principalCollection.getPrimaryPrincipal();
 		// System.out.println(username);
 		// 从数据库获取动态权限数据
@@ -63,8 +59,8 @@ public class EmployeeRealm extends AuthorizingRealm {
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
 			throws AuthenticationException {
-		System.out.println("进入验证方法");
 		UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
+		System.out.println("进入认证的方法===================================认证==");
 		System.out.println("用户名:" + token.getUsername());
 		System.out.println("密码:" + token.getPassword().toString());
 		Employee emp = employeeService.findEmployeeByLoginName(token.getUsername());

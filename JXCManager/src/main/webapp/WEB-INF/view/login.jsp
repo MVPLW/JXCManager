@@ -54,7 +54,7 @@ body {
 				<div class="login-box">
 					<div class="icons"></div>
 					<h2>登录账号</h2>
-					<form class="form-horizontal" action="login" method="post">
+					<form class="form-horizontal" action="" method="post">
 						<fieldset>
 							<div class="input-prepend" title="Username">
 								<span class="add-on"><i class="halflings-icon user"></i></span>
@@ -66,7 +66,7 @@ body {
 								<span class="add-on"><i class="halflings-icon lock"></i></span>
 								<input class="input-large span10" name="password" id="password"
 									type="password" placeholder="type password" />
-							<c:set var="baseurl" value="${pageContext.request.contextPath}/"></c:set>
+							<%-- <c:set var="baseurl" value="${pageContext.request.contextPath}/"></c:set> --%>
 							</div>
 							<%-- <div class="input-prepend" title="code">
 								<span class="add-on"> <i class="halflings-icon lock"></i> </span>
