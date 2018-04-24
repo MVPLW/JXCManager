@@ -7,22 +7,6 @@
     http://www.springframework.org/schema/util/spring-util.xsd">
 
 
-
-
-	<!-- 自定义 相当于仓库 第一次登录之后所有的权限信息都存放在这个对象当中 后面进行操作的时候直接从这个对象中取值判断 <bean id="employeeRealm" 
-		class="cn.jxc.shiro.EmployeeRealm"> 将凭证匹配器设置到realm中，realm按照凭证匹配器要求进行散列 <property 
-		name="credentialsMatcher" ref="credentialsMatcher" /> </bean> 设置加密方法 <bean 
-		id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher"> 
-		<property name="hashAlgorithmName" value="md5" /> <property name="hashIterations" 
-		value="1" /> </bean> 缓存管理器 <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager"> 
-		<property name="cacheManagerConfigFile" value="classpath:shiro-ehcache.xml" 
-		/> </bean> rememberMeManager管理器 <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager"> 
-		<property name="cookie" ref="rememberMeCookie" /> </bean> 记住我cookie <bean 
-		id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie"> 
-		rememberMe时cookie的名字 <constructor-arg name="name" value="shiro.session" /> 
-		<property name="path" value="/"></property> 记住我cookie生效时间30天 <property name="maxAge" 
-		value="2592000" /> </bean> -->
-
 	<!-- 缓存管理器 使用Ehcache实现 -->
 	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManagerConfigFile" value="classpath:shiro-ehcache.xml" />
@@ -101,12 +85,17 @@
 	<!-- Shiro 的Web过滤器 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
+		<!-- 没有登录的用户请求需要登录的页面时自动跳转到登录页面 不是必须的属性  没有的话会自动寻找项目web跟路径下的login.jsp页面 -->
+		<!-- <property name="loginUrl" value="/login"></property> -->
+		<!-- 登录成功默认跳转页面   不配置则跳转至/  如果 登录前点击的一个需要登录的页面  则在登录自动跳转到那个需要登录的页面  不跳转至此-->
 		<property name="successUrl" value="/index" />
+		<property name="unauthorizedUrl" value="/error"></property>
 		<property name="filters">
 			<util:map>
 				<entry key="authc" value-ref="formAuthenticationFilter" />
 			</util:map>
 		</property>
+		<!-- 需要验证的地址列表  常用的包含 -->
 		<property name="filterChainDefinitions">
 			<value>
 				<!--对静态资源设置匿名访问 所有静态资源都可以匿名访问 -->
@@ -124,7 +113,7 @@
 		<property name="usernameParam" value="username" />
 		<property name="passwordParam" value="password" />
 		<property name="rememberMeParam" value="rememberMe" />
-		<property name="loginUrl" value="/login"></property>
+		
 	</bean>
 
 	<!-- shiro生命周期处理器 -->

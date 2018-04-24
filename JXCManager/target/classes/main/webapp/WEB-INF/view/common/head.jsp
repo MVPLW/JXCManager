@@ -77,28 +77,28 @@
 							<li><a href="#"> <span class="header"> <span
 										class="title">iOS Development</span> <span class="percent"></span>
 								</span>
-									<div class="taskProgress progressSlim red">80</div>
-							</a></li>
+							</a>
+							<div class="taskProgress progressSlim red">80</div></li>
 							<li><a href="#"> <span class="header"> <span
 										class="title">Android Development</span> <span class="percent"></span>
 								</span>
-									<div class="taskProgress progressSlim green">47</div>
-							</a></li>
+							</a>
+							<div class="taskProgress progressSlim green">47</div></li>
 							<li><a href="#"> <span class="header"> <span
 										class="title">ARM Development</span> <span class="percent"></span>
 								</span>
-									<div class="taskProgress progressSlim yellow">32</div>
-							</a></li>
+							</a>
+							<div class="taskProgress progressSlim yellow">32</div></li>
 							<li><a href="#"> <span class="header"> <span
 										class="title">ARM Development</span> <span class="percent"></span>
 								</span>
-									<div class="taskProgress progressSlim greenLight">63</div>
-							</a></li>
+							</a>
+							<div class="taskProgress progressSlim greenLight">63</div></li>
 							<li><a href="#"> <span class="header"> <span
 										class="title">ARM Development</span> <span class="percent"></span>
 								</span>
-									<div class="taskProgress progressSlim orange">80</div>
-							</a></li>
+							</a>
+							<div class="taskProgress progressSlim orange">80</div></li>
 							<li><a class="dropdown-menu-sub-footer">View all tasks</a></li>
 						</ul></li>
 					<!-- end: Notifications Dropdown -->
@@ -160,8 +160,9 @@
 									Settings</span></li>
 							<li><a href="#"><i class="halflings-icon user"></i>
 									Profile</a></li>
-							<li><a href="javascript:;" onclick="javascript:location.href='logout';"><i class="halflings-icon off"></i>
-									Logout</a></li>
+							<li><a href="javascript:;"
+								onclick="javascript:location.href='logout';"><i
+									class="halflings-icon off"></i> Logout</a></li>
 						</ul></li>
 					<!-- end: User Dropdown -->
 				</ul>

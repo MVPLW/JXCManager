@@ -35,18 +35,21 @@ public class EmployeeRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 		// 从principals获取主身份信息
 		// 将getPrimaryPrincipal方法返回值转为真实身份类型(在上边的goGetAuthenticationInfo认证通过填充到SimpleAuthenticationInfo)
-		System.out.println("==============进入授权的方法========================");
+		System.err.println("==============进入授权的方法========================");
 		Employee emp = (Employee) principalCollection.getPrimaryPrincipal();
 		// System.out.println(username);
 		// 从数据库获取动态权限数据
 		List<Permission> permissions = permissionService.getPermissionByEmp(emp.getEmpLoginName());
 		List<String> permissionCodes = new ArrayList<String>();
+		int i=0;
 		if (permissions != null) {
 			for (Permission per : permissions) {
+				i++;
 				//将数据库中的权限标签符放入集合
 				permissionCodes.add(per.getPermissionCode());
 			}
 		}
+		System.err.println(i+" ~~~~~~~~~~~~~~~~~~~~~~~~~  "+emp.getEmpLoginName()+"共有"+i+"个权限");
 		//查到权限数据，返回授权信息(包括上边的permissions)
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.addStringPermissions(permissionCodes);
@@ -60,9 +63,7 @@ public class EmployeeRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
 			throws AuthenticationException {
 		UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-		System.out.println("进入认证的方法===================================认证==");
-		System.out.println("用户名:" + token.getUsername());
-		System.out.println("密码:" + token.getPassword().toString());
+		System.err.println("进入认证的方法====================================="+"用户名"+token.getUsername());
 		Employee emp = employeeService.findEmployeeByLoginName(token.getUsername());
 		if (null == emp) {
 			throw new UnknownAccountException();

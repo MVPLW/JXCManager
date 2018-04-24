@@ -56,7 +56,7 @@
 			
 			<!-- start: Content -->
 			<iframe style="height: 800px; width: 100%;" src="welcome.jsp"
-				id="page-Content" name="page-Content" frameborder="0" >
+				id="page-Content" name="page-Content"  >
 			</iframe>
 			<!-- end: Content -->
 			

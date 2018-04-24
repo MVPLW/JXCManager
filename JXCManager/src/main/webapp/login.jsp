@@ -76,9 +76,9 @@ body {
 								href=javascript:randomcode_refresh()>刷新</a>
 							</div> --%>
 							<div class="clearfix"></div>
+							<span class="bg-warning" style="position:relative ;left: -60px;top: -5px;" >${message}</span>
 							<label class="remember" for="remember"><input
 								type="checkbox" id="rememberMe" name="rememberMe" />记住我</label>
-							<p class="bg-warning">${message}</p>
 							<div class="button-login">
 								<button type="submit" class="btn btn-primary">Login</button>
 							</div>

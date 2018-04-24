@@ -15,7 +15,8 @@ public class CustomHandleException implements HandlerExceptionResolver {
 
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object object,
-			Exception e) {// 解析出异常类型
+			Exception e) {
+		// 解析出异常类型
 		CustomException customException = null;
 		// 若该异常类型是系统自定义的异常，直接取出异常信息在错误页面展示即可。
 		if (e instanceof CustomException) {
