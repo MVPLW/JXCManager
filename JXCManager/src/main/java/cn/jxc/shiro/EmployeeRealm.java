@@ -27,7 +27,6 @@ public class EmployeeRealm extends AuthorizingRealm {
 	@Autowired
 	private PermissionService permissionService;
 
-
 	/**
 	 * 用于授权的方法
 	 */
@@ -35,24 +34,25 @@ public class EmployeeRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 		// 从principals获取主身份信息
 		// 将getPrimaryPrincipal方法返回值转为真实身份类型(在上边的goGetAuthenticationInfo认证通过填充到SimpleAuthenticationInfo)
-		System.err.println("==============进入授权的方法========================");
 		Employee emp = (Employee) principalCollection.getPrimaryPrincipal();
+		System.err.println("==============进入授权的方法========================" + emp.getEmpLoginName());
 		// System.out.println(username);
 		// 从数据库获取动态权限数据
-		List<Permission> permissions = permissionService.getPermissionByEmp(emp.getEmpLoginName());
+		List<Permission> permissions = permissionService.findPermissionByEmp(emp.getEmpLoginName());
+		System.err.println(permissions.size() + "   ~~~授权的方法。。。。。。。。。。");
 		List<String> permissionCodes = new ArrayList<String>();
-		int i=0;
+		int i = 0;
 		if (permissions != null) {
 			for (Permission per : permissions) {
 				i++;
-				//将数据库中的权限标签符放入集合
+				// 将数据库中的权限标签符放入集合
 				permissionCodes.add(per.getPermissionCode());
 			}
 		}
-		System.err.println(i+" ~~~~~~~~~~~~~~~~~~~~~~~~~  "+emp.getEmpLoginName()+"共有"+i+"个权限");
-		//查到权限数据，返回授权信息(包括上边的permissions)
-        SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addStringPermissions(permissionCodes);
+		System.err.println(i + " ~~~~~~~~~~~~~~~~~~~~~~~~~  " + emp.getEmpLoginName() + "共有" + i + "个权限");
+		// 查到权限数据，返回授权信息(包括上边的permissions)
+		SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+		simpleAuthorizationInfo.addStringPermissions(permissionCodes);
 		return simpleAuthorizationInfo;
 	}
 
@@ -63,7 +63,7 @@ public class EmployeeRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
 			throws AuthenticationException {
 		UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-		System.err.println("进入认证的方法====================================="+"用户名"+token.getUsername());
+		System.err.println("进入认证的方法=====================================" + "用户名" + token.getUsername());
 		Employee emp = employeeService.findEmployeeByLoginName(token.getUsername());
 		if (null == emp) {
 			throw new UnknownAccountException();

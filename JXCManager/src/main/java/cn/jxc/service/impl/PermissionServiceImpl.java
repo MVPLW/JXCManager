@@ -44,7 +44,7 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
-	public List<Permission> getPermissionByEmp(String empLoginName) {
+	public List<Permission> findPermissionByEmp(String empLoginName) {
 		// TODO Auto-generated method stub
 		return permissionMapper.getPermissionByEmp(empLoginName);
 	}

@@ -24,7 +24,7 @@ public class Employee implements java.io.Serializable {
 
 	// 所有员工角色权限
 	private List<EmployeeRole> employeeRoles = new ArrayList<EmployeeRole>();
-	
+
 	public Employee() {
 		super();
 	}

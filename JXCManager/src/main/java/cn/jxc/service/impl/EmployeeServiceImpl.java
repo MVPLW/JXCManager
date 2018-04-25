@@ -2,6 +2,7 @@ package cn.jxc.service.impl;
 
 import java.util.List;
 
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +18,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
 	private EmployeeMapper employeeMapper;
-	
+
 	@Override
 	public Employee login(String name, String pwd) {
 		return employeeMapper.login(name, pwd);
 	}
 
 	@Override
-	public PageInfo<Employee> getEmployeeAll(Integer pageNum,Integer pageSize) {
+	public PageInfo<Employee> getEmployeeAll(Integer pageNum, Integer pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
 		List<Employee> employeeAll = employeeMapper.getEmployeeAll();
 		return new PageInfo<>(employeeAll);
@@ -35,5 +36,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 		// TODO Auto-generated method stub
 		return employeeMapper.findEmployeeByLoginName(name);
 	}
-	
+
+	@Override
+	public int addEmployee(Employee employee) {
+		System.err.println(employee.getEmpLoginPwd());
+		// 把密码设置成散列值
+		employee.setEmpLoginPwd(new Md5Hash(employee.getEmpLoginPwd()).toString());
+		System.err.println(employee.getEmpLoginPwd());
+		return employeeMapper.addEmployee(employee);
+	}
+
 }

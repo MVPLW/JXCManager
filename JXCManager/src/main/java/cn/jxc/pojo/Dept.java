@@ -1,10 +1,10 @@
 package cn.jxc.pojo;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 部门实体  包涵:财务部 销售部 采购部 仓库管理部 ...
+ * 部门实体 包涵:财务部 销售部 采购部 仓库管理部 ...
  */
 public class Dept implements java.io.Serializable {
 
@@ -12,12 +12,12 @@ public class Dept implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer deptId;
 	private String deptName;
 	private String deptDes;
-	
-	private Set<Object> employees = new HashSet<Object>(0);
+
+	private List<Employee> employees = new ArrayList<Employee>();
 
 	public Dept() {
 	}
@@ -26,7 +26,7 @@ public class Dept implements java.io.Serializable {
 		this.deptName = deptName;
 	}
 
-	public Dept(String deptName, String deptDes, Set<Object> employees) {
+	public Dept(String deptName, String deptDes, List<Employee> employees) {
 		this.deptName = deptName;
 		this.deptDes = deptDes;
 		this.employees = employees;
@@ -56,11 +56,11 @@ public class Dept implements java.io.Serializable {
 		this.deptDes = deptDes;
 	}
 
-	public Set<Object> getEmployees() {
+	public List<Employee> getEmployees() {
 		return this.employees;
 	}
 
-	public void setEmployees(Set<Object> employees) {
+	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
 	}
 

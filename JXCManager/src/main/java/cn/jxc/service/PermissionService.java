@@ -16,6 +16,6 @@ public interface PermissionService {
 
 	Integer deletePermission(int permissionId);
 	
-	List<Permission> getPermissionByEmp(String empLoginName);
+	List<Permission> findPermissionByEmp(String empLoginName);
 	
 }

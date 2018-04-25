@@ -12,4 +12,6 @@ public interface EmployeeService {
 	Employee findEmployeeByLoginName(String name);
 
 	PageInfo<Employee> getEmployeeAll(Integer pageNum, Integer pageSize);
+	
+	int addEmployee(Employee employee);
 }

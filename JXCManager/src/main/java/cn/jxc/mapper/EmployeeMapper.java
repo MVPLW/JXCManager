@@ -10,8 +10,10 @@ public interface EmployeeMapper {
 
 	Employee login(@Param("name") String name, @Param("pwd") String pwd);
 
-	Employee findEmployeeByLoginName(@Param("name")String name);
+	Employee findEmployeeByLoginName(@Param("name") String name);
 
 	List<Employee> getEmployeeAll();
+
+	int addEmployee(@Param("e") Employee employee);
 
 }

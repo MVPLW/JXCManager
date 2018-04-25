@@ -2,13 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.jxc.mapper.EmployeeMapper">
-	
+
 	<resultMap type="Employee" id="employeeResultMap">
 		<id column="eemploginname" property="empLoginName" />
-		<!-- <association property="dept" javaType="Dept" column="edeptid">
-		</association>
-		<association property="role" javaType="Role" column="eroleid">
-		</association> -->
+		<!-- <association property="dept" javaType="Dept" column="edeptid"> </association> 
+			<association property="role" javaType="Role" column="eroleid"> </association> -->
 		<result column="eemploginpwd" property="empLoginPwd" />
 		<result column="ename" property="empName" />
 		<result column="ejoindate" property="joinDate" />
@@ -18,27 +16,49 @@
 		<result column="ephone" property="telephone" />
 		<result column="eemail" property="email" />
 	</resultMap>
-	
+
 	<sql id="employeeMap">
 		e.`EmpLoginName` AS eemploginname,e.`EmpLoginPwd` AS
 		eemploginpwd,e.`EmpName` AS ename,e.`DeptId` AS
-		edeptid,e.`JoinDate` AS ejoindate,e.`Gender`AS egender,e.`Birthday` AS
-		ebirthday,e.`Address` AS eaddress,e.`Telephone` AS ephone,e.`Email` AS
+		edeptid,e.`JoinDate` AS
+		ejoindate,e.`Gender`AS egender,e.`Birthday` AS
+		ebirthday,e.`Address` AS
+		eaddress,e.`Telephone` AS ephone,e.`Email` AS
 		eemail
 	</sql>
 
 	<select id="login" resultMap="employeeResultMap">
-		select <include refid="employeeMap" /> from employee e
-		where e.`EmpLoginName`=#{name} and e.`EmpLoginPwd`=#{pwd}
+		select
+		<include refid="employeeMap" />
+		from employee e
+		where e.`EmpLoginName`=#{name} and
+		e.`EmpLoginPwd`=#{pwd}
 	</select>
-	
-	<select id="getEmployeeAll" resultMap="employeeResultMap" >
-		select <include refid="employeeMap" /> from employee e
+
+	<select id="getEmployeeAll" resultMap="employeeResultMap">
+		select
+		<include refid="employeeMap" />
+		from employee e
 	</select>
-	
+
 	<select id="findEmployeeByLoginName" resultMap="employeeResultMap">
-		select <include refid="employeeMap" /> from employee e
+		select
+		<include refid="employeeMap" />
+		from employee e
 		where e.`EmpLoginName`=#{name}
 	</select>
+
+	<insert id="addEmployee" parameterType="Employee">
+		INSERT INTO
+		`jxcdb`.`employee` (`EmpLoginName`,
+		`EmpLoginPwd`, `EmpName`, `DeptId`,
+		`JoinDate`, `Gender`, `Birthday`,
+		`Address`, `Telephone`, `Email`)
+		VALUES (#{e.empLoginName},
+		#{e.empLoginPwd}, #{e.empName},
+		#{e.dept.deptId}, #{e.joinDate}, #{e.gender},
+		#{e.birthday},
+		#{e.address}, #{e.telephone}, #{e.email});
+	</insert>
 
 </mapper>

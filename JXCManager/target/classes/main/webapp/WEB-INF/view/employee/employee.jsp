@@ -66,7 +66,8 @@ h3 {
 					<div class="control-group">
 						<div data-condition="search">
 							<div style="float: right;">
-								<a class="btn btn-primary" href="javascript:;" id="roleAdd"
+								<a class="btn btn-primary" href="javascript:;" id="employeeAdd"
+									onclick="javascript:location.href='goEmployeeAdd';"
 									data-command="Add"><i class="icon-plus"></i>&nbsp;添加</a> <a
 									class="btn btn-warning" href="javascript:;"
 									data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a> <a
