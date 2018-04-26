@@ -13,27 +13,47 @@
 
 	<select id="getRoleAll" resultMap="roleMap">
 		select
-		<include refid="roleSql"></include>
+		<include refid="roleSql" />
 		from role r
 	</select>
 
 	<insert id="addRole" parameterType="Role">
 		INSERT INTO `jxcdb`.`role`
 		(`RoleId`, `RoleName`, `Description`, `RoleCode`)
-		VALUES (NULL, #{r.roleName}, #{r.description}, #{r.roleCode});
+		VALUES (NULL,
+		#{r.roleName}, #{r.description}, #{r.roleCode});
 	</insert>
-	
+
 	<update id="updateRole" parameterType="Role">
 		UPDATE `jxcdb`.`role` SET
-		`RoleName`=#{r.roleName}, `Description`=#{r.description}, `RoleCode`=#{r.roleCode}
+		`RoleName`=#{r.roleName}, `Description`=#{r.description},
+		`RoleCode`=#{r.roleCode}
 		WHERE (`RoleId`=#{r.roleId});
 	</update>
 	<!-- 根据id查询一个角色 -->
 	<select id="findRoleById" resultMap="roleMap">
 		select
 		<include refid="roleSql"></include>
-		from role r 
+		from role r
 		where r.roleId=#{roleId}
 	</select>
+
+	<select id="findRoleByEmp" parameterType="string" resultMap="roleMap">
+		SELECT
+		<include refid="roleSql" />
+		FROM employeerole
+		LEFT JOIN role r ON employeerole.RoleId=r.RoleId
+		WHERE employeerole.EmpLoginName=#{emp}
+	</select>
+
+	<delete id="delRoleByEmp" parameterType="string">
+		DELETE FROM employeerole
+		WHERE emploginname = #{emp}
+	</delete>
+
+	<insert id="addEmpRole">
+		INSERT INTO `jxcdb`.`employeerole` (`EmployeeRoleId`,
+		`RoleId`, `EmpLoginName`) VALUES (NULL, #{roleId}, #{emp});
+	</insert>
 
 </mapper>

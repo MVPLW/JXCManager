@@ -108,14 +108,17 @@ h3 {
 												value="${s.empLoginName}" /></th>
 											<td>${s.empLoginName}</td>
 											<td>${s.empName}</td>
-											<td> <fmt:formatDate value="${s.joinDate}" pattern="yyyy-MM-dd" /> </td>
+											<td><fmt:formatDate value="${s.joinDate}"
+													pattern="yyyy-MM-dd" /></td>
 											<td>${s.gender}</td>
-											<td><fmt:formatDate value="${s.birthday}" pattern="yyyy-MM-dd" /></td>
+											<td><fmt:formatDate value="${s.birthday}"
+													pattern="yyyy-MM-dd" /></td>
 											<td>${s.address }</td>
 											<td>${s.telephone }</td>
 											<td>${s.email }</td>
 											<td><input type="hidden" value="${s.empLoginName}" /> <a
-												id="detail" href="javascript:;">查看</a></td>
+												href="javascript:;"
+												onclick="modalAssignRole('${s.empLoginName}')">查看角色</a></td>
 										</tr>
 									</c:forEach>
 									<c:if test="${fn:length(employeeAll.list)==0}">
@@ -134,8 +137,10 @@ h3 {
 									<li><a>...</a></li>
 								</c:if>
 								<c:forEach begin="1" end="${employeeAll.pages}" var="s">
-									<c:if test="${s>=employeeAll.pageNum-2 && s<=employeeAll.pageNum+2 }">
-										<li <c:if test="${s==employeeAll.pageNum}">class="active"</c:if>>
+									<c:if
+										test="${s>=employeeAll.pageNum-2 && s<=employeeAll.pageNum+2 }">
+										<li
+											<c:if test="${s==employeeAll.pageNum}">class="active"</c:if>>
 											<a href="javascript:;" onclick="goemployeepage(${s})">${s}</a>
 										</li>
 									</c:if>
@@ -157,42 +162,38 @@ h3 {
 	</div>
 
 	<!-- 添加角色 -->
-	<div class="modal hide fade" id="roleAddModel" style="width: 800px;">
+	<div class="modal hide fade" id="assignRolesModals"
+		style="width: 800px;">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">x</button>
-			<h2>添加角色</h2>
+			<h2>分配角色</h2>
 		</div>
 		<div class="modal-body">
 			<div>
-				<form method="post" action="goRoleAdd" id="roleForm">
+				<form method="post" action="goEmpRoleAssign" id="assignRoleForm">
 					<table style="width: 100%; table-layout: fixed;">
 						<tbody>
 							<tr>
-								<td align="center"><div class="control-group">
-										<label class="control-label" for="roleName">角色名称</label>
-									</div></td>
-								<td><div class="controls">
-										<input class="input-xlarge focused" id="roleName"
-											name="roleName" type="text" placeholder="此处填写角色名" />
-									</div></td>
-							</tr>
-							<tr>
-								<td align="center"><div class="control-group">
-										<label class="control-label" for="roleCode">角色代码</label>
-									</div></td>
-								<td><div class="controls">
-										<input class="input-xlarge focused" id="roleCode"
-											name="roleCode" type="text" placeholder="此处填写角色代码" />
-									</div></td>
-							</tr>
-							<tr>
-								<td align="center"><div class="control-group">
-										<label class="control-label" for="description">角色描述</label>
-									</div></td>
-								<td><div class="controls">
-										<input class="input-xlarge focused" id="description"
-											name="description" type="text" placeholder="此处填写对于角色的描述" />
-									</div></td>
+								<td>
+									<div class="control-group">
+										<label class="control-label">谨慎分配</label> <input type="hidden"
+											name="empLoginName" />
+										<div class="controls" id="haveRoles">
+											<!-- <label class="checkbox inline"> <input
+												name="assignRole" type="checkbox" id="inlineCheckbox1"
+												value="option1"> Option 1
+											</label>-->
+											<c:forEach items="${roleAll}" var="s" varStatus="a">
+												<label class="checkbox inline"> <input
+													name="assignRole" type="checkbox"
+													id="checkboxRoles${s.roleId}" value="${s.roleId}">
+													${s.roleName}
+												</label>
+												<%-- <c:if test="${a.index+1%4==0}"><div style="clear: both;">&nbsp;</div> </c:if> --%>
+											</c:forEach>
+										</div>
+									</div>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -200,7 +201,7 @@ h3 {
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a href="javascript:;" class="btn btn-primary" id="roleAddCommit">Save</a>
+			<a href="javascript:;" class="btn btn-primary" id="commitAssignRoles">Save</a>
 			<a href="javascript:;" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
@@ -244,7 +245,7 @@ h3 {
 		function goemployeepage(type){
 			var pageNum = parseInt($("input[name=pageNo]").val()); //获取当前的页码
 			var pagePageTotal = parseInt('${employeeAll.pages}'); //总页数
-			if (pageNum == 1 && type == 'pre') {
+			if (pageNum == 1 && type == 'prev') {
 				return;
 			}
 			if (pageNum == pagePageTotal && type == 'next') {
@@ -257,16 +258,41 @@ h3 {
 			} else {
 				pageNum = parseInt(type);
 			}
-			location.href = "goRole?pageNo=" + pageNum;
+			location.href = "goEmployee?pageNo=" + pageNum;
+		}
+		
+		//显示分配角色的弹框同时加载所有角色
+		function modalAssignRole(emploginname){
+			//先把所有复选框回复默认
+			$("#haveRoles").find("input[name='assignRole']").each(function(i, n) {
+				$(n).removeAttr("checked");
+				$(n).parent().removeClass("checked");
+			})
+			$.ajax({
+				type:"POST",
+				url:"findRolesByEmp",
+				data:"emploginname="+emploginname,
+				dataType:"JSON",
+				success:function(result){
+					//拥有的角色选中
+					for(var i = 0 ; i < result.length ; i++){
+						$("#checkboxRoles"+result[i].roleId).prop("checked",true);
+						$("#checkboxRoles"+result[i].roleId).parent().addClass("checked");
+					}
+				}
+			});
+			$("input[name=empLoginName]:hidden").val(emploginname);
+			$("#assignRolesModals").modal("show");
 		}
 		$(function(){
-			/* 弹出添加角色弹框 */
-			$("#roleAdd").click(function(){
-				$("#roleAddModel").modal("show");
-			});
-			/* 添加角色 */
-			$("#roleAddCommit").click(function(){
-				$("#roleForm").submit();/* 提交表单 */
+			/* 分配角色提交 */
+			$("#commitAssignRoles").click(function(){
+				var s = confirm("确认分配权限吗?");
+				if(s==false){
+					return;
+				}
+				//var a = $("#haveRoles").find("input[name='assignRole']");
+				$("#assignRoleForm").submit();/* 提交表单 */
 			});
 			
 		});

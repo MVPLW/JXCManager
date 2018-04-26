@@ -1,5 +1,7 @@
 package cn.jxc.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,15 +15,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 
 import cn.jxc.exception.CustomException;
 import cn.jxc.pojo.Dept;
 import cn.jxc.pojo.Employee;
+import cn.jxc.pojo.Role;
 import cn.jxc.service.DeptService;
 import cn.jxc.service.EmployeeService;
+import cn.jxc.service.RoleService;
 
 @Controller
 public class EmployeeController {
@@ -30,6 +36,8 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 	@Autowired
 	private DeptService deptService;
+	@Autowired
+	private RoleService roleService;
 
 	@RequestMapping("/")
 	public String index() {
@@ -89,12 +97,14 @@ public class EmployeeController {
 	 */
 	@RequiresPermissions("employee:list")
 	@RequestMapping("/goEmployee")
-	public String goemployee(@RequestParam(value = "pageNum", required = false) Integer pageNum, Model model) {
+	public String goemployee(@RequestParam(value = "pageNo", required = false) Integer pageNum, Model model) {
 		if (pageNum == null) {
 			pageNum = 1;
 		}
 		PageInfo<Employee> employeeAll = employeeService.getEmployeeAll(pageNum, 5);
+		List<Role> roles = roleService.getRoleAll(1, 10000).getList();
 		model.addAttribute("employeeAll", employeeAll);
+		model.addAttribute("roleAll", roles);
 		return "employee/employee";
 	}
 
@@ -118,7 +128,7 @@ public class EmployeeController {
 	 * @param employee
 	 *            员工对象
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@RequestMapping("/goEmployeeInsert")
 	public String goEmployeeInsert(Employee employee) throws Exception {
@@ -128,9 +138,43 @@ public class EmployeeController {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			throw new Exception("新增出错+"+e.getMessage());
-//			return "";
+			throw new Exception("新增出错+" + e.getMessage());
+			// return "";
 		}
+	}
+
+	/**
+	 * 根据用户名查询相关权限 以及所有权限
+	 * 
+	 * @param empLoginName
+	 *            用户名
+	 * @return
+	 */
+	@RequestMapping("/findRolesByEmp")
+	@ResponseBody
+	public String findRolesByEmp(@RequestParam("emploginname") String empLoginName) {
+		System.out.println(empLoginName);
+		// 根据用户名查询拥有的角色
+		List<Role> findRoleByEmp = roleService.findRoleByEmp(empLoginName);
+		List<List<Role>> list = new ArrayList<List<Role>>();
+		list.add(findRoleByEmp);
+		System.out.println(findRoleByEmp.size() + "===拥有的角色个数");
+		return JSON.toJSONString(findRoleByEmp);
+	}
+
+	/**
+	 * 为用户分配角色
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/goEmpRoleAssign")
+	public String goEmpRoleAssign(String[] assignRole, String empLoginName) {
+		List<String> list = Arrays.asList(assignRole);
+		int addEmpRole = roleService.addEmpRole(list, empLoginName);
+		if (addEmpRole > 0) { // 代表成功分配角色
+			return "redirect:goEmployee";
+		}
+		return "error";
 	}
 
 }

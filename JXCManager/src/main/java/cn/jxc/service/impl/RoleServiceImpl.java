@@ -14,15 +14,15 @@ import cn.jxc.service.RoleService;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-	
+
 	@Autowired
 	private RoleMapper roleMapper;
 
 	@Override
-	public PageInfo<Role> getRoleAll(Integer pageNo,Integer pageSize) {
+	public PageInfo<Role> getRoleAll(Integer pageNo, Integer pageSize) {
 		PageHelper.startPage(pageNo, pageSize);
 		List<Role> roleAll = roleMapper.getRoleAll();
-		return new PageInfo<>(roleAll);
+		return new PageInfo<Role>(roleAll);
 	}
 
 	@Override
@@ -49,4 +49,29 @@ public class RoleServiceImpl implements RoleService {
 		return roleMapper.findRoleById(roleId);
 	}
 
+	@Override
+	public List<Role> findRoleByEmp(String emp) {
+		// TODO Auto-generated method stub
+		return roleMapper.findRoleByEmp(emp);
+	}
+
+	@Override
+	public int delRoleByEmp(String empLoginName) {
+		// TODO Auto-generated method stub
+		return roleMapper.delRoleByEmp(empLoginName);
+	}
+
+	@Override
+	public int addEmpRole(List<String> roles, String empLoginName) {
+		try {
+			// 循环添加用户角色
+			for (String roleId : roles) {
+				roleMapper.addEmpRole(empLoginName, roleId);
+			}
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 }
