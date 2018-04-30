@@ -1,6 +1,5 @@
 package cn.jxc.controller;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -156,8 +155,6 @@ public class EmployeeController {
 		System.out.println(empLoginName);
 		// 根据用户名查询拥有的角色
 		List<Role> findRoleByEmp = roleService.findRoleByEmp(empLoginName);
-		List<List<Role>> list = new ArrayList<List<Role>>();
-		list.add(findRoleByEmp);
 		System.out.println(findRoleByEmp.size() + "===拥有的角色个数");
 		return JSON.toJSONString(findRoleByEmp);
 	}

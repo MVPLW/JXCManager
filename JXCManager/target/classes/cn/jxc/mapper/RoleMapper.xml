@@ -56,4 +56,14 @@
 		`RoleId`, `EmpLoginName`) VALUES (NULL, #{roleId}, #{emp});
 	</insert>
 
+	<delete id="delRolePermissionByRoleId" parameterType="int">
+		DELETE FROM `jxcdb`.`rolepermission` WHERE
+		`RoleId`=#{roleId}
+	</delete>
+	
+	<delete id="delRole">
+		DELETE FROM `jxcdb`.`role` WHERE
+		`RoleId`=#{roleId}
+	</delete>
+
 </mapper>

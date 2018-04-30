@@ -25,12 +25,26 @@
 		SELECT
 		<include refid="permissionSql" />
 		FROM permission per LEFT JOIN rolepermission
-		ON per.Permission_id=rolepermission.PermissionId WHERE
+		ON
+		per.Permission_id=rolepermission.PermissionId WHERE
 		rolepermission.RoleId in (
-		SELECT role.RoleId FROM role LEFT JOIN employeerole ON
+		SELECT role.RoleId FROM role LEFT JOIN
+		employeerole ON
 		role.RoleId=employeerole.RoleId
-		WHERE employeerole.EmpLoginName=(
-		SELECT EmpLoginName FROM employee WHERE EmpLoginName=#{empLoginName}))
+		WHERE
+		employeerole.EmpLoginName=(
+		SELECT EmpLoginName FROM employee WHERE
+		EmpLoginName=#{empLoginName}))
+	</select>
+
+	<select id="getPermissionByRole" parameterType="string"
+		resultMap="permissionMap">
+		SELECT
+		<include refid="permissionSql" />
+		FROM rolepermission rp,permission per
+		WHERE rp.RoleId = #{roleId}
+		AND
+		rp.PermissionId = per.Permission_Id
 	</select>
 
 	<insert id="addPermission" parameterType="Permission">
@@ -56,4 +70,16 @@
 		Permission_id=#{perId}
 	</delete>
 
+	<insert id="addRolePermission">
+		INSERT INTO `jxcdb`.`rolepermission`
+		(`Role_Permission_id`, `RoleId`, `PermissionId`) VALUES (NULL,
+		#{roleId},
+		#{permissionId})
+	</insert>
+	
+	<delete id="deletePermissionByRoleId" parameterType="int">
+		delete from
+		`jxcdb`.`rolepermission` where `RoleId`=#{roleId}
+	</delete>
+	
 </mapper>

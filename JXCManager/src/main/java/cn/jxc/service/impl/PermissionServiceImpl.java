@@ -17,9 +17,9 @@ public class PermissionServiceImpl implements PermissionService {
 
 	@Autowired
 	private PermissionMapper permissionMapper;
-	
+
 	@Override
-	public PageInfo<Permission> getPermissionAll(Integer pageNo,Integer pageSize) {
+	public PageInfo<Permission> getPermissionAll(Integer pageNo, Integer pageSize) {
 		PageHelper.startPage(pageNo, pageSize);
 		List<Permission> permissionAll = permissionMapper.getPermissionAll();
 		return new PageInfo<Permission>(permissionAll);
@@ -48,5 +48,27 @@ public class PermissionServiceImpl implements PermissionService {
 		// TODO Auto-generated method stub
 		return permissionMapper.getPermissionByEmp(empLoginName);
 	}
-	
+
+	@Override
+	public List<Permission> getPermissionByRole(String roleId) {
+		// TODO Auto-generated method stub
+		return permissionMapper.getPermissionByRole(roleId);
+	}
+
+	@Override
+	public Integer addRolePermissionAssign(Integer roleId, List<Integer> permissionId) {
+		try {
+			permissionMapper.deletePermissionByRoleId(roleId);
+			if (null != permissionId) {
+				for (Integer integer : permissionId) { // 循环添加关联关系
+					permissionMapper.addRolePermission(roleId, integer);
+				}
+			}
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
 }

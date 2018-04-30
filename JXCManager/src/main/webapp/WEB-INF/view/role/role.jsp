@@ -68,7 +68,7 @@ h3 {
 							<div style="float: right;">
 								<a class="btn btn-primary" href="javascript:;" id="roleAdd"
 									data-command="Add"><i class="icon-plus"></i>&nbsp;添加</a> <a
-									class="btn btn-warning" href="javascript:;"
+									class="btn btn-warning" href="javascript:;" onclick="delRole()"
 									data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a> <a
 									class="btn btn-danger" href="javascript:;"
 									data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
@@ -93,7 +93,6 @@ h3 {
 										<th>名称</th>
 										<th>描述</th>
 										<th>角色代码</th>
-										<th>权限</th>
 										<th>操作</th>
 									</tr>
 								</thead>
@@ -106,11 +105,10 @@ h3 {
 											<td>${s.roleName}</td>
 											<td>${s.description}</td>
 											<td>${s.roleCode}</td>
-											<td>权限</td>
 											<td><input type="hidden" value="${s.roleId}" /> <a
-												id="detail" href="javascript:;">查看</a>
-												<a href="javascript:;" onclick="update(${s.roleId})" >修改</a>	
-											</td>
+												id="assignDetail" href="javascript:;"
+												onclick="assignPermissionsss(${s.roleId})">权限</a> <a
+												href="javascript:;" onclick="update(${s.roleId})">修改</a></td>
 										</tr>
 									</c:forEach>
 									<c:if test="${fn:length(roleAll.list)==0}">
@@ -235,7 +233,8 @@ h3 {
 									</div></td>
 								<td><div class="controls">
 										<input class="input-xlarge focused" id="updateDescription"
-											name="updateDescription" type="text" placeholder="此处填写对于角色的描述" />
+											name="updateDescription" type="text"
+											placeholder="此处填写对于角色的描述" />
 									</div></td>
 							</tr>
 						</tbody>
@@ -246,6 +245,55 @@ h3 {
 		<div class="modal-footer">
 			<a href="javascript:;" class="btn btn-primary" id="roleUpdateCommit">Update</a>
 			<a href="javascript:;" class="btn btn-primary" data-dismiss="modal">Close</a>
+		</div>
+	</div>
+
+	<!-- 分配权限弹框 -->
+	<div class="modal hide fade" id="assignPermissionModals"
+		style="width: 800px;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">x</button>
+			<h2>分配权限</h2>
+		</div>
+		<div class="modal-body">
+			<div>
+				<form method="post" action="goRolePermissionAssign"
+					id="assignPermissionForm">
+					<table style="width: 100%; table-layout: fixed;">
+						<tbody>
+							<tr>
+								<td>
+									<div class="control-group">
+										<label class="control-label">谨慎分配</label> <input type="hidden"
+											name="assignRoleId" />
+										<div class="controls" id="havePermission" align="center">
+											<!-- <label class="checkbox inline"> <input
+												name="assignRole" type="checkbox" id="inlineCheckbox1"
+												value="option1"> Option 1
+											</label>-->
+											<c:forEach items="${permissionAll}" var="s" varStatus="a">
+												<label class="checkbox inline"> <input
+													name="assignRole" type="checkbox"
+													id="checkboxPermission${s.permissionId}"
+													value="${s.permissionId}"> ${s.permissionDesc}
+												</label>
+												<c:if test="${(a.index+1)%5==0}">
+													<br />
+												</c:if>
+											</c:forEach>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a href="javascript:;" class="btn btn-primary"
+				id="commitAssignPermission">Save</a> <a href="javascript:;"
+				class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
 
@@ -324,6 +372,49 @@ h3 {
 				}
 			});
 		}
+		// 点击权限按钮  弹出分配权限按钮
+		function assignPermissionsss(roleId){
+			$("#havePermission").find("input[name='assignRole']").each(function(i, n) {
+				$(n).removeAttr("checked");
+				$(n).parent().removeClass("checked");
+			})
+			$.ajax({
+				type:"POST",
+				url:"findPermissionByRoleId",
+				data:"roleId="+roleId,
+				dataType:"JSON",
+				success:function(result){
+					//拥有的角色选中
+					for(var i = 0 ; i < result.length ; i++){
+						$("#checkboxPermission"+result[i].permissionId).prop("checked",true);
+						$("#checkboxPermission"+result[i].permissionId).parent().addClass("checked");
+					}
+				}
+			});
+			$("input[name=assignRoleId]:hidden").val(roleId);
+			$("#assignPermissionModals").modal("show");
+		}
+		
+		//删除选中角色
+		function delRole(){
+			//获取选中复选框
+			var s = $("#productBody input[name='productCheck']:checked");
+			if (s.length == 0) {
+				alert("请选择要删除角色");
+				return;
+			}
+			var b = confirm("确认删除所选角色吗? 此操作不可恢复");
+			if(b==false) { return;}
+			$.ajaxSettings.async = false;
+			var a = "-";
+			$(s).each(function(){
+				var c = $(this).val();
+				a += c + "-";
+			});
+			alert(a);
+			location.href="deleteRoleById?roleId="+a;
+		}
+		
 		$(function(){
 			/* 弹出添加角色弹框 */
 			$("#roleAdd").click(function(){
@@ -358,6 +449,12 @@ h3 {
 					return;				
 				}
 				$("#roleUpdateForm").submit();  //表单提交
+			});
+			/* 分配权限提交 */
+			$("#commitAssignPermission").click(function(){
+				var s=confirm("确认分配权限吗?");
+				if(s==false) { return;}
+				$("#assignPermissionForm").submit();  //提交表单
 			});
 		});
 	</script>

@@ -64,7 +64,7 @@
 	<aop:config proxy-target-class="true">
 		<aop:pointcut id="controllerMethodPointcut"
 			expression="
-        execution(* cn.jxc.service.impl.*.get*(..))" />
+        execution(* cn.jxc.service.impl.*.gget*(..))" />
 		<aop:advisor advice-ref="methodCacheInterceptor"
 			pointcut-ref="controllerMethodPointcut" />
 	</aop:config>

@@ -16,7 +16,13 @@ public interface RoleService {
 
 	int updateRole(Role role);
 
-	int delRole(Integer roleId);
+	/**
+	 * 根据角色id删除角色信息
+	 * 
+	 * @param roleId
+	 * @return
+	 */
+	int delRoleById(String roleId);
 
 	/**
 	 * 根据用户名删除用户角色

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import cn.jxc.mapper.EmployeeMapper;
 import cn.jxc.mapper.RoleMapper;
 import cn.jxc.pojo.Role;
 import cn.jxc.service.RoleService;
@@ -17,6 +18,8 @@ public class RoleServiceImpl implements RoleService {
 
 	@Autowired
 	private RoleMapper roleMapper;
+	@Autowired
+	private EmployeeMapper employeeMapper;
 
 	@Override
 	public PageInfo<Role> getRoleAll(Integer pageNo, Integer pageSize) {
@@ -38,9 +41,25 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public int delRole(Integer roleId) {
+	public int delRoleById(String roleId) {
 		// TODO Auto-generated method stub
-		return 0;
+		try {
+			// 首先删除角色外键关联
+			String[] a = roleId.split("-");
+			for (int i = 1; i < a.length; i++) {
+				// 根据角色删除角色权限关联
+				roleMapper.delRolePermissionByRoleId(Integer.parseInt(a[i]));
+				// 根据角色删除员工角色关联
+				employeeMapper.deleteEmployeeRoleByRoleId(Integer.parseInt(a[i]));
+
+				roleMapper.delRole(Integer.parseInt(a[i]));// 删除角色
+			}
+			return 1;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	@Override
