@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://shiro.apache.org/tags" prefix="shiro"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,12 +67,16 @@ h3 {
 					<div class="control-group">
 						<div data-condition="search">
 							<div style="float: right;">
-								<a class="btn btn-primary" href="javascript:;" id="employeeAdd"
-									onclick="javascript:location.href='goEmployeeAdd';"
-									data-command="Add"><i class="icon-plus"></i>&nbsp;添加</a> <a
-									class="btn btn-warning" href="javascript:;"
-									data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a> <a
-									class="btn btn-danger" href="javascript:;"
+								<shiro:hasPermission name="employee:add">
+									<a class="btn btn-primary" href="javascript:;" id="employeeAdd"
+										onclick="javascript:location.href='goEmployeeAdd';"
+										data-command="Add"><i class="icon-plus"></i>&nbsp;添加</a>
+								</shiro:hasPermission>
+								<shiro:hasPermission name="employee:delete">
+									<a class="btn btn-warning" href="javascript:;"
+										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a>
+								</shiro:hasPermission>
+								<a class="btn btn-danger" href="javascript:;"
 									data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 							</div>
 						</div>

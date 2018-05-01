@@ -22,7 +22,7 @@
 
 	<select id="getPermissionByEmp" parameterType="string"
 		resultMap="permissionMap">
-		SELECT
+		SELECT DISTINCT
 		<include refid="permissionSql" />
 		FROM permission per LEFT JOIN rolepermission
 		ON

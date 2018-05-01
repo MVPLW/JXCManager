@@ -46,10 +46,9 @@
 <body>
 	<!-- 网页头部 -->
 	<%@ include file="common/head.jsp"%>
-
 	<div class="container-fluid-full">
 		<div class="row-fluid">
-			
+		
 			<!-- start: Main Menu -->
 			<%@ include file="common/Menu.jsp"%>
 			<!-- end: Main Menu -->

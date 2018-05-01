@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://shiro.apache.org/tags" prefix="shiro"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,9 +58,9 @@ h3 {
 			<!-- start: Content -->
 			<div id="content" class="span10">
 				<ul class="breadcrumb">
-					<li><i class="icon-home"></i> <a href="index.html">首页</a> <i
+					<li><i class="icon-home"></i> <a href="gowelcome">首页</a> <i
 						class="icon-angle-right"></i></li>
-					<li><a href="form">采购订单管理</a></li>
+					<li><a href="javascript:;">采购订单管理</a></li>
 				</ul>
 
 				<div class="row-fluid">
@@ -73,12 +74,16 @@ h3 {
 									class="input-medium" value="${suppName}" placeholder="请输入供应商" />
 								<input type="submit" value="搜索" class="btn btn-success" />
 								<div style="float: right;">
-									<a class="btn btn-primary" href="goPurchaseRequest"
-										data-command="Add"><i class="icon-plus"></i>&nbsp;申请</a> <a
-										class="btn btn-warning" href="javascript:void(0)"
-										onclick="deletePurchase()" data-command="Delete"><i
-										class="icon-remove"></i>&nbsp;删除</a> <a class="btn btn-danger"
-										href="javascript:void(0)"
+									<shiro:hasPermission name="purchase:add">
+										<a class="btn btn-primary" href="goPurchaseRequest"
+											data-command="Add"><i class="icon-plus"></i>&nbsp;申请</a>
+									</shiro:hasPermission>
+									<shiro:hasPermission name="purchase:delete">
+										<a class="btn btn-warning" href="javascript:void(0)"
+											onclick="deletePurchase()" data-command="Delete"><i
+											class="icon-remove"></i>&nbsp;删除</a>
+									</shiro:hasPermission>
+									<a class="btn btn-danger" href="javascript:void(0)"
 										onclick="javascript:location.href='gopurchase';"
 										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 								</div>
@@ -116,7 +121,6 @@ h3 {
 												<td><fmt:formatDate value="${s.requestTime}"
 														pattern="yyyy-MM-dd" /></td>
 												<td>${s.supplier.suppName}</td>
-
 												<td><span
 													<c:choose>
 													<c:when test="${s.orderStatus.no==2}">class="label label-important"</c:when>
@@ -127,7 +131,9 @@ h3 {
 												</c:choose>>${s.orderStatus.orderType}</span></td>
 												<td><input type="hidden" value="${s.purchaseRequestId}" />
 													<a id="detail">查看</a> <c:if test="${s.orderStatus.no==1}">
-														<a id="update"> 编辑</a>
+														<shiro:hasPermission name="purchase:update">
+															<a id="update"> 编辑</a>
+														</shiro:hasPermission>
 														<a id="commit"
 															onclick="operaOrder('${s.purchaseRequestId}',3)"> 提交</a>
 														<a id="cancelOrder"
@@ -394,7 +400,8 @@ h3 {
 							//获取选中的订单号
 							var singleNo = $(this).parent()
 									.find("input:hidden").val();
-							$.ajax({
+							$
+									.ajax({
 										type : "POST",
 										url : "getPurchaseRequestBySingleNo",
 										data : "singleNo=" + singleNo,

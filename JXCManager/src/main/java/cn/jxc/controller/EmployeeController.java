@@ -43,6 +43,12 @@ public class EmployeeController {
 		System.out.println("跳转至首页");
 		return "index";
 	}
+	
+	@RequestMapping("/gowelcome")
+	public String gowelcome() {
+		System.out.println("跳转至欢迎页面");
+		return "redirect:welcome.jsp";
+	}
 
 	/**
 	 * 登录方法
