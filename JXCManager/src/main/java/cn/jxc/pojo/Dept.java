@@ -3,6 +3,8 @@ package cn.jxc.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jxc.excel.ExcelField;
+
 /**
  * 部门实体 包涵:财务部 销售部 采购部 仓库管理部 ...
  */
@@ -13,23 +15,26 @@ public class Dept implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@ExcelField(title = "编号", align = 2)
 	private Integer deptId;
+
+	@ExcelField(title = "部门名称", align = 2)
 	private String deptName;
+
+	@ExcelField(title = "部门描述", align = 2)
 	private String deptDes;
 
 	private List<Employee> employees = new ArrayList<Employee>();
 
 	public Dept() {
+		super();
 	}
 
-	public Dept(String deptName) {
-		this.deptName = deptName;
-	}
-
-	public Dept(String deptName, String deptDes, List<Employee> employees) {
+	public Dept(Integer deptId, String deptName, String deptDes) {
+		super();
+		this.deptId = deptId;
 		this.deptName = deptName;
 		this.deptDes = deptDes;
-		this.employees = employees;
 	}
 
 	public Integer getDeptId() {

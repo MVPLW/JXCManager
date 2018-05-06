@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import cn.jxc.excel.ExcelField;
 import cn.jxc.util.OrderStatus;
 
 /**
@@ -16,25 +19,45 @@ public class PurchaseRequest implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@ExcelField(title = "采购申请单号", align = 2)
 	private String purchaseRequestId;
+	@ExcelField(title = "申请人", align = 2, value = "employeeByRequestEmpId.empLoginName")
 	private Employee employeeByRequestEmpId;
+	@ExcelField(title = "供货商", align = 2, value = "supplier.suppName")
 	private Supplier supplier;
+	@ExcelField(title = "联系人", align = 2)
 	private String suppContact;
+	@ExcelField(title = "联系电话", align = 2)
 	private String suppPhone;
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@ExcelField(title = "申请时间", align = 2)
 	private Date requestTime;
+	@ExcelField(title = "备注", align = 2)
 	private String remark;
+
 	private OrderStatus orderStatus;
-	
+
+	@ExcelField(title = "部门审核人", align = 2, value = "employeeByDeptReviewEmp.empLoginName")
 	private Employee employeeByDeptReviewEmp;
+	@ExcelField(title = "部门审核状态", align = 2, value = "reviewstatusByDeptReviewStatus.rsName")
 	private ReviewStatus reviewstatusByDeptReviewStatus;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@ExcelField(title = "部门审核时间", align = 2)
 	private Date deptReviewTime;
+	@ExcelField(title = "部门审核原因", align = 2)
 	private String deptReviewReason;// 部门审核原因
-	
+
+	@ExcelField(title = "财务审核人", align = 2, value = "employeeByFinancialAuditEmp.empLoginName")
 	private Employee employeeByFinancialAuditEmp;
+	@ExcelField(title = "财务审核状态", align = 2, value = "reviewstatusByFinancialAuditStatus.rsName")
 	private ReviewStatus reviewstatusByFinancialAuditStatus;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@ExcelField(title = "财务审核时间", align = 2)
 	private Date financialAuditTime;
+	@ExcelField(title = "财务审核原因", align = 2)
 	private String financialAuditReason;// 财务审核原因
-	
+
 	// 存放当前订单中明细
 	private List<PurchaseRequestDetail> purchaserequestdetails = new ArrayList<PurchaseRequestDetail>(0);
 

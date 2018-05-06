@@ -83,6 +83,18 @@ h3 {
 											onclick="deletePurchase()" data-command="Delete"><i
 											class="icon-remove"></i>&nbsp;删除</a>
 									</shiro:hasPermission>
+
+									<div class="btn-group">
+										<button class="btn btn-success dropdown-toggle"
+											data-toggle="dropdown">
+											<span class="caret"></span>&nbsp;导出
+										</button>
+										<ul class="dropdown-menu">
+											<li><a href="javascript:;" onclick="exportCurrentData()">导出当前数据</a></li>
+											<li><a href="javascript:;" onclick="exportAllData()">导出所有数据</a></li>
+										</ul>
+									</div>
+
 									<a class="btn btn-danger" href="javascript:void(0)"
 										onclick="javascript:location.href='gopurchase';"
 										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
@@ -390,6 +402,68 @@ h3 {
 		$("#productBody a").live('mouseout', function() {
 			$(this).css("color", "#646464");
 		});
+
+		function browseFloder() {
+			/* try {
+				var Message = "请选择文件夹"; //选择框提示信息  
+				var Shell = new ActiveXObject("Shell.Application");
+				var Folder = Shell.BrowseForFolder(0, Message, 0x0040, 0x11);//起始目录为：我的电脑  
+				//var Folder = Shell.BrowseForFolder(0,Message,0); //起始目录为：桌面  
+				if (Folder != null) {
+					Folder = Folder.items(); // 返回 FolderItems 对象  
+					Folder = Folder.item(); // 返回 Folderitem 对象  
+					Folder = Folder.Path; // 返回路径  
+					if (Folder.charAt(Folder.length - 1) != "\\") {
+						Folder = Folder + "\\";
+					}
+					document.all.savePath.value = Folder;
+					return Folder;
+				}
+			} catch (e) {
+				alert(e.message);
+			} */
+			var xmlHttp;
+			//判断浏览器是否支持ActiveX控件  
+			if (window.ActiveXObject) {
+				alert("支持");
+				//支持-通过ActiveXObject的一个新实例来创建XMLHttpRequest对象  
+				xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} else if (window.XMLHttpRequest) {//不支持 
+				xmlHttp = new XMLHttpRequest();
+				alert("不支持");
+			}
+			try {
+				var Message = "Please select the folder path."; //选择框提示信息
+				var Shell = new ActiveXObject("Shell.Application");
+				var Folder = Shell.BrowseForFolder(0, Message, 0x0040, 0x11); //起始目录为：我的电脑
+				//var Folder = Shell.BrowseForFolder(0,Message,0); //起始目录为：桌面
+				if (Folder != null) {
+					Folder = Folder.items(); // 返回 FolderItems 对象
+					Folder = Folder.item(); // 返回 Folderitem 对象
+					Folder = Folder.Path; // 返回路径
+					if (Folder.charAt(Folder.length - 1) != "\\") {
+						Folder = Folder + "\\";
+					}
+					return Folder;
+				}
+			} catch (e) {
+				alert(e.message);
+			}
+		}
+		
+		/* 导出当前显示的数据 */
+		function exportCurrentData() {
+			var singleNo = $("input[name=singleNo]").val();
+			var empNo = $("input[name=empNo]").val();
+			var suppName = $("input[name=suppName]").val();
+			var pageNo = parseInt($("input[name=pageNo]").val());
+			location.href = "purchaseExport?pageNo=" + pageNo + "&empNo="
+					+ empNo + "&suppName=" + suppName + "&singleNo=" + singleNo;
+		}
+		/* 导出所有数据 */
+		function exportAllData() {
+			location.href = "purchaseExport";
+		}
 
 		$("#detail")
 				.live(

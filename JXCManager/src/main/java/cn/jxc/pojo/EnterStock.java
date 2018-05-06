@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import cn.jxc.excel.ExcelField;
+
 /**
- * 入库单 
+ * 入库单
  */
 public class EnterStock implements java.io.Serializable {
 
@@ -14,18 +18,41 @@ public class EnterStock implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	@ExcelField(title = "入库单号", align = 2)
 	private String enterStockId;
+
+	@ExcelField(title = "入库人", align = 2, value = "employee.empLoginName")
 	private Employee employee;
+
+	@ExcelField(title = "入库类型", align = 2, value = "enterstocktype.estName")
 	private EnterStockType enterstocktype;
+
+	@ExcelField(title = "入库仓库", align = 2, value = "storehouse.shName")
 	private StoreHouse storehouse;
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@ExcelField(title = "时间", align = 2)
 	private Date enterDate;
+
+	@ExcelField(title = "上游单号", align = 2)
 	private String upstreamNo;
+
+	@ExcelField(title = "审核人", align = 2, value = "reviewEmp.empLoginName")
 	private Employee reviewEmp;
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@ExcelField(title = "审核时间", align = 2)
 	private Date reviewDate;
+
+	@ExcelField(title = "审核状态", align = 2, value = "reviewStatus.rsName")
 	private ReviewStatus reviewStatus;
+
+	@ExcelField(title = "审核原因", align = 2)
 	private String reviewReason;
+
+	@ExcelField(title = "备注", align = 2)
 	private String remark;
-	
+
 	private List<EnterStockDetail> enterstockdetails = new ArrayList<EnterStockDetail>(0);
 
 	public EnterStock() {

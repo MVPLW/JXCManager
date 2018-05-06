@@ -1,10 +1,13 @@
 
 package cn.jxc.controller;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 
+import cn.jxc.excel.ExportExcel;
 import cn.jxc.pojo.Employee;
 import cn.jxc.pojo.Product;
 import cn.jxc.pojo.PurchaseRequest;
@@ -72,7 +76,7 @@ public class PurchaseRequestController {
 	@RequiresPermissions("purchase:add")
 	@RequestMapping("/goPurchaseRequest")
 	public String goPurchaseRequest(Model model) {
-		PageInfo<Employee> employees = employeeService.getEmployeeAll(1,10000);
+		PageInfo<Employee> employees = employeeService.getEmployeeAll(1, 10000);
 		List<Supplier> suppliers = supplierService.getSupplierAll();
 		PageInfo<Product> productAll = productService.getProductAll(1); // 分页查询 刚开始进入查询第一页的数据
 
@@ -156,7 +160,7 @@ public class PurchaseRequestController {
 		PurchaseRequest purchase = purchaseRequestService.getPurchaseRequestBySingleNo(singleNo);
 		PageInfo<PurchaseRequestDetail> purchaseRequestDetails = purchaseRequestDetailService
 				.getPurchaseRequestDetail(singleNo, 1, 1000);
-		PageInfo<Employee> employeeAll = employeeService.getEmployeeAll(1,10000);
+		PageInfo<Employee> employeeAll = employeeService.getEmployeeAll(1, 10000);
 		List<Supplier> supplierAll = supplierService.getSupplierAll();
 		PageInfo<Product> productAll = productService.getProductAll(productPageNo);
 		model.addAttribute("purchase", purchase);
@@ -316,6 +320,34 @@ public class PurchaseRequestController {
 			e.printStackTrace();
 			return "error";
 		}
+	}
+
+	/**
+	 * 导出excel 有pageNo导出当前 没有导出所有
+	 * 
+	 * @param pageNo
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
+	@RequestMapping("/purchaseExport")
+	public void exportExcel(@RequestParam(value = "pageNo", required = false) Integer pageNo,
+			@RequestParam(value = "empNo", required = false) String empNo,
+			@RequestParam(value = "singleNo", required = false) String singleNo,
+			@RequestParam(value = "suppName", required = false) String suppName, HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		// 获取数据
+		List<PurchaseRequest> list = null;
+		if (null == pageNo) {
+			list = purchaseRequestService.getPurchaseRequestByBlurry(1, 100000, null, null, null).getList();
+		} else {
+			list = purchaseRequestService.getPurchaseRequestByBlurry(pageNo, 5, empNo, singleNo, suppName).getList();
+		}
+		// 获取文件名
+		String fileName = "Purchase" + new SimpleDateFormat("MMddhhmmsss").format(new Date())
+				+ String.valueOf((int) (Math.random() * 9 + 1) * 1000) + ".xlsx";
+		// 生成excel并且下载
+		new ExportExcel(null, PurchaseRequest.class, 1).setDataList(list).write(response, fileName).dispose();
 	}
 
 }

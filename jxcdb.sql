@@ -10,31 +10,10 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2018-03-22 10:05:27
+Date: 2018-05-04 17:18:20
 */
 
-DROP DATABASE IF EXISTS `jxcdb`;
-
-create database `jxcdb`;
-
-use `jxcdb`;
-
 SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- Table structure for authority
--- ----------------------------
-DROP TABLE IF EXISTS `authority`;
-CREATE TABLE `authority` (
-  `Auth_id` int(11) NOT NULL AUTO_INCREMENT,
-  `Auth_name` varchar(50) NOT NULL,
-  `Auth_createTime` date NOT NULL,
-  PRIMARY KEY (`Auth_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of authority
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for backsales
@@ -43,17 +22,22 @@ DROP TABLE IF EXISTS `backsales`;
 CREATE TABLE `backsales` (
   `BSA_id` varchar(30) NOT NULL,
   `Customer_id` int(11) NOT NULL,
-  `RequestDate` date DEFAULT NULL,
-  `ReviewEmp` int(11) NOT NULL,
-  `ReviewState` varchar(0) DEFAULT NULL,
-  `BackNum` varchar(0) DEFAULT NULL,
-  `BackReason` varchar(0) DEFAULT NULL,
-  PRIMARY KEY (`BSA_id`)
+  `RequestDate` date NOT NULL,
+  `ReviewEmp` varchar(30) DEFAULT NULL,
+  `ReviewState` int(11) DEFAULT NULL,
+  `BackReason` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`BSA_id`),
+  KEY `FK_Customer` (`Customer_id`),
+  KEY `FK_reviewEmp` (`ReviewEmp`),
+  CONSTRAINT `FK_Customer` FOREIGN KEY (`Customer_id`) REFERENCES `customer` (`Customer_id`),
+  CONSTRAINT `FK_reviewEmp` FOREIGN KEY (`ReviewEmp`) REFERENCES `employee` (`EmpLoginName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of backsales
 -- ----------------------------
+INSERT INTO `backsales` VALUES ('THHS8e738373584748', '18392', '2018-04-04', 'rose', '1', '今天周二');
+INSERT INTO `backsales` VALUES ('THSIO393474923283738', '18392', '2018-04-08', null, null, '哈哈哈');
 
 -- ----------------------------
 -- Table structure for backsalesdetail
@@ -61,15 +45,25 @@ CREATE TABLE `backsales` (
 DROP TABLE IF EXISTS `backsalesdetail`;
 CREATE TABLE `backsalesdetail` (
   `BSAD_id` int(11) NOT NULL AUTO_INCREMENT,
-  `BSA_id` int(11) NOT NULL,
-  `Product_id` int(11) NOT NULL,
-  `Count` int(11) NOT NULL,
-  PRIMARY KEY (`BSAD_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `bs` varchar(30) NOT NULL,
+  `Product_id` varchar(30) NOT NULL,
+  `Productunitid` int(11) NOT NULL,
+  `price` double(10,2) DEFAULT NULL,
+  `count` int(11) DEFAULT NULL,
+  PRIMARY KEY (`BSAD_id`),
+  KEY `FK_BackSales` (`bs`),
+  KEY `FK_product` (`Product_id`),
+  KEY `FK_productUnit_s` (`Productunitid`),
+  CONSTRAINT `FK_BackSales` FOREIGN KEY (`bs`) REFERENCES `backsales` (`BSA_id`),
+  CONSTRAINT `FK_product` FOREIGN KEY (`Product_id`) REFERENCES `product` (`Product_id`),
+  CONSTRAINT `FK_productUnit_s` FOREIGN KEY (`Productunitid`) REFERENCES `productunit` (`ProductUnit_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of backsalesdetail
 -- ----------------------------
+INSERT INTO `backsalesdetail` VALUES ('1', 'THHS8e738373584748', 'CPS-10001', '1', null, '2');
+INSERT INTO `backsalesdetail` VALUES ('2', 'THHS8e738373584748', 'CPS-10003', '2', null, '2');
 
 -- ----------------------------
 -- Table structure for backstock
@@ -118,11 +112,12 @@ CREATE TABLE `customer` (
   `PostalCode` varchar(50) DEFAULT NULL,
   `Cus_contact` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`Customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18393 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of customer
 -- ----------------------------
+INSERT INTO `customer` VALUES ('18392', '哈哈哈', '徐州市', '2938372', '221000', '战汉');
 
 -- ----------------------------
 -- Table structure for customerpayment
@@ -227,9 +222,8 @@ INSERT INTO `dept` VALUES ('5', '董事', '拥有最高权限');
 DROP TABLE IF EXISTS `employee`;
 CREATE TABLE `employee` (
   `EmpLoginName` varchar(30) NOT NULL,
-  `EmpLoginPwd` varchar(30) NOT NULL,
+  `EmpLoginPwd` varchar(60) NOT NULL,
   `EmpName` varchar(30) NOT NULL,
-  `RoleId` int(11) NOT NULL,
   `DeptId` int(11) NOT NULL,
   `JoinDate` date NOT NULL,
   `Gender` varchar(2) NOT NULL,
@@ -239,17 +233,44 @@ CREATE TABLE `employee` (
   `Email` varchar(30) NOT NULL,
   PRIMARY KEY (`EmpLoginName`),
   KEY `FK_FK_EMP_DEPT` (`DeptId`),
-  KEY `FK_PK_EMP_Role` (`RoleId`),
-  CONSTRAINT `FK_FK_EMP_DEPT` FOREIGN KEY (`DeptId`) REFERENCES `dept` (`DeptId`),
-  CONSTRAINT `FK_PK_EMP_Role` FOREIGN KEY (`RoleId`) REFERENCES `role` (`RoleId`)
+  CONSTRAINT `FK_FK_EMP_DEPT` FOREIGN KEY (`DeptId`) REFERENCES `dept` (`DeptId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of employee
 -- ----------------------------
-INSERT INTO `employee` VALUES ('james', '123', '詹姆斯', '2', '4', '2010-02-01', '男', '1994-06-14', '江苏省南京市', '17683728192', 'abc@163.com');
-INSERT INTO `employee` VALUES ('rose', '123', '罗斯', '2', '3', '2015-03-04', '男', '1991-06-04', '徐州泉山区', '19787283921', '5241593@qq.com');
-INSERT INTO `employee` VALUES ('wade', '123', '哓擎', '1', '3', '2016-10-26', '男', '1996-04-16', '江苏省徐州市', '18796284434', 'lxq413@126.com');
+INSERT INTO `employee` VALUES ('james', '202cb962ac59075b964b07152d234b70', '詹姆斯', '4', '2010-02-01', '男', '1994-06-14', '江苏省南京市', '17683728192', 'abc@163.com');
+INSERT INTO `employee` VALUES ('jinying', '202cb962ac59075b964b07152d234b70', '煞笔', '1', '2018-04-09', '男', '2018-04-09', '阿双方打底衫', '23847636', '454dfd');
+INSERT INTO `employee` VALUES ('Jordan', '202cb962ac59075b964b07152d234b70', '乔丹', '4', '2018-04-02', '女', '2015-11-11', '美国洛杉矶', '19383734', '837344593@qq.com');
+INSERT INTO `employee` VALUES ('rose', '202cb962ac59075b964b07152d234b70', '罗斯', '3', '2015-03-04', '男', '1991-06-04', '徐州泉山区', '19787283921', '5241593@qq.com');
+INSERT INTO `employee` VALUES ('wade', '202cb962ac59075b964b07152d234b70', '哓擎', '3', '2016-10-26', '男', '1996-04-16', '江苏省徐州市', '18796284434', 'lxq413@126.com');
+
+-- ----------------------------
+-- Table structure for employeerole
+-- ----------------------------
+DROP TABLE IF EXISTS `employeerole`;
+CREATE TABLE `employeerole` (
+  `EmployeeRoleId` int(11) NOT NULL AUTO_INCREMENT,
+  `RoleId` int(11) NOT NULL,
+  `EmpLoginName` varchar(30) NOT NULL,
+  PRIMARY KEY (`EmployeeRoleId`),
+  KEY `FK_Role` (`RoleId`),
+  KEY `FK_Emp` (`EmpLoginName`),
+  CONSTRAINT `FK_Emp` FOREIGN KEY (`EmpLoginName`) REFERENCES `employee` (`EmpLoginName`),
+  CONSTRAINT `FK_Role` FOREIGN KEY (`RoleId`) REFERENCES `role` (`RoleId`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of employeerole
+-- ----------------------------
+INSERT INTO `employeerole` VALUES ('8', '2', 'jinying');
+INSERT INTO `employeerole` VALUES ('9', '2', 'wade');
+INSERT INTO `employeerole` VALUES ('10', '3', 'wade');
+INSERT INTO `employeerole` VALUES ('11', '4', 'wade');
+INSERT INTO `employeerole` VALUES ('12', '5', 'wade');
+INSERT INTO `employeerole` VALUES ('13', '6', 'wade');
+INSERT INTO `employeerole` VALUES ('15', '8', 'wade');
+INSERT INTO `employeerole` VALUES ('16', '9', 'wade');
 
 -- ----------------------------
 -- Table structure for enterstock
@@ -262,18 +283,29 @@ CREATE TABLE `enterstock` (
   `EnterDate` date NOT NULL,
   `EnterStockType_id` int(11) NOT NULL,
   `UpstreamNo` varchar(30) DEFAULT NULL,
+  `ReviewEmp` varchar(30) DEFAULT NULL,
+  `ReviewDate` date DEFAULT NULL,
+  `ReviewStatus` int(11) DEFAULT NULL,
+  `ReviewReason` varchar(255) DEFAULT NULL,
+  `Remark` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`EnterStock_id`),
   KEY `FK_FK_EnterStoreEmp_Emp` (`Employee_id`),
   KEY `FK_FK_EnterStore_Store` (`StoreHouse_id`),
   KEY `FK_FK_EnterStore_Type` (`EnterStockType_id`),
+  KEY `FK_ReviewEmp_Emp` (`ReviewEmp`),
+  KEY `FK_ReviewStatus` (`ReviewStatus`),
   CONSTRAINT `FK_FK_EnterStoreEmp_Emp` FOREIGN KEY (`Employee_id`) REFERENCES `employee` (`EmpLoginName`),
   CONSTRAINT `FK_FK_EnterStore_Store` FOREIGN KEY (`StoreHouse_id`) REFERENCES `storehouse` (`StoreHouse_id`),
-  CONSTRAINT `FK_FK_EnterStore_Type` FOREIGN KEY (`EnterStockType_id`) REFERENCES `enterstocktype` (`EST_id`)
+  CONSTRAINT `FK_FK_EnterStore_Type` FOREIGN KEY (`EnterStockType_id`) REFERENCES `enterstocktype` (`EST_id`),
+  CONSTRAINT `FK_ReviewEmp_Emp` FOREIGN KEY (`ReviewEmp`) REFERENCES `employee` (`EmpLoginName`),
+  CONSTRAINT `FK_ReviewStatus` FOREIGN KEY (`ReviewStatus`) REFERENCES `reviewstatus` (`RS_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of enterstock
 -- ----------------------------
+INSERT INTO `enterstock` VALUES ('RKRYEW041302470089244', '4', 'james', '2018-04-13', '1', 'CGHDMR041010550061856', 'wade', '2018-04-13', '2', '地方地方', '');
+INSERT INTO `enterstock` VALUES ('RKUMHD041302310507481', '4', 'jinying', '2018-04-13', '2', 'THHS8e738373584748', 'wade', '2018-04-16', '3', 'dsafd', '');
 
 -- ----------------------------
 -- Table structure for enterstockdetail
@@ -285,16 +317,24 @@ CREATE TABLE `enterstockdetail` (
   `Product_id` varchar(30) NOT NULL,
   `Product_count` int(11) NOT NULL,
   `Product_price` decimal(10,0) NOT NULL,
+  `ProductUnit_id` int(11) NOT NULL,
+  `ShouldCount` int(11) NOT NULL,
   PRIMARY KEY (`SP_id`),
-  KEY `FK_FK_EnterStoreDetail_Product` (`Product_id`),
-  KEY `FK_FK_EnterStore_EnterStoreDetail` (`EnterStock_id`),
-  CONSTRAINT `FK_FK_EnterStoreDetail_Product` FOREIGN KEY (`Product_id`) REFERENCES `product` (`Product_id`),
-  CONSTRAINT `FK_FK_EnterStore_EnterStoreDetail` FOREIGN KEY (`EnterStock_id`) REFERENCES `enterstock` (`EnterStock_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `FK_EnterStoreDetail_Product` (`Product_id`),
+  KEY `FK_EnterStore_EnterStoreDetail` (`EnterStock_id`),
+  KEY `FK_ProductUnit_Unit` (`ProductUnit_id`),
+  CONSTRAINT `FK_EnterStoreDetail_Product` FOREIGN KEY (`Product_id`) REFERENCES `product` (`Product_id`),
+  CONSTRAINT `FK_EnterStore_EnterStoreDetail` FOREIGN KEY (`EnterStock_id`) REFERENCES `enterstock` (`EnterStock_id`),
+  CONSTRAINT `FK_ProductUnit_Unit` FOREIGN KEY (`ProductUnit_id`) REFERENCES `productunit` (`ProductUnit_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of enterstockdetail
 -- ----------------------------
+INSERT INTO `enterstockdetail` VALUES ('20', 'RKUMHD041302310507481', 'CPS-10001', '1', '0', '1', '2');
+INSERT INTO `enterstockdetail` VALUES ('21', 'RKUMHD041302310507481', 'CPS-10003', '2', '0', '2', '2');
+INSERT INTO `enterstockdetail` VALUES ('22', 'RKRYEW041302470089244', 'CPS-21908', '2', '0', '2', '2');
+INSERT INTO `enterstockdetail` VALUES ('23', 'RKRYEW041302470089244', 'CPS-10001', '2', '0', '1', '2');
 
 -- ----------------------------
 -- Table structure for enterstocktype
@@ -347,11 +387,14 @@ CREATE TABLE `leavestockdetail` (
   `LeaveStock_id` varchar(30) NOT NULL,
   `Product_id` varchar(30) NOT NULL,
   `Count` int(11) NOT NULL,
+  `ProductUnit_id` int(11) NOT NULL,
   PRIMARY KEY (`LSD_id`),
-  KEY `FK_FK_LeaveStoreDetail_Product` (`Product_id`),
-  KEY `FK_FK_LeaveStore_LeaveStoreDetail` (`LeaveStock_id`),
-  CONSTRAINT `FK_FK_LeaveStoreDetail_Product` FOREIGN KEY (`Product_id`) REFERENCES `product` (`Product_id`),
-  CONSTRAINT `FK_FK_LeaveStore_LeaveStoreDetail` FOREIGN KEY (`LeaveStock_id`) REFERENCES `leavestock` (`LS_id`)
+  KEY `FK_LeaveStoreDetail_Product` (`Product_id`),
+  KEY `FK_LeaveStore_LeaveStoreDetail` (`LeaveStock_id`),
+  KEY `FK_ProductUnit_PUnit` (`ProductUnit_id`),
+  CONSTRAINT `FK_LeaveStoreDetail_Product` FOREIGN KEY (`Product_id`) REFERENCES `product` (`Product_id`),
+  CONSTRAINT `FK_LeaveStore_LeaveStoreDetail` FOREIGN KEY (`LeaveStock_id`) REFERENCES `leavestock` (`LS_id`),
+  CONSTRAINT `FK_ProductUnit_PUnit` FOREIGN KEY (`ProductUnit_id`) REFERENCES `productunit` (`ProductUnit_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -377,6 +420,61 @@ INSERT INTO `leavestocktype` VALUES ('2', '退货出库', '退货');
 INSERT INTO `leavestocktype` VALUES ('3', '报损出库', '货物报损');
 INSERT INTO `leavestocktype` VALUES ('4', '销毁出库', '销毁');
 INSERT INTO `leavestocktype` VALUES ('5', '调拨出库', '调拨');
+
+-- ----------------------------
+-- Table structure for permission
+-- ----------------------------
+DROP TABLE IF EXISTS `permission`;
+CREATE TABLE `permission` (
+  `Permission_id` int(11) NOT NULL AUTO_INCREMENT,
+  `PermissionDesc` varchar(255) NOT NULL,
+  `PermissionUrl` varchar(255) NOT NULL,
+  `IsNavi` int(11) NOT NULL,
+  `PermissionCode` varchar(255) NOT NULL,
+  PRIMARY KEY (`Permission_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of permission
+-- ----------------------------
+INSERT INTO `permission` VALUES ('1', '采购单', '/gopurchase', '1', 'purchase:list');
+INSERT INTO `permission` VALUES ('2', '添加采购单', '/goPurchaseRequest', '0', 'purchase:add');
+INSERT INTO `permission` VALUES ('3', '修改采购单', '/goPurchaseUpdate', '0', 'purchase:update');
+INSERT INTO `permission` VALUES ('4', '部门审核采购单', '/deptReview', '0', 'purchase:deptreview');
+INSERT INTO `permission` VALUES ('5', '财务审核采购单', '/finalReview', '0', 'purchase:finalreview');
+INSERT INTO `permission` VALUES ('6', '删除采购单', '/deletePurchases', '0', 'purchase:delete');
+INSERT INTO `permission` VALUES ('7', '查看角色', '/goRole', '0', 'role:list');
+INSERT INTO `permission` VALUES ('8', '添加角色', '/goRoleAdd', '0', 'role:add');
+INSERT INTO `permission` VALUES ('9', '删除角色', '/goRoleDelete', '0', 'role:delete');
+INSERT INTO `permission` VALUES ('10', '修改角色', '/goRoleUpdate', '0', 'role:update');
+INSERT INTO `permission` VALUES ('11', '查看员工', '/goEmployee', '0', 'employee:list');
+INSERT INTO `permission` VALUES ('12', '添加员工', '/goEmployeeAdd', '0', 'employee:add');
+INSERT INTO `permission` VALUES ('13', '修改员工', '/goEmployeeUpdate', '0', 'employee:update');
+INSERT INTO `permission` VALUES ('14', '删除员工', '/goEmployeeDelete', '0', 'employee:delete');
+INSERT INTO `permission` VALUES ('15', '销售单', '/gosales', '1', 'sales:list');
+INSERT INTO `permission` VALUES ('16', '新增销售单', '/goSalesAdd', '0', 'sales:add');
+INSERT INTO `permission` VALUES ('17', '修改销售单', '/goSalesUpdate', '0', 'sales:update');
+INSERT INTO `permission` VALUES ('18', '删除销售单', '/goSalesDelete', '0', 'sales:delete');
+INSERT INTO `permission` VALUES ('19', '审核销售单', '/goSalesReview', '0', 'sales:review');
+INSERT INTO `permission` VALUES ('20', '报损单', '/godamaged', '1', 'damaged:list');
+INSERT INTO `permission` VALUES ('21', '新增报损单', '/goDamagedAdd', '0', 'damaged:add');
+INSERT INTO `permission` VALUES ('22', '修改报损单', '/goDamagedUpdate', '0', 'damaged:update');
+INSERT INTO `permission` VALUES ('23', '删除报损单', '/goDamagedDelete', '0', 'damaged:delete');
+INSERT INTO `permission` VALUES ('24', '审核报损单', '/goDamagedReview', '0', 'damaged:review');
+INSERT INTO `permission` VALUES ('25', '入库单', '/goenterstock', '1', 'enterstock:list');
+INSERT INTO `permission` VALUES ('26', '新增入库单', '/goEnterStockAdd', '0', 'enterstock:add');
+INSERT INTO `permission` VALUES ('27', '修改入库单', '/goEnterStockUpdate', '0', 'enterstock:update');
+INSERT INTO `permission` VALUES ('28', '删除入库单', '/goEnterStockDelete', '0', 'enterstock:delete');
+INSERT INTO `permission` VALUES ('29', '审核入库单', '/goEnterStockReview', '0', 'enterstock:review');
+INSERT INTO `permission` VALUES ('30', '调拨单', '/gorequisition', '1', 'requisition:review');
+INSERT INTO `permission` VALUES ('31', '新增调拨单', '/goRequisitionAdd', '0', 'requisition:add');
+INSERT INTO `permission` VALUES ('32', '修改调拨单', '/goRequisitionUpdate', '0', 'requisition:update');
+INSERT INTO `permission` VALUES ('33', '删除调拨单', '/goRequisitionDelete', '0', 'requisition:delete');
+INSERT INTO `permission` VALUES ('34', '审核调拨单', '/goRequisitionReview', '0', 'requisition:review');
+INSERT INTO `permission` VALUES ('35', '资源管理', '/gopermission', '0', 'permission:list');
+INSERT INTO `permission` VALUES ('36', '新增资源', '/gopermissionAdd', '0', 'permission:add');
+INSERT INTO `permission` VALUES ('37', '修改资源', '/gopermissionUpdate', '0', 'permission:update');
+INSERT INTO `permission` VALUES ('38', '删除资源', '/gopermissionDelete', '0', 'permission:delete');
 
 -- ----------------------------
 -- Table structure for product
@@ -517,10 +615,13 @@ CREATE TABLE `purchaserequest` (
   `DeptReviewStatus` int(11) DEFAULT NULL,
   `DeptReviewTime` date DEFAULT NULL,
   `DeptReviewEmp` varchar(30) DEFAULT NULL,
+  `DeptReviewReason` varchar(255) DEFAULT NULL,
   `FinancialAuditStatus` int(11) DEFAULT NULL,
   `FinancialAuditTime` date DEFAULT NULL,
   `FinancialAuditEmp` varchar(30) DEFAULT NULL,
+  `FinancialAuditReason` varchar(255) DEFAULT NULL,
   `Remark` varchar(255) DEFAULT NULL,
+  `OrderStatus` int(8) DEFAULT NULL,
   PRIMARY KEY (`PurchaseRequest_id`),
   KEY `FK_DEPTREVIEW_EMP` (`DeptReviewEmp`),
   KEY `FK_FK_AUDITREVIEW_EMP` (`FinancialAuditEmp`),
@@ -539,7 +640,18 @@ CREATE TABLE `purchaserequest` (
 -- ----------------------------
 -- Records of purchaserequest
 -- ----------------------------
-INSERT INTO `purchaserequest` VALUES ('CGBOVI032004210234394', 'wade', '2018-03-07', 'GHS10001', null, null, '1', '2018-03-14', 'wade', '1', '2018-03-16', 'wade', null);
+INSERT INTO `purchaserequest` VALUES ('CGBOVI032004210234394', 'wade', '2018-03-07', 'GHS10001', '394', 'sfsdf', '2', '2018-06-02', 'wade', '今天周二', '1', '2018-03-16', 'wade', null, '394第一个单子是；打飞机收电费卡；阿斯顿；飞纪委批复件；而是离开发的刷卡缴费四海鼎沸飞斯蒂芬开户金额疯狂送飞机；撒快递费飞肥婆巨额额罚款交多少方解石方式几十块交罚款单数据库都是', '2');
+INSERT INTO `purchaserequest` VALUES ('CGEJQA050403470083212', 'rose', '2018-05-01', 'GHS10902', '张三', '1837498472', '3', '2018-05-04', 'wade', '萨芬地方', '1', null, null, null, '今天周二', '5');
+INSERT INTO `purchaserequest` VALUES ('CGGTST042001190444967', 'jinying', '2018-04-20', 'GHS10001', '张三', '18796284456', '2', '2018-05-04', 'wade', '是的', '2', '2018-05-04', 'wade', '是多少', '哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈', '7');
+INSERT INTO `purchaserequest` VALUES ('CGHCCY032809540465676', 'rose', '2018-03-01', 'GHS10902', '朱军', '19762983728', '1', null, null, null, '1', null, null, null, '676阿斯顿；罚款交多少发；束带结发卡戴珊分萨拉丁；封孔剂；里多撒卡缴费就；发斯蒂芬实得分但是飞', '2');
+INSERT INTO `purchaserequest` VALUES ('CGHDMR041010550061856', 'jinying', '2018-04-02', 'GHS10001', '张三', '4585145624', '1', null, null, null, '1', null, null, null, '及同年你这偶然', '1');
+INSERT INTO `purchaserequest` VALUES ('CGKTIJ041709490105728', 'jinying', '2018-04-17', 'GHS10902', '张三', '18796284456', '1', null, null, null, '1', null, null, null, '今天周二', '1');
+INSERT INTO `purchaserequest` VALUES ('CGMXIZ032708500014915', 'rose', '2018-03-27', 'GHS10902', '李刚', '186936283621', '2', '2018-04-02', 'wade', '阿斯顿发大水', '2', '2018-04-02', 'wade', '今天周二', '915adsfdsf爱的色放发的第三方', '7');
+INSERT INTO `purchaserequest` VALUES ('CGRCTQ041910080064518', 'jinying', '2018-04-19', 'GHS10001', '张三', '18796284456', '1', null, null, null, '1', null, null, null, '今天周二', '1');
+INSERT INTO `purchaserequest` VALUES ('CGSDFDF129383483', 'wade', '2016-09-08', 'GHS10001', '张三今天周二123', '1592383492', '1', null, null, null, '1', null, null, null, '明天周三三水水水水水水水水水水水水水', '3');
+INSERT INTO `purchaserequest` VALUES ('CGSPXO032809550233525', 'james', '2018-03-03', 'GHS10001', '大爷', '19374837293', '3', '2018-04-02', 'wade', '今天周二', '1', null, null, null, '525阿三；李的会计法撒旦教父；科技大厦飞；阿斯蒂芬卡戴珊', '5');
+INSERT INTO `purchaserequest` VALUES ('CGVHMC040302380319951', 'wade', '2018-04-03', 'GHS10001', '的地方过分', '2343543', '1', null, null, null, '1', null, null, null, '地方', '3');
+INSERT INTO `purchaserequest` VALUES ('CGZZNZ033012140135319', 'wade', '2018-03-30', 'GHS10001', '靳颖', '1542156456', '2', '2018-04-02', 'wade', '今天周二', '2', '2018-04-02', 'wade', '哈哈哈', '今天卡将地方；看桑德菲杰倒扣分', '6');
 
 -- ----------------------------
 -- Table structure for purchaserequestdetail
@@ -559,14 +671,57 @@ CREATE TABLE `purchaserequestdetail` (
   CONSTRAINT `FK_FK_PurchaseRequest_PurchaseRequestDetail` FOREIGN KEY (`PurchaseRequest_id`) REFERENCES `purchaserequest` (`PurchaseRequest_id`),
   CONSTRAINT `FK_FK_REQUESTDETAIL_PRO` FOREIGN KEY (`Product_id`) REFERENCES `product` (`Product_id`),
   CONSTRAINT `FK_PurchaseDetail_ProductUnit` FOREIGN KEY (`ProductUnit_id`) REFERENCES `productunit` (`ProductUnit_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of purchaserequestdetail
 -- ----------------------------
-INSERT INTO `purchaserequestdetail` VALUES ('1', 'CGBOVI032004210234394', 'CPS-10003', '2', null, null);
-INSERT INTO `purchaserequestdetail` VALUES ('2', 'CGBOVI032004210234394', 'CPS-10004', '3', null, null);
-INSERT INTO `purchaserequestdetail` VALUES ('3', 'CGBOVI032004210234394', 'CPS-10034', '5', null, null);
+INSERT INTO `purchaserequestdetail` VALUES ('2', 'CGBOVI032004210234394', 'CPS-10004', '7', '4', '3.40');
+INSERT INTO `purchaserequestdetail` VALUES ('3', 'CGBOVI032004210234394', 'CPS-10034', '5', '5', null);
+INSERT INTO `purchaserequestdetail` VALUES ('6', 'CGMXIZ032708500014915', 'CPS-10004', '2', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('7', 'CGMXIZ032708500014915', 'CPS-10002', '2', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('9', 'CGMXIZ032708500014915', 'CPS-10034', '5', '4', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('10', 'CGMXIZ032708500014915', 'CPS-11084', '3', '2', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('11', 'CGHCCY032809540465676', 'CPS-10004', '3', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('12', 'CGHCCY032809540465676', 'CPS-10034', '2', '4', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('13', 'CGHCCY032809540465676', 'CPS-11084', '5', '2', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('14', 'CGSPXO032809550233525', 'CPS-10004', '3', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('15', 'CGSPXO032809550233525', 'CPS-10002', '2', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('16', 'CGSPXO032809550233525', 'CPS-10003', '4', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('17', 'CGZZNZ033012140135319', 'CPS-10004', '3', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('18', 'CGZZNZ033012140135319', 'CPS-10002', '1', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('19', 'CGZZNZ033012140135319', 'CPS-10003', '4', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('20', 'CGZZNZ033012140135319', 'CPS-10034', '4', '4', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('21', 'CGZZNZ033012140135319', 'CPS-11084', '4', '2', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('54', 'CGSDFDF129383483', 'CPS-10003', '1', '6', '12.00');
+INSERT INTO `purchaserequestdetail` VALUES ('55', 'CGSDFDF129383483', 'CPS-10002', '3', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('56', 'CGSDFDF129383483', 'CPS-11084', '2', '2', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('57', 'CGSDFDF129383483', 'CPS-10001', '3', '1', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('66', 'CGVHMC040302380319951', 'CPS-10004', '2', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('67', 'CGVHMC040302380319951', 'CPS-10002', '3', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('68', 'CGVHMC040302380319951', 'CPS-10003', '4', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('69', 'CGVHMC040302380319951', 'CPS-10034', '4', '4', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('70', 'CGVHMC040302380319951', 'CPS-11084', '4', '2', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('71', 'CGHDMR041010550061856', 'CPS-21908', '2', '2', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('72', 'CGHDMR041010550061856', 'CPS-10001', '2', '1', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('78', 'CGKTIJ041709490105728', 'CPS-10004', '2', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('79', 'CGKTIJ041709490105728', 'CPS-10002', '2', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('80', 'CGKTIJ041709490105728', 'CPS-10003', '1', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('81', 'CGKTIJ041709490105728', 'CPS-10034', '3', '4', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('82', 'CGKTIJ041709490105728', 'CPS-11084', '2', '2', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('83', 'CGRCTQ041910080064518', 'CPS-10004', '1', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('84', 'CGRCTQ041910080064518', 'CPS-10002', '2', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('85', 'CGRCTQ041910080064518', 'CPS-10003', '3', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('86', 'CGRCTQ041910080064518', 'CPS-10034', '4', '4', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('87', 'CGRCTQ041910080064518', 'CPS-11084', '5', '2', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('88', 'CGGTST042001190444967', 'CPS-10004', '1', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('89', 'CGGTST042001190444967', 'CPS-10002', '1', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('90', 'CGGTST042001190444967', 'CPS-10003', '1', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('91', 'CGGTST042001190444967', 'CPS-10034', '1', '4', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('96', 'CGEJQA050403470083212', 'CPS-10004', '2', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('97', 'CGEJQA050403470083212', 'CPS-10002', '2', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('98', 'CGEJQA050403470083212', 'CPS-10003', '3', '6', '0.00');
+INSERT INTO `purchaserequestdetail` VALUES ('99', 'CGEJQA050403470083212', 'CPS-10034', '1', '4', '0.00');
 
 -- ----------------------------
 -- Table structure for requisition
@@ -605,6 +760,10 @@ CREATE TABLE `requisition` (
 -- ----------------------------
 -- Records of requisition
 -- ----------------------------
+INSERT INTO `requisition` VALUES ('DBRMWF040810290442633', 'jinying', '2018-04-08', null, null, '1', '1', null, null, '1', null, null);
+INSERT INTO `requisition` VALUES ('DBTOZC040410490419528', 'jinying', '2018-04-03', null, null, '1', '1', null, null, '1', null, null);
+INSERT INTO `requisition` VALUES ('DBYEJA040501540359351', 'jinying', '2018-04-05', null, null, '1', '2', null, null, '2', null, null);
+INSERT INTO `requisition` VALUES ('DBZUUI040311220008363', 'rose', '2018-04-03', null, null, '1', '1', null, null, '1', null, null);
 
 -- ----------------------------
 -- Table structure for requisitiondetail
@@ -615,16 +774,20 @@ CREATE TABLE `requisitiondetail` (
   `Requisition_id` varchar(30) NOT NULL,
   `Product_id` varchar(30) NOT NULL,
   `Count` int(11) NOT NULL,
+  `ProductUnitId` int(11) NOT NULL,
   PRIMARY KEY (`RE_id`),
   KEY `FK_FK_Requisition_Pro` (`Product_id`),
   KEY `FK_FK_Requisition_RequDetail` (`Requisition_id`),
+  KEY `FK_ProductUnit` (`ProductUnitId`),
   CONSTRAINT `FK_FK_Requisition_Pro` FOREIGN KEY (`Product_id`) REFERENCES `product` (`Product_id`),
-  CONSTRAINT `FK_FK_Requisition_RequDetail` FOREIGN KEY (`Requisition_id`) REFERENCES `requisition` (`Requisition_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `FK_FK_Requisition_RequDetail` FOREIGN KEY (`Requisition_id`) REFERENCES `requisition` (`Requisition_id`),
+  CONSTRAINT `FK_ProductUnit` FOREIGN KEY (`ProductUnitId`) REFERENCES `productunit` (`ProductUnit_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of requisitiondetail
 -- ----------------------------
+INSERT INTO `requisitiondetail` VALUES ('35', 'DBTOZC040410490419528', 'CPS-10004', '2', '6');
 
 -- ----------------------------
 -- Table structure for reviewstatus
@@ -641,7 +804,7 @@ CREATE TABLE `reviewstatus` (
 -- ----------------------------
 INSERT INTO `reviewstatus` VALUES ('1', '未审核');
 INSERT INTO `reviewstatus` VALUES ('2', '审核通过');
-INSERT INTO `reviewstatus` VALUES ('3', '审核未通过');
+INSERT INTO `reviewstatus` VALUES ('3', '审核拒绝');
 
 -- ----------------------------
 -- Table structure for role
@@ -651,34 +814,98 @@ CREATE TABLE `role` (
   `RoleId` int(11) NOT NULL AUTO_INCREMENT,
   `RoleName` varchar(50) NOT NULL,
   `Description` varchar(200) DEFAULT NULL,
+  `RoleCode` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`RoleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('1', '采购员', '可以申请采购进货');
-INSERT INTO `role` VALUES ('2', '采购部经理', '权限比采购员高 可以审核采购申请');
+INSERT INTO `role` VALUES ('2', '采购部经理', '权限比采购员高 可以审核采购申请', null);
+INSERT INTO `role` VALUES ('3', '销售员', '销售货物', null);
+INSERT INTO `role` VALUES ('4', '销售经理', '可以审核销售单', null);
+INSERT INTO `role` VALUES ('5', '仓库管理员', '管理仓库', null);
+INSERT INTO `role` VALUES ('6', '采购员', '可以申请采购进货', null);
+INSERT INTO `role` VALUES ('8', '人事', '人员信息的增删改', null);
+INSERT INTO `role` VALUES ('9', '仓管经理', '审核调拨单 删除之类的权限', null);
+INSERT INTO `role` VALUES ('11', 'test1', '123', '123');
+INSERT INTO `role` VALUES ('12', 'test2', '123', '123');
+INSERT INTO `role` VALUES ('13', 'test4', '123', '123');
 
 -- ----------------------------
--- Table structure for role_auth
+-- Table structure for rolepermission
 -- ----------------------------
-DROP TABLE IF EXISTS `role_auth`;
-CREATE TABLE `role_auth` (
-  `Role_Auth_id` int(11) NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `rolepermission`;
+CREATE TABLE `rolepermission` (
+  `Role_Permission_id` int(11) NOT NULL AUTO_INCREMENT,
   `RoleId` int(11) NOT NULL,
-  `Auth_id` int(11) DEFAULT NULL,
-  `AuthId` int(11) NOT NULL,
-  PRIMARY KEY (`Role_Auth_id`),
-  KEY `FK_FK_AUTH_ROLEAUTH` (`Auth_id`),
-  KEY `FK_FK_ROLE_ROLEAUTH` (`RoleId`),
-  CONSTRAINT `FK_FK_AUTH_ROLEAUTH` FOREIGN KEY (`Auth_id`) REFERENCES `authority` (`Auth_id`),
-  CONSTRAINT `FK_FK_ROLE_ROLEAUTH` FOREIGN KEY (`RoleId`) REFERENCES `role` (`RoleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `PermissionId` int(11) NOT NULL,
+  PRIMARY KEY (`Role_Permission_id`),
+  KEY `FK_RolePermission_Role` (`RoleId`),
+  KEY `FK_RolePermission_Permission` (`PermissionId`),
+  CONSTRAINT `FK_RolePermission_Permission` FOREIGN KEY (`PermissionId`) REFERENCES `permission` (`Permission_id`),
+  CONSTRAINT `FK_RolePermission_Role` FOREIGN KEY (`RoleId`) REFERENCES `role` (`RoleId`)
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of role_auth
+-- Records of rolepermission
 -- ----------------------------
+INSERT INTO `rolepermission` VALUES ('9', '2', '2');
+INSERT INTO `rolepermission` VALUES ('10', '2', '1');
+INSERT INTO `rolepermission` VALUES ('11', '2', '3');
+INSERT INTO `rolepermission` VALUES ('12', '2', '4');
+INSERT INTO `rolepermission` VALUES ('13', '2', '5');
+INSERT INTO `rolepermission` VALUES ('14', '6', '1');
+INSERT INTO `rolepermission` VALUES ('15', '6', '2');
+INSERT INTO `rolepermission` VALUES ('16', '6', '3');
+INSERT INTO `rolepermission` VALUES ('18', '2', '6');
+INSERT INTO `rolepermission` VALUES ('19', '3', '16');
+INSERT INTO `rolepermission` VALUES ('20', '3', '17');
+INSERT INTO `rolepermission` VALUES ('21', '3', '15');
+INSERT INTO `rolepermission` VALUES ('22', '4', '15');
+INSERT INTO `rolepermission` VALUES ('23', '4', '16');
+INSERT INTO `rolepermission` VALUES ('24', '4', '17');
+INSERT INTO `rolepermission` VALUES ('25', '4', '18');
+INSERT INTO `rolepermission` VALUES ('26', '4', '19');
+INSERT INTO `rolepermission` VALUES ('27', '5', '20');
+INSERT INTO `rolepermission` VALUES ('28', '5', '21');
+INSERT INTO `rolepermission` VALUES ('29', '5', '22');
+INSERT INTO `rolepermission` VALUES ('30', '9', '23');
+INSERT INTO `rolepermission` VALUES ('31', '9', '20');
+INSERT INTO `rolepermission` VALUES ('32', '9', '21');
+INSERT INTO `rolepermission` VALUES ('33', '9', '22');
+INSERT INTO `rolepermission` VALUES ('34', '9', '24');
+INSERT INTO `rolepermission` VALUES ('35', '5', '25');
+INSERT INTO `rolepermission` VALUES ('36', '5', '26');
+INSERT INTO `rolepermission` VALUES ('37', '5', '27');
+INSERT INTO `rolepermission` VALUES ('38', '5', '30');
+INSERT INTO `rolepermission` VALUES ('39', '5', '31');
+INSERT INTO `rolepermission` VALUES ('40', '5', '32');
+INSERT INTO `rolepermission` VALUES ('41', '9', '25');
+INSERT INTO `rolepermission` VALUES ('42', '9', '26');
+INSERT INTO `rolepermission` VALUES ('43', '9', '27');
+INSERT INTO `rolepermission` VALUES ('44', '9', '28');
+INSERT INTO `rolepermission` VALUES ('45', '9', '29');
+INSERT INTO `rolepermission` VALUES ('46', '9', '30');
+INSERT INTO `rolepermission` VALUES ('47', '9', '31');
+INSERT INTO `rolepermission` VALUES ('48', '9', '32');
+INSERT INTO `rolepermission` VALUES ('49', '9', '33');
+INSERT INTO `rolepermission` VALUES ('50', '9', '34');
+INSERT INTO `rolepermission` VALUES ('51', '8', '7');
+INSERT INTO `rolepermission` VALUES ('52', '8', '8');
+INSERT INTO `rolepermission` VALUES ('53', '8', '9');
+INSERT INTO `rolepermission` VALUES ('54', '8', '10');
+INSERT INTO `rolepermission` VALUES ('55', '8', '11');
+INSERT INTO `rolepermission` VALUES ('56', '8', '12');
+INSERT INTO `rolepermission` VALUES ('57', '8', '13');
+INSERT INTO `rolepermission` VALUES ('58', '8', '14');
+INSERT INTO `rolepermission` VALUES ('63', '11', '1');
+INSERT INTO `rolepermission` VALUES ('64', '11', '30');
+INSERT INTO `rolepermission` VALUES ('65', '11', '34');
+INSERT INTO `rolepermission` VALUES ('66', '8', '35');
+INSERT INTO `rolepermission` VALUES ('67', '8', '36');
+INSERT INTO `rolepermission` VALUES ('68', '8', '37');
+INSERT INTO `rolepermission` VALUES ('69', '8', '38');
 
 -- ----------------------------
 -- Table structure for salesorder
@@ -718,11 +945,14 @@ CREATE TABLE `salesorderdetail` (
   `Product_id` varchar(30) NOT NULL,
   `Count` int(11) NOT NULL,
   `Price` decimal(10,0) NOT NULL,
+  `ProductUnit_id` int(11) NOT NULL,
   PRIMARY KEY (`SOD_id`),
-  KEY `FK_FK_SalesOrderDetail_Product` (`Product_id`),
-  KEY `FK_FK_SalesOrder_SOD` (`SalesOrder_id`),
-  CONSTRAINT `FK_FK_SalesOrderDetail_Product` FOREIGN KEY (`Product_id`) REFERENCES `product` (`Product_id`),
-  CONSTRAINT `FK_FK_SalesOrder_SOD` FOREIGN KEY (`SalesOrder_id`) REFERENCES `salesorder` (`SO_id`)
+  KEY `FK_SalesOrderDetail_Product` (`Product_id`),
+  KEY `FK_SalesOrder_SOD` (`SalesOrder_id`),
+  KEY `FK_ProductUnit_ProductUnitId` (`ProductUnit_id`),
+  CONSTRAINT `FK_ProductUnit_ProductUnitId` FOREIGN KEY (`ProductUnit_id`) REFERENCES `productunit` (`ProductUnit_id`),
+  CONSTRAINT `FK_SalesOrderDetail_Product` FOREIGN KEY (`Product_id`) REFERENCES `product` (`Product_id`),
+  CONSTRAINT `FK_SalesOrder_SOD` FOREIGN KEY (`SalesOrder_id`) REFERENCES `salesorder` (`SO_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -764,14 +994,19 @@ CREATE TABLE `storehouse` (
   `SH_phone` varchar(20) NOT NULL,
   `Employee_id` varchar(30) NOT NULL,
   `CreateDate` date NOT NULL,
+  `SH_Name` varchar(255) NOT NULL,
   PRIMARY KEY (`StoreHouse_id`),
   KEY `FK_FK_StoreHouseEmp_Emp` (`Employee_id`),
   CONSTRAINT `FK_FK_StoreHouseEmp_Emp` FOREIGN KEY (`Employee_id`) REFERENCES `employee` (`EmpLoginName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of storehouse
 -- ----------------------------
+INSERT INTO `storehouse` VALUES ('1', '徐州沛县', '15837283928', 'wade', '2018-04-03', '时光仓库');
+INSERT INTO `storehouse` VALUES ('2', '泉山区', '39484729', 'rose', '2018-04-06', '周二库');
+INSERT INTO `storehouse` VALUES ('3', '云龙区', '29473628181', 'wade', '2018-04-03', '周三库');
+INSERT INTO `storehouse` VALUES ('4', '哈哈哈', '28473629132', 'james', '2018-04-01', '周天');
 
 -- ----------------------------
 -- Table structure for supplier
@@ -795,24 +1030,4 @@ CREATE TABLE `supplier` (
 -- Records of supplier
 -- ----------------------------
 INSERT INTO `supplier` VALUES ('GHS10001', '张三供货商', '徐州市泉山区', '18678927383', '221000', '李思思', '1987693827', '建设银行', '62102879838217328389', '主要售卖建材');
-
--- ----------------------------
--- Procedure structure for sum2
--- ----------------------------
-DROP PROCEDURE IF EXISTS `sum2`;
-DELIMITER ;;
-CREATE DEFINER=`skip-grants user`@`skip-grants host` PROCEDURE `sum2`(a int)
-begin
-         declare sum int default 0;
-        declare i int default 1;
-         loop_name:loop -- 循环开始
-           if i>a then 
-                leave loop_name;  -- 判断条件成立则结束循环  好比java中的 boeak
-            end if;
-             set sum=sum+i;
-            set i=i+1;
-         end loop;  -- 循环结束
-         select sum; -- 输出结果
- end
-;;
-DELIMITER ;
+INSERT INTO `supplier` VALUES ('GHS10902', '徐州建材公司', '沛县', '13762892827', '221001', '李刚', '1983739928', '工商银行', '68397383928393727388', '售卖水泥钢材等等');

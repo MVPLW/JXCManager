@@ -83,8 +83,18 @@ h3 {
 										data-command="Add"><i class="icon-plus"></i>&nbsp;添加</a> <a
 										class="btn btn-warning" href="javascript:void(0)"
 										onclick="deleteEnterStock()" data-command="Delete"><i
-										class="icon-remove"></i>&nbsp;删除</a> <a class="btn btn-danger"
-										href="javascript:void(0)"
+										class="icon-remove"></i>&nbsp;删除</a>
+									<div class="btn-group">
+										<button class="btn btn-success dropdown-toggle"
+											data-toggle="dropdown">
+											<span class="caret"></span>&nbsp;导出
+										</button>
+										<ul class="dropdown-menu">
+											<li><a href="javascript:;" onclick="exportCurrentData()">导出当前数据</a></li>
+											<li><a href="javascript:;" onclick="exportAllData()">导出所有数据</a></li>
+										</ul>
+									</div>
+									<a class="btn btn-danger" href="javascript:void(0)"
 										onclick="javascript:location.href='goenterstock';"
 										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 								</div>
@@ -133,12 +143,11 @@ h3 {
 														<span class="label label-important">${s.reviewStatus.rsName}</span>
 													</c:if></td>
 												<td><input type="hidden" value="${s.enterStockId}" />
-													<a id="detail" href="javascript:;">查看</a>
-													<c:if test="${s.reviewStatus.rsId!=2}">
-														<a id="updateEnterStock"> 编辑</a> 
+													<a id="detail" href="javascript:;">查看</a> <c:if
+														test="${s.reviewStatus.rsId!=2}">
+														<a id="updateEnterStock"> 编辑</a>
 														<a id="review" href="javascript:;">审核</a>
-													</c:if> 
-												</td>
+													</c:if></td>
 											</tr>
 										</c:forEach>
 										<c:if test="${fn:length(ess.list)==0}">
@@ -333,6 +342,21 @@ h3 {
 			//$("#searchblueey").click();
 			$("#enterMyForm").submit();
 		}
+
+		/* 导出当前显示的数据 */
+		function exportCurrentData() {
+			var singleNo = $("input[name=singleNo]").val();
+			var shName = $("input[name=shName]").val();
+			var pageNo = parseInt($("input[name=pageNo]").val());
+			var start=$("#start").val();
+			var end=$("#end").val();
+			location.href = "enterStockExport?pageNo="+pageNo+"&shName="+shName+"&singleNo="+singleNo+"&start="+start+"&end="+end;
+		}
+		/* 导出所有数据 */
+		function exportAllData() {
+			location.href = "enterStockExport";
+		}
+		
 		$("#productBody a").live('mouseover', function() {
 			$(this).css("cursor", "pointer");
 			$(this).css("color", "#298AEB");

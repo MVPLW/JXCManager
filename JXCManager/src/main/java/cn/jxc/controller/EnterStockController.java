@@ -1,10 +1,13 @@
 package cn.jxc.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageInfo;
 
+import cn.jxc.excel.ExportExcel;
 import cn.jxc.pojo.Employee;
 import cn.jxc.pojo.EnterStock;
 import cn.jxc.pojo.EnterStockDetail;
@@ -39,7 +43,7 @@ import cn.jxc.service.StoreHouseService;
 /**
  * 入库
  * 
- * @author 李晓擎
+ * @author lxq
  *
  */
 @Controller
@@ -110,7 +114,7 @@ public class EnterStockController {
 	@RequestMapping("/goenterstockadd")
 	public String goenterstockadd(Model model) {
 		List<EnterStockType> enterStockTypeAll = enterStockType.getEnterStockTypeAll();
-		PageInfo<Employee> employeeAll = employeeService.getEmployeeAll(1,10000);
+		PageInfo<Employee> employeeAll = employeeService.getEmployeeAll(1, 10000);
 		List<StoreHouse> storeHouselist = storeHouseService.getStoreHouselist();
 		PageInfo<Product> productAll = productService.getProductAll(1);
 		model.addAttribute("estAll", enterStockTypeAll);
@@ -247,7 +251,7 @@ public class EnterStockController {
 		// 根据入库单号查询入库详情
 		List<EnterStockDetail> enterStockDetails = enterStockDetailService
 				.getEnterStockDetailBySingleNo(singleNo, 1, 100000).getList();
-		PageInfo<Employee> employeeAll = employeeService.getEmployeeAll(1,100000); // 所有员工
+		PageInfo<Employee> employeeAll = employeeService.getEmployeeAll(1, 100000); // 所有员工
 		List<StoreHouse> storeHouselist = storeHouseService.getStoreHouselist(); // 所有仓库
 		model.addAttribute("enterStock", enterStockBySingleNo);
 		model.addAttribute("enterStockDetails", enterStockDetails);
@@ -294,6 +298,39 @@ public class EnterStockController {
 		} catch (Exception e) {
 			return "error";
 		}
+	}
+
+	/**
+	 * 导出数据到excel
+	 * 
+	 * @param singleNo
+	 * @param shName
+	 * @param start
+	 * @param end
+	 * @param pageNo
+	 * @param request
+	 * @param response
+	 * @throws ParseException
+	 * @throws IOException
+	 */
+	@RequestMapping("/enterStockExport")
+	public void export(@RequestParam(value = "singleNo", required = false) String singleNo,
+			@RequestParam(value = "shName", required = false) String shName,
+			@RequestParam(value = "start", required = false) String start,
+			@RequestParam(value = "end", required = false) String end,
+			@RequestParam(value = "pageNo", required = false) Integer pageNo, HttpServletRequest request,
+			HttpServletResponse response) throws ParseException, IOException {
+		List<EnterStock> list = null;
+		if (pageNo == null) {
+			list = enterStockService.getEnterStockBySuless(null, null, null, null, 1, 10000000).getList();
+		} else {
+			list = enterStockService.getEnterStockBySuless(singleNo, shName, start, end, pageNo, 5).getList();
+		}
+		// 获取文件名
+		String fileName = "EnterStock" + new SimpleDateFormat("MMddhhmmsss").format(new Date())
+				+ String.valueOf((int) (Math.random() * 9 + 1) * 1000) + ".xlsx";
+		// 输出
+		new ExportExcel(null, EnterStock.class, 1).setDataList(list).write(response, fileName).dispose();
 	}
 
 }

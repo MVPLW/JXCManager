@@ -5,6 +5,7 @@ package cn.jxc.exception;
  * @author LXQ 2018/4/24
  *
  */
+@SuppressWarnings("serial")
 public class CustomException extends Exception {
 	
 	private String message;
