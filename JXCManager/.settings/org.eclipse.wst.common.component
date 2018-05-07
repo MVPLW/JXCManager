@@ -4,7 +4,14 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
+<<<<<<< HEAD
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+=======
+<<<<<<< HEAD
+=======
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+>>>>>>> refs/remotes/gitrepository/master
+>>>>>>> refs/remotes/origin/master
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
         <property name="context-root" value="JXCManager"/>

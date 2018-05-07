@@ -12,7 +12,7 @@
 			<c:forEach items="${navibar}" var="s">
 				<li><a
 					href="${pageContext.request.contextPath}${s.permissionUrl}"
-					target="page-Content"> <i class="icon-eye-open"></i> <span
+					target="page-Content"> <i class="icon-eye-open"></i><span
 						class="hidden-tablet">${s.permissionDesc}</span>
 				</a></li>
 			</c:forEach>
