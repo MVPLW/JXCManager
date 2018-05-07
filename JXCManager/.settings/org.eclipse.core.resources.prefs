@@ -1,2 +1,13 @@
 eclipse.preferences.version=1
+encoding//src/main/java=GBK
+encoding//src/main/java/cn/jxc/controller=UTF-8
+encoding//src/main/java/cn/jxc/controller/EnterStockController.java=GBK
+encoding//src/main/java/cn/jxc/controller/PurchaseRequestController.java=GBK
+encoding//src/main/java/cn/jxc/controller/RequisitionController.java=GBK
+encoding//src/main/java/cn/jxc/controller/RoleController.java=GBK
+encoding//src/main/java/cn/jxc/controller/SalesController.java=GBK
+encoding//src/main/java/cn/jxc/controller/SupplierController.java=GBK
 encoding//src/main/webapp/login.jsp=UTF-8
+encoding//src/test/java=UTF-8
+encoding//src/test/resources=UTF-8
+encoding/src=UTF-8
