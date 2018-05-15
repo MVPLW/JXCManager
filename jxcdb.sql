@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2018-05-07 09:42:43
+Date: 2018-05-15 21:27:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -647,7 +647,7 @@ INSERT INTO `purchaserequest` VALUES ('CGHCCY032809540465676', 'rose', '2018-03-
 INSERT INTO `purchaserequest` VALUES ('CGHDMR041010550061856', 'jinying', '2018-04-02', 'GHS10001', '张三', '4585145624', '1', null, null, null, '1', null, null, null, '及同年你这偶然', '1');
 INSERT INTO `purchaserequest` VALUES ('CGKTIJ041709490105728', 'jinying', '2018-04-17', 'GHS10902', '张三', '18796284456', '1', null, null, null, '1', null, null, null, '今天周二', '1');
 INSERT INTO `purchaserequest` VALUES ('CGMXIZ032708500014915', 'rose', '2018-03-27', 'GHS10902', '李刚', '186936283621', '2', '2018-04-02', 'wade', '阿斯顿发大水', '2', '2018-04-02', 'wade', '今天周二', '915adsfdsf爱的色放发的第三方', '7');
-INSERT INTO `purchaserequest` VALUES ('CGRCTQ041910080064518', 'jinying', '2018-04-19', 'GHS10001', '张三', '18796284456', '1', null, null, null, '1', null, null, null, '今天周二', '1');
+INSERT INTO `purchaserequest` VALUES ('CGRCTQ041910080064518', 'jinying', '2018-04-19', 'GHS10001', '张三', '18796284456', '2', '2018-05-07', 'wade', 'sdf', '2', '2018-05-07', 'wade', 'asdf', '今天周二', '6');
 INSERT INTO `purchaserequest` VALUES ('CGSDFDF129383483', 'wade', '2016-09-08', 'GHS10001', '张三今天周二123', '1592383492', '1', null, null, null, '1', null, null, null, '明天周三三水水水水水水水水水水水水水', '3');
 INSERT INTO `purchaserequest` VALUES ('CGSPXO032809550233525', 'james', '2018-03-03', 'GHS10001', '大爷', '19374837293', '3', '2018-04-02', 'wade', '今天周二', '1', null, null, null, '525阿三；李的会计法撒旦教父；科技大厦飞；阿斯蒂芬卡戴珊', '5');
 INSERT INTO `purchaserequest` VALUES ('CGVHMC040302380319951', 'wade', '2018-04-03', 'GHS10001', '的地方过分', '2343543', '1', null, null, null, '1', null, null, null, '地方', '3');
@@ -978,11 +978,12 @@ CREATE TABLE `stockpile` (
   CONSTRAINT `FK_FK_StockPile_ProductUnit` FOREIGN KEY (`ProductUnit_id`) REFERENCES `productunit` (`ProductUnit_id`),
   CONSTRAINT `FK_FK_Stock_Product` FOREIGN KEY (`Product_id`) REFERENCES `product` (`Product_id`),
   CONSTRAINT `FK_FK_StoreHouse_Stock` FOREIGN KEY (`StoreHouse_id`) REFERENCES `storehouse` (`StoreHouse_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stockpile
 -- ----------------------------
+INSERT INTO `stockpile` VALUES ('1', '1', 'CPS-10003', '12', '12', '3', '12');
 
 -- ----------------------------
 -- Table structure for storehouse
