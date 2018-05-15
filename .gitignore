@@ -1,5 +1,6 @@
 ##ignore this file##
 JXCManager/target/*
+JXCManager/build/*
 JXCManager/.classpath
 JXCManager/.project
 JXCManager/.settings
