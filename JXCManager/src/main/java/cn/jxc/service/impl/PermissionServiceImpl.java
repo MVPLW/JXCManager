@@ -60,7 +60,7 @@ public class PermissionServiceImpl implements PermissionService {
 		try {
 			permissionMapper.deletePermissionByRoleId(roleId);
 			if (null != permissionId) {
-				for (Integer integer : permissionId) { // 循环添加关联关系
+				for (Integer integer : permissionId) {
 					permissionMapper.addRolePermission(roleId, integer);
 				}
 			}
