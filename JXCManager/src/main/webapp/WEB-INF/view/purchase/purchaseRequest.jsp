@@ -94,7 +94,6 @@ h3 {
 											<li><a href="javascript:;" onclick="exportAllData()">导出所有数据</a></li>
 										</ul>
 									</div>
-
 									<a class="btn btn-danger" href="javascript:void(0)"
 										onclick="javascript:location.href='gopurchase';"
 										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
@@ -450,7 +449,7 @@ h3 {
 				alert(e.message);
 			}
 		}
-		
+
 		/* 导出当前显示的数据 */
 		function exportCurrentData() {
 			var singleNo = $("input[name=singleNo]").val();
@@ -464,6 +463,11 @@ h3 {
 		function exportAllData() {
 			location.href = "purchaseExport";
 		}
+
+		/* 导入数据 */
+		/* function importPurchase() {
+			
+		} */
 
 		$("#detail")
 				.live(

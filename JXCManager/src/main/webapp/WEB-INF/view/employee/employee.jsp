@@ -73,7 +73,7 @@ h3 {
 										data-command="Add"><i class="icon-plus"></i>&nbsp;添加</a>
 								</shiro:hasPermission>
 								<shiro:hasPermission name="employee:delete">
-									<a class="btn btn-warning" href="javascript:;"
+									<a class="btn btn-warning" href="javascript:;" onclick="javascript:del();"
 										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a>
 								</shiro:hasPermission>
 								<a class="btn btn-danger" href="javascript:;"
@@ -173,6 +173,7 @@ h3 {
 			<button type="button" class="close" data-dismiss="modal">x</button>
 			<h2>分配角色</h2>
 		</div>
+		
 		<div class="modal-body">
 			<div>
 				<form method="post" action="goEmpRoleAssign" id="assignRoleForm">
@@ -289,6 +290,12 @@ h3 {
 			$("input[name=empLoginName]:hidden").val(emploginname);
 			$("#assignRolesModals").modal("show");
 		}
+
+		/* 删除员工 */
+		function del(){
+			/* empJudgmen  判断员工是否有被引用 */
+		}
+		
 		$(function(){
 			/* 分配角色提交 */
 			$("#commitAssignRoles").click(function(){

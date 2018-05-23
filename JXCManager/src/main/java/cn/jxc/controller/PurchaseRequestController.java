@@ -350,4 +350,36 @@ public class PurchaseRequestController {
 		new ExportExcel(null, PurchaseRequest.class, 1).setDataList(list).write(response, fileName).dispose();
 	}
 
+	/**
+	 *
+	 * 导入已经填好数据的Excel
+	 * 
+	 * @param multipartFile
+	 */
+	/*@RequestMapping(value = "purchaseImport", method = RequestMethod.GET)
+	public void importFile(MultipartFile multipartFile) {
+		try {
+			int failureNum = 0;
+			StringBuilder failureMsg = new StringBuilder();
+			ImportExcel ei = new ImportExcel(multipartFile, 1, 0);
+			List<PurchaseRequest> list = ei.getDataList(PurchaseRequest.class);
+			for (PurchaseRequest user : list) {
+				try {
+					// to do: 保存处理数据
+					// userService.save(user);
+					// logger.info(user.toString());
+					purchaseRequestService.addPurchaseRequest(user);
+				} catch (Exception ex) {
+					failureNum++;
+				}
+			}
+
+			if (failureNum > 0) {
+				failureMsg.insert(0, ", Failures: " + failureNum);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}*/
+
 }
