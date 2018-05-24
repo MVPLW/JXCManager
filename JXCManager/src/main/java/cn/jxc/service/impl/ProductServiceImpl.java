@@ -22,8 +22,8 @@ public class ProductServiceImpl implements ProductService {
 	 * 分页获取产品信息
 	 */
 	@Override
-	public PageInfo<Product> getProductAll(int num) {
-		PageHelper.startPage(num, 5);
+	public PageInfo<Product> getProductAll(int num,int pageSize) {
+		PageHelper.startPage(num, pageSize);
 		List<Product> productAll = productMapper.getProductAll();
 		PageInfo<Product> pageInfo=new PageInfo<Product>(productAll);
 		return pageInfo;

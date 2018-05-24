@@ -1,5 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.jxc.mapper.StockPileMapper">
+
+	<resultMap type="StockPile" id="stockPileMap">
+		<id column="SP_id" property="spId" />
+		<result column="Quantity" property="quantity" />
+		<result column="ProsPecification" property="prosPecification" />
+		<result column="CostPrice" property="costPrice" />
+		<association property="product" javaType="Product"
+			resultMap="cn.jxc.mapper.ProductMapper.productResultMap" />
+		<association property="productunit" javaType="ProductUnit"
+			resultMap="cn.jxc.mapper.ProductUnitMapper.productunitmap" />
+		<association property="storehouse" javaType="StoreHouse"
+			resultMap="cn.jxc.mapper.StoreHouseMapper.StoreHouseMap" />
+	</resultMap>
+
+	<sql id="stockPileSql">
+		sp.SP_id,sp.Quantity,sp.ProsPecification,sp.CostPrice
+	</sql>
+
+	<select id="getStockPileByStoreHouseIdAndProductId" resultMap="stockPileMap">
+		select
+		<include refid="stockPileSql" />
+		,
+		<include refid="cn.jxc.mapper.StoreHouseMapper.storehouses" />
+		,
+		<include refid="cn.jxc.mapper.ProductUnitMapper.productunitsql" />
+		,
+		<include refid="cn.jxc.mapper.ProductMapper.product" />
+		from stockpile sp
+		LEFT JOIN storehouse s
+		ON
+		sp.StoreHouse_id=s.StoreHouse_id
+		LEFT JOIN productunit u
+		ON
+		sp.ProductUnit_id=u.ProductUnit_id
+		LEFT JOIN product p
+		ON
+		p.Product_id=sp.Product_id
+		<where>
+			<if test="storeHouseId!=null and storeHouseId!=-1">
+				AND sp.StoreHouse_id=#{storeHouseId}
+			</if>
+			<if test="productId!=null and productId!='-1'">
+				AND sp.Product_id=#{productId}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertStockPile" parameterType="StockPile">
+		INSERT INTO
+		`stockpile` (`SP_id`,`StoreHouse_id`,
+		`Product_id`, `Quantity`,
+		`ProsPecification`, `ProductUnit_id`,
+		`CostPrice`) VALUES
+		(NULL,#{storehouse.storeHouseId}, #{product.productId}, #{quantity},
+		#{prosPecification}, #{productunit.productUnitId}, #{costPrice})
+	</insert>
 	
+	<update id="updateStockPileCountAvgByStoreHouseAndProduct">
+		UPDATE `jxcdb`.`stockpile` SET
+		`Quantity`=#{quantity},
+		`ProsPecification`=#{pros}, `CostPrice`=#{costPrice}
+		WHERE (`StoreHouse_id`=#{storeHouseId} AND `Product_id`=#{productId});
+	</update>
+
 </mapper>

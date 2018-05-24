@@ -116,7 +116,7 @@ public class EnterStockController {
 		List<EnterStockType> enterStockTypeAll = enterStockType.getEnterStockTypeAll();
 		PageInfo<Employee> employeeAll = employeeService.getEmployeeAll(1, 10000);
 		List<StoreHouse> storeHouselist = storeHouseService.getStoreHouselist();
-		PageInfo<Product> productAll = productService.getProductAll(1);
+		PageInfo<Product> productAll = productService.getProductAll(1,5);
 		model.addAttribute("estAll", enterStockTypeAll);
 		model.addAttribute("employeeAll", employeeAll.getList());
 		model.addAttribute("storeHouseAll", storeHouselist);

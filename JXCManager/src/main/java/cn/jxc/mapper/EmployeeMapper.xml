@@ -64,5 +64,6 @@
 	<delete id="deleteEmployeeRoleByRoleId" parameterType="int">
 		DELETE FROM `jxcdb`.`employeerole` WHERE `RoleId`=#{roleId}
 	</delete>
+	
 
 </mapper>
