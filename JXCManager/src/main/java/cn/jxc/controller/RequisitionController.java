@@ -57,6 +57,7 @@ public class RequisitionController {
 		}
 		//调拨订单表查询
 		PageInfo<Requisition> reslist = requisitionmapperservice.getRequisition(null,null,pageNo,10);
+		
 		model.addAttribute("reslist", reslist);
 		return "resuisition/requisition";
 	}
@@ -107,11 +108,12 @@ public class RequisitionController {
 	public String addRequisition(Requisition requisition,String products) {
 		List<RequisitionDetail> requisitionDetail = JSONObject.parseArray(products,RequisitionDetail.class);
 		requisition.setRequisitiondetails(requisitionDetail);
+		requisition.setRequestTime(new Date());
 		int requisitioncount = requisitionmapperservice.Requisitionadd(requisition);
 		if(requisitioncount==1) {
 			return "gorequisitionadd";
 		}else {
-			return "redirect:gorequisition";
+			return "redirect:/gorequisition";
 		}
 	}
 	
@@ -260,5 +262,24 @@ public class RequisitionController {
 				+ String.valueOf((int) (Math.random() * 9 + 1) * 1000) + ".xlsx";
 		// 生成excel并且下载
 		new ExportExcel(null, Requisition.class, 1).setDataList(list).write(response, fileName).dispose();
+	}
+	
+	//审核
+	@RequestMapping("requisitionReview")
+	public String deptReview(String requisitionId, Integer status, String reason, HttpServletRequest request) {
+		Employee employee = (Employee) request.getSession().getAttribute("loginEmp");
+		int order = 0;
+		if(status==2){
+			order = 4;
+		}else if(status==3){
+			order = 5;
+		}
+		int updaterequisition = requisitionmapperservice.updaterequisition(requisitionId, employee.getEmpLoginName(),
+				new Date(), status,order, reason);
+		if (updaterequisition > 0) { // 执行成功
+			return "redirect:/gorequisition";
+		} else {
+			return "error";
+		}
 	}
 }

@@ -1,6 +1,8 @@
 package cn.jxc.service;
 
 
+import java.util.Date;
+
 import com.github.pagehelper.PageInfo;
 
 import cn.jxc.pojo.Requisition;
@@ -30,4 +32,6 @@ public interface RequisitionService {
 	
 	//¸ù¾ÝidÉ¾³ý
 	int RequisitionDelete(String requisitionid);
+	//ÉóºË×´Ì¬²Ù×÷
+	int updaterequisition(String requisitionId,String reviewEmp,Date reviewTime,Integer reviewstatus,Integer order,String reason);
 }

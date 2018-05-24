@@ -92,7 +92,7 @@
 													<label class="control-label" for="requestTime">制单日期&nbsp;&nbsp;</label>
 													<div class="controls">
 														<input type="text" class="input-xlarge datepicker" disabled="disabled"
-															readonly="readonly" id="requestTime" name="requestTime" pattern="yyyy-MM-dd"														
+															readonly="readonly" id="requestTime" name="requestTime"														
 															placeholder="申请时间" />
 													</div>
 												</div></td>

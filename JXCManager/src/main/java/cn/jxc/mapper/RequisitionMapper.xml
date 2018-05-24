@@ -16,6 +16,8 @@
 		<result property="outboundStoreHouseTime" column="OutboundStoreHouseTime" />
 		<!-- 入库时间 -->
 		<result property="storageStoreHouseTime" column="StorageStoreHouseTime" />
+		<result property="orderStatus" column="OrderStatus"
+			typeHandler="cn.jxc.util.OrderStatusTypeHandler" />
 		<!-- 审核人 -->
 		<association property="employeeByReviewEmp" javaType="Employee" column="reviewEmp">
 			<id column="reviewEmp" property="empLoginName"/>
@@ -50,7 +52,7 @@
 	</resultMap>
 	<select id="getRequisition" resultMap="Requisitionlist">
 		SELECT  rs.Requisition_id,rs.requestTime,rs.ReviewTime,rs.OutboundStoreHouseTime,rs.StorageStoreHouseTime,
-		emp1.EmpLoginName AS requestEmp,emp2.EmpLoginName AS reviewEmp,
+		rs.OrderStatus,emp1.EmpLoginName AS requestEmp,emp2.EmpLoginName AS reviewEmp,
 		emp3.EmpLoginName AS OutboundEmp,emp4.EmpLoginName AS StoreHouseEmp,
 		r.RS_name,r.RS_id,
 		sto1.SH_Name AS OutboundStoreHouse,sto1.StoreHouse_id AS OutboundStoreHouseid,
@@ -114,4 +116,14 @@
 		FROM `requisition`
 		WHERE `Requisition_id` = #{id}
 	</delete>
+	<!-- 审核状态操作 -->
+	<update id="updaterequisition">
+		UPDATE requisition SET 
+		ReviewEmp =#{reviewEmp},
+		ReviewTime=#{reviewTime},
+		ReviewStatus=#{status},
+		OrderStatus= #{order},
+		Reason=#{reason} 
+		WHERE Requisition_id= #{requisitionId}
+	</update>
 </mapper>

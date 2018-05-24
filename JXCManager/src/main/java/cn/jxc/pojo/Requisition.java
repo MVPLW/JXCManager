@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import cn.jxc.excel.ExcelField;
+import cn.jxc.util.OrderStatus;
 
 /**
  * 调拨单据
@@ -42,7 +43,18 @@ public class Requisition implements java.io.Serializable {
 	private Date storageStoreHouseTime;//入库时间
 	@ExcelField(title = "审核备注", align = 2)
 	private String reason;//审核备注
+	private OrderStatus orderStatus;
 	
+	
+
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
 	public String getReason() {
 		return reason;
 	}

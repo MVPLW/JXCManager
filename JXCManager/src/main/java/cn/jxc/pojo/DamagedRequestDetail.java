@@ -5,15 +5,15 @@ import java.io.Serializable;
 public class DamagedRequestDetail implements Serializable{
 
 	/**
-	 * 
+	 * 报损申请明细表
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private int dRDId;
-	private DamagedRequest damagedRequest;
-	private Product product;
-	private int count;
-	private ProductUnit productUnit;
+	private int dRDId;							//主键id			
+	private DamagedRequest damagedRequest;		//报损编号
+	private Product product;					//产品编号
+	private int count;							//产品数量
+	private ProductUnit productUnit;			//产品规格
 	
 	public DamagedRequestDetail() {
 		super();

@@ -1,7 +1,11 @@
 package cn.jxc.pojo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import cn.jxc.util.OrderStatus;
 
 /**
  * 报损单据
@@ -13,16 +17,34 @@ public class DamagedRequest implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String damagedRequestId;
-	private Employee requestEmp;
-	private Date requestTime;
-	private StoreHouse damagedStoreHouse;
-	private ReviewStatus deptReviewStatus;
-	private Employee deptReviewEmp;
-	private Date deptReviewTime;
-	private String damagedReason;
-	private String remark;
+	private String damagedRequestId;		//报损单号
+	private Employee requestEmp;			//报损申请人
+	private Date requestTime;				//报损制单时间
+	private StoreHouse damagedStoreHouse;	//报损所在仓库
+	private ReviewStatus deptReviewStatus;	//审核状态
+	private Employee deptReviewEmp;			//审核人
+	private Date deptReviewTime;			//审核时间
+	private String damagedReason;			//报损原因
+	private String remark;    				//备注
+	private OrderStatus orderStatus; 			//报损详情
 	
+	private List<DamagedRequestDetail> damagedrequestdetail = new ArrayList<DamagedRequestDetail>();
+	public List<DamagedRequestDetail> getDamagedrequestdetail() {
+		return damagedrequestdetail;
+	}
+
+	public void setDamagedrequestdetail(List<DamagedRequestDetail> damagedrequestdetail) {
+		this.damagedrequestdetail = damagedrequestdetail;
+	}
+
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
 	public DamagedRequest() {
 		super();
 	}

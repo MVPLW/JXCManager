@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxc.mapper.DamagedRequestMapper">
+	<resultMap type="DamagedRequest" id="damagedrequests">
+		<result property="damagedRequestId" column="DamagedRequest_id"/>
+		<result property="requestTime" column="RequestTime"/>
+		<result property="deptReviewTime" column="DeptReviewTime"/>
+		<result property="damagedReason" column="DamagedReason"/>
+		<result property="remark" column="Remark"/>
+		<result property="orderStatus" column="OrderStatus"
+			typeHandler="cn.jxc.util.OrderStatusTypeHandler" />
+		<!-- 制单人 -->
+		<association property="requestEmp" javaType="Employee">
+			<id column="RequestEmp" property="empLoginName"/>
+		</association>
+		<!-- 所在仓库 -->
+		<association property="damagedStoreHouse" javaType="StoreHouse">
+			<id property="storeHouseId" column="StoreHouse_id"/>
+			<result property="shName" column="SH_Name"/>
+		</association>
+		<!-- 审核状态 -->
+		<association property="deptReviewStatus" javaType="ReviewStatus"
+			resultMap="cn.jxc.mapper.ReviewStatusMapper.ReviewStatusMap">
+		</association>
+		<!-- 审核人 -->
+		<association property="deptReviewEmp" javaType="Employee">
+			<id column="DeptReview" property="empLoginName"/>
+		</association>
+	</resultMap>
+	
+	<select id="getDamageRequest" resultMap="damagedrequests">
+		SELECT   
+		d.`DamagedRequest_id`,e1.`EmpLoginName` AS RequestEmp,d.`RequestTime`,s.`SH_Name`,r.`RS_name`,
+		e2.`EmpLoginName` AS DeptReview,d.`DeptReviewTime`,d.`DamagedReason`,d.`Remark`,d.`OrderStatus`
+		FROM damagedrequest AS d
+		LEFT JOIN employee AS e1 ON d.`RequestEmpId` = e1.`EmpLoginName`
+		LEFT JOIN storehouse AS s ON d.`DamagedStoreHouse` = s.`StoreHouse_id`
+		LEFT JOIN reviewstatus r ON d.`DeptReviewStatus` = r.`RS_id`
+		LEFT JOIN employee AS e2 ON d.`DeptReviewEmp` = e2.`EmpLoginName`
+		<where>
+			<if test="id != null and id != ''">
+				and d.`DamagedRequest_id` LIKE CONCAT('%',#{id},'%')
+			</if>
+			<if test="name != null and name != ''">
+				and e1.`EmpLoginName` LIKE CONCAT('%',#{name},'%')
+			</if>
+		</where>		
+		ORDER BY d.`RequestTime` DESC
+	</select>
+	
+	<insert id="AddDamagedRequest">
+		INSERT INTO `damagedrequest`
+            (`DamagedRequest_id`,
+             `RequestEmpId`,
+             `RequestTime`,
+             `DamagedStoreHouse`,
+             `DeptReviewStatus`,
+             `DamagedReason`,
+             `Remark`,
+             `OrderStatus`)
+VALUES (#{damagedRequestId},
+        #{requestEmp.empLoginName},
+        #{requestTime},
+        #{damagedStoreHouse.storeHouseId},
+        1,
+        #{damagedReason},
+        #{remark},
+       1)
+	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

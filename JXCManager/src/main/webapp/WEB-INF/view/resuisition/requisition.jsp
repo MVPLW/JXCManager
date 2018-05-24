@@ -118,6 +118,7 @@ h3 {
 										<th align="center">制单时间</th>
 										<th align="center">调出仓库</th>
 										<th align="center">调入仓库</th>
+										<th align="center">调拨详情</th>
 										<th align="center">操作</th>
 									</tr>
 								</thead>
@@ -130,10 +131,24 @@ h3 {
 											<td class="center"><fmt:formatDate value="${res.requestTime }" pattern="yyyy-MM-dd" /></td>
 											<td>${res.storehouseByOutboundStoreHouse.shName }</td>
 											<td>${res.storehouseByStorageStoreHouse.shName }</td>
+											<td>
+												<span
+													<c:choose>
+													<c:when test="${res.orderStatus.no==2}">class="label label-important"</c:when>
+													<c:when test="${res.orderStatus.no==1}">class="label label-warning"</c:when>
+													<c:when test="${res.orderStatus.no==7}">class="label label-success"</c:when>
+													<c:when test="${res.orderStatus.no==5}">class="label label-important"</c:when>
+													<c:otherwise>class="label label-info"</c:otherwise>
+												</c:choose>>${res.orderStatus.orderType}</span>
+											</td>
 											<td><input type="hidden" value="${res.requisitionId}" />
 											<a id="detail" href="javascript:;">查看</a>
-											<a href="javascript:;" onclick="javascript:location.href='gorequisitionupdate?requisitionId=${res.requisitionId}';">编辑</a>
-											<a href="#" id="deptreview" onclick="deptreview('${res.requisitionId}')">审核</a>
+											<c:if test="${res.orderStatus.no !=3 && res.orderStatus.no !=4 && res.orderStatus.no !=6 && res.orderStatus.no!=7 && res.orderStatus.no!=5}">
+												<a href="javascript:;" onclick="javascript:location.href='gorequisitionupdate?requisitionId=${res.requisitionId}';">编辑</a>
+											</c:if>
+											<c:if test="${ res.orderStatus.no !=3 && res.orderStatus.no !=4 && res.orderStatus.no !=5 && res.orderStatus.no !=6 && res.orderStatus.no !=7}">
+												<a href="#" id="deptreview" onclick="deptreview('${res.requisitionId}')">审核</a>
+											</c:if>
 											</td>
 										</tr>
 									</c:forEach>
@@ -184,9 +199,9 @@ h3 {
 							<th>
 								<div class="controls">
 									<label class="radio"> <input type="radio"
-										name="deptReview" value="1" checked="checked" /> 是
+										name="deptReview" value="2" checked="checked" /> 是
 									</label> <label class="radio" style="position: relative; top: 3px;">
-										<input type="radio" name="deptReview" value="0" /> 否
+										<input type="radio" name="deptReview" value="3" /> 否
 									</label>
 								</div>
 							</th>
@@ -324,19 +339,19 @@ h3 {
 		}
 		
 		//审核
-		function deptreview(purchase, status) {
+		function deptreview(purchase) {
 			$("#deptReviewModal").modal("show");
 			$("#deptReviewCommit").live(
 					'click',
 					function() { //点击保存
-						var s = $("input[name=deptReview]:checked").val(); //审核是否通过 0 表示通过  1表示不通过
+						var status = $("input[name=deptReview]:checked").val(); //审核是否通过 2 表示通过  3表示不通过						
 						var reason = $("#deptReviewReason").val(); //审核原因
 						if (reason == "" || reason == undefined) {
 							alert("请输入原因");
 							return;
 						}
-						//location.href = "deptReview?singleNo=" + purchase
-								//+ "&no=" + s + "&reason=" + reason;
+						location.href = "requisitionReview?requisitionId=" + purchase
+								+ "&status=" + status + "&reason=" + reason;
 					});
 		};
 		
@@ -352,7 +367,6 @@ h3 {
 				data : "singleNo=" + singleNo,
 				dataType : "JSON",
 				success : function(result) {
-					alert(result.list[0].requisition.reason);
 					//采购详情表格赋值
 					puchaseDetailAss(result);
 					//显示所有页码
@@ -408,10 +422,12 @@ h3 {
 							.find("span")
 							.html(employeeByReviewEmp);
 					var deptreviewTime = dateformat(result.list[0].requisition.outboundStoreHouseTime);
-					$("#requisitionDetail").children(
-							"tr:eq(2)").children(
-							"td:eq(1)").find("span")
-							.html(result.list[0].requisition.employeeByOutboundEmp.empLoginName);
+					
+					$("#requisitionDetail")
+					.children("tr:eq(3)")
+					.children("td:eq(0)")
+					.find("span")
+					.html(dateformat(result.list[0].requisition.reviewTime));
 					$("#requisitionDetail")
 							.children("tr:eq(2)")
 							.children("td:eq(2)")
@@ -419,12 +435,13 @@ h3 {
 							.html(result.list[0].requisition.employeeByStorageStoreHouseEmp.empLoginName);
 					
 					//4
-					$("#requisitionDetail")
-							.children("tr:eq(3)")
-							.children("td:eq(0)")
-							.find("span")
-							.html(dateformat(result.list[0].requisition.reviewTime));
 					var finTime = dateformat(result.list[0].requisition.storageStoreHouseTime);
+					$("#requisitionDetail").children(
+							"tr:eq(2)").children(
+							"td:eq(1)").find("span")
+							.html(result.list[0].requisition.employeeByOutboundEmp.empLoginName);
+					
+					
 					$("#requisitionDetail").children(
 							"tr:eq(3)").children(
 							"td:eq(1)").find("span")

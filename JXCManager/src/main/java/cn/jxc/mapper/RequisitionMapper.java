@@ -1,5 +1,6 @@
 package cn.jxc.mapper;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -24,4 +25,13 @@ public interface RequisitionMapper {
 	int RequisitionUpdete(@Param("rs")Requisition requisition);
 	//¸ù¾ÝidÉ¾³ý
 	int RequisitionDelete(@Param("id")String requisitionid);
+	//ÉóºË×´Ì¬²Ù×÷
+	int updaterequisition(
+			@Param("requisitionId")String requisitionId,
+			@Param("reviewEmp")String reviewEmp,
+			@Param("reviewTime")Date reviewTime,
+			@Param("status")Integer reviewstatus,
+			@Param("order")Integer order,
+			@Param("reason")String reason);
+	
 }
