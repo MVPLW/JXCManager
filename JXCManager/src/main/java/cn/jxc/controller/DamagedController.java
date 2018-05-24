@@ -66,7 +66,7 @@ public class DamagedController {
 		//仓库信息
 		List<StoreHouse> storehouse = storehouseservice.getStoreHouselist();
 		//产品信息
-		PageInfo<Product> productAll = productService.getProductAll(1); 
+		PageInfo<Product> productAll = productService.getProductAll(1,5); 
 		model.addAttribute("employees", employees.getList());
 		model.addAttribute("storehouse", storehouse);
 		model.addAttribute("productAll", productAll);
