@@ -94,7 +94,7 @@
 											<td><div class="control-group">
 													<label class="control-label" for="requestTime">制单日期&nbsp;&nbsp;</label>
 													<div class="controls">
-														<input type="text" class="input-xlarge datepicker"
+														<input type="text" class="input-xlarge datepicker" disabled="disabled"
 															readonly="readonly" id="requestTime" name="requestTime"
 															placeholder="制单时间" />
 													</div>
@@ -107,7 +107,7 @@
 															data-rel="chosen">
 															<c:forEach items="${storehouse}" var="s">
 																<option value="${s.storeHouseId }"
-																	<c:if test="${s.storeHouseId==requisition.storehouseByOutboundStoreHouse.shName }">selected="selected"</c:if>>${s.shName}</option>
+																	<c:if test="${s.storeHouseId==requisition.storehouseByOutboundStoreHouse.storeHouseId }">selected="selected"</c:if>>${s.shName}</option>
 															</c:forEach>
 														</select>
 													</div>
@@ -123,7 +123,7 @@
 															data-rel="chosen">
 															<c:forEach items="${storehouse}" var="s">
 																<option value="${s.storeHouseId }"
-																	<c:if test="${s.storeHouseId==requisition.storehouseByStorageStoreHouse.shName}">selected="selected"</c:if>>${s.shName}</option>
+																	<c:if test="${s.storeHouseId==requisition.storehouseByStorageStoreHouse.storeHouseId}">selected="selected"</c:if>>${s.shName}</option>
 															</c:forEach>
 														</select>
 													</div>

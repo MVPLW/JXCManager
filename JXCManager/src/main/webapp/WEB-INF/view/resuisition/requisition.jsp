@@ -56,7 +56,7 @@ h3 {
 			<!-- start: Content -->
 			<div id="content" class="span10">
 				<ul class="breadcrumb">
-					<li><i class="icon-home"></i> <a href="index.jsp">首页</a> <i
+					<li><i class="icon-home"></i> <a href="gowelcome">首页</a> <i
 						class="icon-angle-right"></i></li>
 					<li><a href="gorequisition">调拨订单管理</a></li>
 				</ul>
@@ -66,22 +66,33 @@ h3 {
 						<div class="control-group">
 							<div data-condition="search">
 								调拨单号:<input type="text" name="requisitionId"
-									class="input-medium" placeholder="请输入调拨单号" /> 审核状态: <select
-									name="rs_id">
+									class="input-medium" placeholder="请输入调拨单号" value="${requisitionId }"/> 制单人: 
+									<input type="text" name="requisitionnameEmp" class="input-medium" placeholder="请输入制单人" value="${requisitionnameEmp }"/>
+									<%-- <select name="rs_id">
 									<option value="0">请选择</option>
 									<c:forEach var="rs" items="${rslist }">
-										<option value="${rs.rsId}">${rs.rsName }</option>
+										<option value="${rs.rsId}" <c:if test="${rs.rsId eq rs_id}">selected="selected"</c:if>>${rs.rsName }</option>
 									</c:forEach>
-								</select>
+								</select> --%>
 								<button type="submit" class="btn btn-success"
 									data-command="search">
 									<i class="icon-search"></i>&nbsp;搜索
 								</button>
 								<div style="float: right;">
 									<a class="btn btn-primary" href="gorequisitionadd"
-										data-command="Add"><i class="icon-plus"></i>&nbsp;新增调拨</a> <a
-										class="btn btn-warning" href="javascript:void(0)" onclick="deleteRequisition()"
+										data-command="Add"><i class="icon-plus"></i>&nbsp;新增调拨</a> 
+									<a class="btn btn-warning" href="javascript:void(0)" onclick="deleteRequisition()"
 										data-command="Delete"><i class="icon-remove"></i>&nbsp;删除</a>
+									<div class="btn-group">
+										<button class="btn btn-success dropdown-toggle"
+											data-toggle="dropdown">
+											<span class="caret"></span>&nbsp;导出
+										</button>
+										<ul class="dropdown-menu">
+											<li><a href="javascript:;" onclick="exportCurrentData()">导出当前数据</a></li>
+											<li><a href="javascript:;" onclick="exportAllData()">导出所有数据</a></li>
+										</ul>
+									</div>
 									<a class="btn btn-danger" href="gorequisition"
 										data-command="Refresh"><i class="icon-refresh"></i>&nbsp;刷新</a>
 								</div>
@@ -99,51 +110,30 @@ h3 {
 						<div class="box-content">
 							<table
 								class="table table-striped table-bordered bootstrap-datatable">
-								<!-- table table-bordered table-striped table-condensed
-								 -->
 								<thead>
 									<tr>
 										<th><input type="checkbox" id="productCheckAll" /></th>
-										<th>调拨单号</th>
-										<th>制单人</th>
-										<!-- 申请人 -->
-										<th>制单	时间</th>
-										<!-- 申请时间 -->
-										<th>审核人</th>
-										<th>审核时间</th>
-										<th>审核状态</th>
-										<th>调出仓库</th>
-										<th>调入仓库</th>
-										<th>操作</th>
+										<th align="center">调拨单号</th>
+										<th align="center">制单人</th>
+										<th align="center">制单时间</th>
+										<th align="center">调出仓库</th>
+										<th align="center">调入仓库</th>
+										<th align="center">操作</th>
 									</tr>
 								</thead>
 								<tbody id="productBody">
 									<c:forEach var="res" items="${reslist.list}">
 										<tr>
-											<th><input type="checkbox" name="productCheck"
-													value="${res.requisitionId}" /></th>
-											<!--  -->
+											<th><input type="checkbox" name="productCheck" value="${res.requisitionId}" /></th>											
 											<td>${res.requisitionId }</td>
-											<!-- 调拨单号 -->
-											<td class="center">${res.employeeByRequestEmp.empLoginName }</td>
-											<!-- 制单人 -->
-											<td class="center"><fmt:formatDate
-													value="${res.requestTime }" pattern="yyyy-MM-dd" /></td>
-											<!-- 制单时间 -->
-											<td class="center">${res.employeeByReviewEmp.empLoginName }<!-- <span class="label label-success">Active</span> -->
-											</td>
-											<!-- 审核人 -->
-											<td><fmt:formatDate value="${res.reviewTime }"
-													pattern="yyyy-MM-dd" /></td>
-											<!-- 审核时间 -->
-											<td>${res.reviewstatus.rsName }</td>
-											<!-- 审核状态 -->
+											<td class="center">${res.employeeByRequestEmp.empLoginName }</td>											
+											<td class="center"><fmt:formatDate value="${res.requestTime }" pattern="yyyy-MM-dd" /></td>
 											<td>${res.storehouseByOutboundStoreHouse.shName }</td>
 											<td>${res.storehouseByStorageStoreHouse.shName }</td>
 											<td><input type="hidden" value="${res.requisitionId}" />
-											<a id="detail" href="javascript:">查看</a>
-											<a href="gorequisitionupdate?requisitionId=${res.requisitionId }">修改</a>
-											<a href="#">审核</a>
+											<a id="detail" href="javascript:;">查看</a>
+											<a href="javascript:;" onclick="javascript:location.href='gorequisitionupdate?requisitionId=${res.requisitionId}';">编辑</a>
+											<a href="#" id="deptreview" onclick="deptreview('${res.requisitionId}')">审核</a>
 											</td>
 										</tr>
 									</c:forEach>
@@ -180,6 +170,41 @@ h3 {
 		</div>
 	</div>
 
+	<div class="modal hide fade" id="deptReviewModal" style="width: 800px;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">x</button>
+			<h2>部门审核</h2>
+		</div>
+		<div class="modal-body">
+			<div>
+				<table style="width: 100%; table-layout: fixed;">
+					<tbody>
+						<tr>
+							<th style="width: 120px;">部门审核是否通过</th>
+							<th>
+								<div class="controls">
+									<label class="radio"> <input type="radio"
+										name="deptReview" value="1" checked="checked" /> 是
+									</label> <label class="radio" style="position: relative; top: 3px;">
+										<input type="radio" name="deptReview" value="0" /> 否
+									</label>
+								</div>
+							</th>
+						</tr>
+						<tr>
+							<th>原因</th>
+							<th style="padding-right: 20px;"><textarea rows="4"
+									id="deptReviewReason" cols="30" style="width: 100%;"></textarea></th>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a href="javascript:;" class="btn btn-primary" id="deptReviewCommit">Save</a>
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+		</div>
+	</div>
 	<div class="modal hide fade" id="myModal" style="width: 800px;">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">x</button>
@@ -209,6 +234,9 @@ h3 {
 							<td><h3>审核时间:</h3> <span></span></td>
 							<td><h3>出库时间:</h3> <span></span></td>
 							<td><h3>入库时间:</h3> <span></span></td>
+						</tr>
+						<tr style="height: 30px;">
+							<td><h3>审核备注:</h3> <span></span></td>
 						</tr>
 					</tbody>
 				</table>
@@ -295,41 +323,42 @@ h3 {
 			location.href="gorequisition?pageNo="+pageNum;
 		}
 		
-		
+		//审核
+		function deptreview(purchase, status) {
+			$("#deptReviewModal").modal("show");
+			$("#deptReviewCommit").live(
+					'click',
+					function() { //点击保存
+						var s = $("input[name=deptReview]:checked").val(); //审核是否通过 0 表示通过  1表示不通过
+						var reason = $("#deptReviewReason").val(); //审核原因
+						if (reason == "" || reason == undefined) {
+							alert("请输入原因");
+							return;
+						}
+						//location.href = "deptReview?singleNo=" + purchase
+								//+ "&no=" + s + "&reason=" + reason;
+					});
+		};
 		
 		$("#detail").live('click',function() {
 			empty();
 			$("#myModal").modal("show");
 			//获取选中的订单号
 			var singleNo = $(this).parent().find("input:hidden").val();
-			alert("调拨单号："+singleNo);
+			//alert("调拨单号："+singleNo);
 			$.ajax({
 				type : "POST",
 				url : "getRequisitionBySingleNo",
 				data : "singleNo=" + singleNo,
 				dataType : "JSON",
 				success : function(result) {
+					alert(result.list[0].requisition.reason);
 					//采购详情表格赋值
 					puchaseDetailAss(result);
 					//显示所有页码
 					disPageNum(result);
 					//alert(result.list[0].purchaserequest.remark);
 					//为调拨订单各种信息赋值
-					/* var requisition1 = result.list[0].requisition.requisitionId;
-					var requisition2 = result.list[0].requisition.employeeByRequestEmp.empLoginName;
-					var requisition3 = dateformat(result.list[0].requisition.requestTime);
-					
-					var requisition4 = result.list[0].requisition.employeeByReviewEmp.empLoginName;
-					var requisition5 = dateformat(result.list[0].requisition.reviewTime);
-					var requisition6 = result.list[0].requisition.employeeByOutboundEmp.rsName;
-					
-					var requisition7 = result.list[0].requisition.storehouseByOutboundStoreHouse.shName;
-					var requisition8 = dateformat(result.list[0].requisition.outboundStoreHouseTime);
-					var requisition9 = result.list[0].requisition.storehouseByOutboundStoreHouse.empLoginName;
-					
-					var requisition10 = result.list[0].requisition.storehouseByStorageStoreHouse.shName;
-					var requisition11 = dateformat(result.list[0].requisition.storageStoreHouseTime);
-					var requisition12 = result.list[0].requisition.employeeByStorageStoreHouseEmp.empLoginName; */
 					//1
 					$("#requisitionDetail")
 							.children("tr:eq(0)")
@@ -362,8 +391,12 @@ h3 {
 							.children("td:eq(2)")
 							.find("span")
 							.html(result.list[0].requisition.storehouseByStorageStoreHouse.shName);
-					
-					
+					//5
+					$("#requisitionDetail")
+					.children("tr:eq(4)")
+					.children("td:eq(0)")
+					.find("span")
+					.html(result.list[0].requisition.reason);
 					//3
 					var employeeByReviewEmp = result.list[0].requisition.employeeByReviewEmp.empLoginName;
 					if(employeeByReviewEmp==null){
@@ -385,10 +418,7 @@ h3 {
 							.find("span")
 							.html(result.list[0].requisition.employeeByStorageStoreHouseEmp.empLoginName);
 					
-					
-					
 					//4
-					
 					$("#requisitionDetail")
 							.children("tr:eq(3)")
 							.children("td:eq(0)")
@@ -404,9 +434,11 @@ h3 {
 							.children("td:eq(2)")
 							.find("span")
 							.html(dateformat(result.list[0].requisition.storageStoreHouseTime));
+					
 				}
 			});
 		});
+		//
 		function empty() {
 			$("#requisitionDetail").children("tr:eq(0)").children("td:eq(0)")
 					.find("span").html("");
@@ -432,7 +464,10 @@ h3 {
 					.find("span").html("");
 			$("#requisitionDetail").children("tr:eq(3)").children("td:eq(2)")
 					.find("span").html("");
+			$("#requisitionDetail").children("tr:eq(4)").children("td:eq(0)")
+			.find("span").html("");
 		}
+		//
 		function puchaseDetailAss(result) {
 			var s = "";
 			for (var i = 0; i < result.list.length; i++) {
@@ -474,11 +509,25 @@ h3 {
 				}
 			});
 		}
+		
+		/* 导出当前显示的数据 */
+		function exportCurrentData() {
+			var requisitionId = $("input[name=requisitionId]").val();
+			var requisitionnameEmp = $("input[name=requisitionnameEmp]").val();
+			//var suppName = $("input[name=suppName]").val();
+			var pageNo = parseInt($("input[name=pageNo]").val());
+			location.href = "requisitionExport?pageNo=" + pageNo + "&requisitionId="
+					+ requisitionId + "&requisitionnameEmp=" + requisitionnameEmp;
+		}
+		
+		/* 导出所有数据 */
+		function exportAllData() {
+			location.href = "requisitionExport";
+		}
+		
+		
 		/* 删除采购订单订单 */
 		function deleteRequisition() {
-			/* if(!confirm("确定要删除吗？")){
-				return ;
-			} */
 			var s = $("#productBody input[name='productCheck']:checked");
 			if (s.length == 0) {
 				alert("请选择订单");
@@ -490,7 +539,6 @@ h3 {
 			var flag = false;
 			$(s).each(function() { //循环所有选中的框
 				var a = $(this).val();
-				alert(a);
 				 $.get("judgmens", {
 					singleNo : a
 				},
@@ -500,13 +548,11 @@ h3 {
 						flag = true;
 						return;
 					} else {
-						alert(purchases);
 						purchases += a + "-";
 					}
 				}); 
 			});
 			if (flag == false) {
-				alert("赋值后的参数"+purchases);
 				location.href = "deleteRequisition?requisitionid=" + purchases;
 			}
 		}

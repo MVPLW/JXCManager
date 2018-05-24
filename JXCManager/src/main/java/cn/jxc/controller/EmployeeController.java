@@ -131,4 +131,16 @@ public class EmployeeController {
 		return "error";
 	}
 
+	/**
+	 * 根据登录名判断是否有被别的表引用的列
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/empJudgmen")
+	public String judgmen(String empLoginName) {
+		
+		return "";
+	}
+
 }

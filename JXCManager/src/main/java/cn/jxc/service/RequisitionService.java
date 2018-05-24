@@ -16,7 +16,7 @@ public interface RequisitionService {
 	 * @param pageSize
 	 * @return
 	 */
-	PageInfo<Requisition> getRequisition(String requisitionId, Integer rsid, Integer pageNo, Integer pageSize);
+	PageInfo<Requisition> getRequisition(String requisitionId, String requisitionnameEmp, Integer pageNo, Integer pageSize);
 
 	Requisition getRequisitionById(String requisitionId);
 	// 按条件查询

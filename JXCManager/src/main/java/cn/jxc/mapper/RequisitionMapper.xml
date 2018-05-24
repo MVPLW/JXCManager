@@ -10,6 +10,8 @@
 		<result property="requestTime" column="RequestTime" />
 		<!-- 审核时间 -->
 		<result property="reviewTime" column="ReviewTime" />
+		<!-- 审核备注 -->
+		<result property="reason" column="Reason"/>
 		<!-- 出库时间 -->
 		<result property="outboundStoreHouseTime" column="OutboundStoreHouseTime" />
 		<!-- 入库时间 -->
@@ -65,8 +67,8 @@
 			<if test="requisitionId != null and requisitionId != ''">
 				and rs.Requisition_id like CONCAT('%',#{requisitionId},'%')
 			</if>
-			<if test="rsid != null">
-				and r.RS_id=#{rsid}
+			<if test="requisitionnameEmp != null and requisitionnameEmp != ''">
+				AND rs.`RequestEmp` LIKE CONCAT('%',#{requisitionnameEmp},'%')
 			</if>
 		</where>
 		ORDER BY rs.`RequestTime` DESC
@@ -77,7 +79,7 @@
 		<!-- limit #{from},#{pageSize} -->
 	</select>
 	<select id="requisitionByid" resultMap="Requisitionlist">
-		SELECT  rs.Requisition_id,rs.requestTime,rs.ReviewTime,rs.OutboundStoreHouseTime,rs.StorageStoreHouseTime,
+		SELECT  rs.Requisition_id,rs.requestTime,rs.ReviewTime,rs.OutboundStoreHouseTime,rs.StorageStoreHouseTime,rs.`Reason`,
 		emp1.EmpLoginName AS requestEmp,emp2.EmpLoginName AS reviewEmp,
 		emp3.EmpLoginName AS OutboundEmp,emp4.EmpLoginName AS StoreHouseEmp,
 		r.RS_name,r.RS_id,

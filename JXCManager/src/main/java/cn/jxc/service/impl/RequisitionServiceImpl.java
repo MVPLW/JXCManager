@@ -26,15 +26,15 @@ public class RequisitionServiceImpl implements RequisitionService{
 	//按条件查询
 	@Override
 	public Requisition requisitionByid(String requisitionId) {
-		
+		//requisitionId = requisitionId.substring(1, requisitionId.lastIndexOf('\''));
 		return resMapper.requisitionByid(requisitionId);
 	}
 	
 	//查询所有的调拨订单详情
 	@Override
-	public PageInfo<Requisition> getRequisition(String requisitionId,Integer rsid,Integer num,Integer pageSize) {
+	public PageInfo<Requisition> getRequisition(String requisitionId,String requisitionnameEmp,Integer num,Integer pageSize) {
 		PageHelper.startPage(num, pageSize);
-		List<Requisition> requisition = resMapper.getRequisition(requisitionId,rsid);
+		List<Requisition> requisition = resMapper.getRequisition(requisitionId,requisitionnameEmp);
 		PageInfo<Requisition> pageInfos=new PageInfo<Requisition>(requisition);
 		return pageInfos;
 	}
@@ -69,8 +69,8 @@ public class RequisitionServiceImpl implements RequisitionService{
 	@Override
 	public int RequisitionDelete(String requisitionid) {
 		try {
-		resMapper.RequisitionDelete(requisitionid);
-		resdMapper.RequisitionDetailDelete(requisitionid);
+			resdMapper.RequisitionDetailDelete(requisitionid);
+			resMapper.RequisitionDelete(requisitionid);
 		return 1;
 		}catch (Exception e) {
 			// TODO: handle exception

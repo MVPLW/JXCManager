@@ -49,7 +49,7 @@
 			<div id="content" class="span10">
 				<ul class="breadcrumb">
 					<li><i class="icon-home"></i>首页 <i class="icon-angle-right"></i></li>
-					<li><a href="form">调拨新增管理</a></li>
+					<li><a href="form">调拨管理</a>></li>
 				</ul>
 				<div class="row-fluid sortable">
 					<div class="box span12">
@@ -91,8 +91,8 @@
 											<td><div class="control-group">
 													<label class="control-label" for="requestTime">制单日期&nbsp;&nbsp;</label>
 													<div class="controls">
-														<input type="text" class="input-xlarge datepicker"
-															readonly="readonly" id="requestTime" name="requestTime"
+														<input type="text" class="input-xlarge datepicker" disabled="disabled"
+															readonly="readonly" id="requestTime" name="requestTime" pattern="yyyy-MM-dd"														
 															placeholder="申请时间" />
 													</div>
 												</div></td>

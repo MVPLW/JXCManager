@@ -78,7 +78,7 @@ public class PurchaseRequestController {
 	public String goPurchaseRequest(Model model) {
 		PageInfo<Employee> employees = employeeService.getEmployeeAll(1, 10000);
 		List<Supplier> suppliers = supplierService.getSupplierAll();
-		PageInfo<Product> productAll = productService.getProductAll(1); // 分页查询 刚开始进入查询第一页的数据
+		PageInfo<Product> productAll = productService.getProductAll(1,5); // 分页查询 刚开始进入查询第一页的数据
 
 		model.addAttribute("employees", employees.getList());
 		model.addAttribute("suppliers", suppliers);
@@ -95,7 +95,7 @@ public class PurchaseRequestController {
 	@RequestMapping(value = "/getProductByPage", method = RequestMethod.POST)
 	@ResponseBody
 	public String getProductPage(@RequestParam("pageNum") Integer pageNum) {
-		PageInfo<Product> productAll = productService.getProductAll(pageNum);
+		PageInfo<Product> productAll = productService.getProductAll(pageNum,5);
 		return JSON.toJSONString(productAll.getList());
 	}
 
@@ -162,7 +162,7 @@ public class PurchaseRequestController {
 				.getPurchaseRequestDetail(singleNo, 1, 1000);
 		PageInfo<Employee> employeeAll = employeeService.getEmployeeAll(1, 10000);
 		List<Supplier> supplierAll = supplierService.getSupplierAll();
-		PageInfo<Product> productAll = productService.getProductAll(productPageNo);
+		PageInfo<Product> productAll = productService.getProductAll(productPageNo,5);
 		model.addAttribute("purchase", purchase);
 		model.addAttribute("purchaseDetails", purchaseRequestDetails);
 		model.addAttribute("employeeAll", employeeAll.getList());
@@ -349,5 +349,37 @@ public class PurchaseRequestController {
 		// 生成excel并且下载
 		new ExportExcel(null, PurchaseRequest.class, 1).setDataList(list).write(response, fileName).dispose();
 	}
+
+	/**
+	 *
+	 * 导入已经填好数据的Excel
+	 * 
+	 * @param multipartFile
+	 */
+	/*@RequestMapping(value = "purchaseImport", method = RequestMethod.GET)
+	public void importFile(MultipartFile multipartFile) {
+		try {
+			int failureNum = 0;
+			StringBuilder failureMsg = new StringBuilder();
+			ImportExcel ei = new ImportExcel(multipartFile, 1, 0);
+			List<PurchaseRequest> list = ei.getDataList(PurchaseRequest.class);
+			for (PurchaseRequest user : list) {
+				try {
+					// to do: 保存处理数据
+					// userService.save(user);
+					// logger.info(user.toString());
+					purchaseRequestService.addPurchaseRequest(user);
+				} catch (Exception ex) {
+					failureNum++;
+				}
+			}
+
+			if (failureNum > 0) {
+				failureMsg.insert(0, ", Failures: " + failureNum);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}*/
 
 }

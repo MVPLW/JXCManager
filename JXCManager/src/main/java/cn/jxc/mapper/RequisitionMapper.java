@@ -15,7 +15,7 @@ public interface RequisitionMapper {
 	//查询所有的调拨订单详情
 	List<Requisition> getRequisition(
 			@Param("requisitionId")String requisitionId,
-			@Param("rsid")Integer rsid);
+			@Param("requisitionnameEmp")String requisitionnameEmp);
 	//按条件查询
 	Requisition requisitionByid(String requisitionId);
 	//调拨订单新增

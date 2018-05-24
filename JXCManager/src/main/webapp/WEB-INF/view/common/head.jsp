@@ -10,12 +10,12 @@
 				data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse"> <span
 				class="icon-bar"></span> <span class="icon-bar"></span> <span
 				class="icon-bar"></span>
-			</a> <a class="brand" href="index.html"><span>JXCM</span></a>
+			</a> <a class="brand" href="javascript:;" onclick="javascript:location.href='gowelcome';"><span>JXCM</span></a>
 
 			<!-- start: Header Menu -->
 			<div class="nav-no-collapse header-nav">
 				<ul class="nav pull-right">
-					<li class="dropdown hidden-phone"><a
+					<!-- <li class="dropdown hidden-phone"><a
 						class="btn dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="icon-bell"></i> <span class="badge red"> 7 </span>
 					</a>
@@ -65,9 +65,9 @@
 							</a></li>
 							<li class="dropdown-menu-sub-footer"><a>View all
 									notifications</a></li>
-						</ul></li>
+						</ul></li> -->
 					<!-- start: Notifications Dropdown -->
-					<li class="dropdown hidden-phone"><a
+					<!-- <li class="dropdown hidden-phone"><a
 						class="btn dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="icon-calendar"></i> <span class="badge red"> 5 </span>
 					</a>
@@ -100,10 +100,10 @@
 							</a>
 							<div class="taskProgress progressSlim orange">80</div></li>
 							<li><a class="dropdown-menu-sub-footer">View all tasks</a></li>
-						</ul></li>
+						</ul></li> -->
 					<!-- end: Notifications Dropdown -->
 					<!-- start: Message Dropdown -->
-					<li class="dropdown hidden-phone"><a
+					<!-- <li class="dropdown hidden-phone"><a
 						class="btn dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="icon-envelope"></i> <span class="badge red"> 4 </span>
 					</a>
@@ -147,7 +147,7 @@
 							</a></li>
 							<li><a class="dropdown-menu-sub-footer">View all
 									messages</a></li>
-						</ul></li>
+						</ul></li> -->
 
 					<!-- start: User Dropdown -->
 					<li class="dropdown"><a class="btn dropdown-toggle"

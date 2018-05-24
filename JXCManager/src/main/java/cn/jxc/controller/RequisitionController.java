@@ -1,6 +1,12 @@
 package cn.jxc.controller;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,8 +19,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 
+import cn.jxc.excel.ExportExcel;
 import cn.jxc.pojo.Employee;
 import cn.jxc.pojo.Product;
+import cn.jxc.pojo.PurchaseRequest;
 import cn.jxc.pojo.Requisition;
 import cn.jxc.pojo.RequisitionDetail;
 import cn.jxc.pojo.ReviewStatus;
@@ -47,11 +55,8 @@ public class RequisitionController {
 		if(pageNo==null || pageNo==0) {
 			pageNo=1;
 		}
-		//审核状态
-		List<ReviewStatus> rslist = rsmapperservice.getReviewStatus();
 		//调拨订单表查询
 		PageInfo<Requisition> reslist = requisitionmapperservice.getRequisition(null,null,pageNo,10);
-		model.addAttribute("rslist", rslist);
 		model.addAttribute("reslist", reslist);
 		return "resuisition/requisition";
 	}
@@ -60,22 +65,16 @@ public class RequisitionController {
 	@RequestMapping("getbyrsid")
 	public String getByrsid(
 			@RequestParam(value="requisitionId",required=false) String requisitionId,
-			@RequestParam(value="rs_id",required=false) String rs_id,
+			@RequestParam(value="requisitionnameEmp",required=false) String requisitionnameEmp,
 			Integer pageNo,
 			Model model) {
 		if(pageNo==null || pageNo==0) {
 			pageNo=1;
 		}
-		//审核状态
-		List<ReviewStatus> rslist = rsmapperservice.getReviewStatus();
-		//调拨订单表查询	
-		Integer rsid =Integer.parseInt(rs_id); 
-		if(rsid==0) {
-			rsid=null;
-		}
-		PageInfo<Requisition> reslist = requisitionmapperservice.getRequisition(requisitionId,rsid,pageNo,10);
-		model.addAttribute("rslist", rslist);
+		PageInfo<Requisition> reslist = requisitionmapperservice.getRequisition(requisitionId,requisitionnameEmp,pageNo,10);
 		model.addAttribute("reslist", reslist);
+		model.addAttribute("requisitionId", requisitionId);
+		model.addAttribute("requisitionnameEmp", requisitionnameEmp);
 		return "resuisition/requisition";
 	}
 	
@@ -84,7 +83,6 @@ public class RequisitionController {
 	public String requisitionId(String requisitionId,Model model) {
 		Requisition requisition = requisitionmapperservice.requisitionByid(requisitionId);
 		model.addAttribute("requisition",requisition);
-		System.out.println("选中的订单号是："+requisition.getRequisitionId());
 		return "resuisition/requisition";
 	}
 	
@@ -96,7 +94,7 @@ public class RequisitionController {
 		//仓库信息
 		List<StoreHouse> storehouse = storehouseservice.getStoreHouselist();
 		//产品信息
-		PageInfo<Product> productAll = productService.getProductAll(1); 
+		PageInfo<Product> productAll = productService.getProductAll(1,5); 
 		model.addAttribute("employees", employees.getList());
 		model.addAttribute("storehouse", storehouse);
 		model.addAttribute("productAll", productAll);
@@ -120,12 +118,13 @@ public class RequisitionController {
 	
 	//跳转至修改
 	@RequestMapping("gorequisitionupdate")
-	public String gorequisitionupdate(String requisitionId,Model model, Integer productPageNo) {
-		if (null == productPageNo) {
-			productPageNo = 1;
-		}
+	public String gorequisitionupdate(String requisitionId,Model model) {		
 		//调拨订单表
+		//requisitionId = requisitionId.substring(1, requisitionId.lastIndexOf('\''));
+		System.out.println(requisitionId);
 		Requisition requisition = requisitionmapperservice.requisitionByid(requisitionId);
+		System.out.println(requisition.getRequisitionId());
+		System.out.println(requisitionId);
 		//调拨订单详情表
 		PageInfo<RequisitionDetail> requisitionDetail = requisitiondetailservice
 				.requisitionDetailById(requisitionId, 1, 1000);
@@ -134,7 +133,7 @@ public class RequisitionController {
 		//仓库信息
 		List<StoreHouse> storehouse = storehouseservice.getStoreHouselist();
 		//产品信息
-		PageInfo<Product> productAll = productService.getProductAll(1); 
+		PageInfo<Product> productAll = productService.getProductAll(1,5); 
 		model.addAttribute("requisition",requisition);
 		model.addAttribute("requisitionDetail",requisitionDetail);
 		model.addAttribute("employees",employees.getList());
@@ -193,6 +192,7 @@ public class RequisitionController {
 		}
 		Requisition requisition = requisitionmapperservice.requisitionByid(singleNo);
 		PageInfo<RequisitionDetail> pageinfos = requisitiondetailservice.requisitionDetailById(singleNo, pageNo, 3);
+		System.out.println(requisition.getReason());
 		//System.out.println(requisition.getReviewTime());
 		pageinfos.getList().get(0).setRequisition(requisition);
 		String jsonString = JSON.toJSONString(pageinfos);
@@ -231,6 +231,34 @@ public class RequisitionController {
 			num = "0";
 			return num; // 不可以删除
 		}
-		}
+	}
 	
+	/**
+	 * 导出excel 有pageNo导出当前 没有导出所有
+	 * 
+	 * @param pageNo
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
+	@RequestMapping("/requisitionExport")
+	public void requisitionExportExcel(
+			@RequestParam(value = "pageNo", required = false) Integer pageNo,
+			@RequestParam(value = "requisitionId", required = false) String requisitionId,
+			@RequestParam(value = "requisitionnameEmp", required = false) String requisitionnameEmp,		
+			HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		// 获取数据
+		List<Requisition> list =null;
+		if (null == pageNo) {
+			list = requisitionmapperservice.getRequisition(null, null, 1, 100000).getList();
+		} else {
+			list = requisitionmapperservice.getRequisition(requisitionId, requisitionnameEmp, pageNo, 5).getList();
+		}
+		// 获取文件名
+		String fileName = "Requisition" + new SimpleDateFormat("MMddhhmmsss").format(new Date())
+				+ String.valueOf((int) (Math.random() * 9 + 1) * 1000) + ".xlsx";
+		// 生成excel并且下载
+		new ExportExcel(null, Requisition.class, 1).setDataList(list).write(response, fileName).dispose();
+	}
 }
