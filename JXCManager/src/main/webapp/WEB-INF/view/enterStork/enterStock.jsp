@@ -167,7 +167,7 @@ h3 {
 									</c:if>
 									<c:forEach begin="1" end="${ess.pages}" var="s">
 										<c:if test="${s>=ess.pageNum-2 && s<=ess.pageNum+2 }">
-											<li <c:if test="${s==ess.pageNum}">class="active"</c:if>>
+											<li <c:if test="${s==ess.pageNum}"> class="active"</c:if>>
 												<a href="javascript:;" onclick="goenterstock(${s})">${s}</a>
 											</li>
 										</c:if>

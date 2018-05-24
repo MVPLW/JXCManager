@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxc.mapper.CheckMapper">
+
+	<resultMap type="Checks" id="checkMap">
+		<id column="c_id" property="cid" />
+		<result column="c_relation_no" property="crelationno" />
+		<result column="c_type" property="ctype" />
+		<result column="c_creater" property="ccreater" />
+		<result column="c_createDate" property="createStartDate" />
+		<result column="c_createDate" property="createEndDate" />
+		<result property="orderStatus" column="OrderStatus"
+			typeHandler="cn.jxc.util.OrderStatusTypeHandler" />
+	</resultMap>
+
+	<select id="getALLChecks" resultMap="checkMap">
+		SELECT c.`c_id`,
+		c.`c_type`,
+		c.`c_relation_no`,
+		c.`c_state`,
+		c.`c_creater`,
+		c.`c_createDate`,
+		c.`OrderStatus`
+		FROM
+		`check` AS c 
+		<where>
+			<if test="cid!=null and cid!=''">
+				and c.c_id like concat('%',#{cid},'%')
+			</if>
+			<if test="crelationno!=null and crelationno!=''">
+				and c.c_relation_no like concat('%',#{crelationno},'%')
+
+			</if>
+			<if test="createStartDate!=null">
+				and c.c_createDate <![CDATA[>=]]>
+				#{createStartDate}
+			</if>
+			<if test="createEndDate!=null">
+				and c.c_createDate <![CDATA[<=]]>
+				#{createEndDate}
+			</if>
+
+		</where>
+	</select>
+
+</mapper>

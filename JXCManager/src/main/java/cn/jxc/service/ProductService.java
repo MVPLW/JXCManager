@@ -10,7 +10,7 @@ public interface ProductService {
 	 * @param num 页码
 	 * @return   返回产品信息集合
 	 */
-	PageInfo<Product> getProductAll(int num);
+	PageInfo<Product> getProductAll(int num,int pageSize);
 	
 	/**
 	 * 根据产品名字和编号进行模糊分页查询
