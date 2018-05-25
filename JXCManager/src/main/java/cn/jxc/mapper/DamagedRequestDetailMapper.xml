@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxc.mapper.DamagedRequestDetailMapper">
+	
+	
+	
+	
+	
+	<insert id="AddDamagedRequesDetail">
+		
+        INSERT INTO `damagedrequestdetail`
+            (`DRD_id`,
+             `DamaagedRequest_id`,
+             `Product_id`,
+             `Count`,
+             `ProductUnit_id`)
+VALUES (#{dRDId},
+        #{damagedRequest.damagedRequestId},
+        #{product.productId},
+        #{count},
+        #{productUnit.productUnitId})
+	
+	
+	
+	
+	
+	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

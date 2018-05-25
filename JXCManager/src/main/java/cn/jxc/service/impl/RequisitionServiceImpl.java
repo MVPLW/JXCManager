@@ -1,5 +1,6 @@
 package cn.jxc.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +85,13 @@ public class RequisitionServiceImpl implements RequisitionService{
 		List<Requisition> requisitionByid = resMapper.getRequisition(requisitionId, null);
 		
 		return requisitionByid.get(0);
+	}
+	//ÉóºË²Ù×÷
+	@Override
+	public int updaterequisition(String requisitionId, String reviewEmp, Date reviewTime, Integer reviewstatus,
+			Integer order,String reason) {
+		
+		return resMapper.updaterequisition(requisitionId, reviewEmp, reviewTime, reviewstatus, order, reason);
 	}
 
 }
